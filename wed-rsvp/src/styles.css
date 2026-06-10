@@ -59,10 +59,14 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
+  max-width: 100%;
 }
 
 body {
   margin: 0;
+  overflow-x: hidden;
+  max-width: 100%;
   font-family: var(--font-sans);
   font-weight: 400;
   font-size: 1rem;
@@ -147,9 +151,134 @@ p {
 }
 
 /* === Section: WelcomeGate === */
+.welcome-gate {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-gate);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  overflow: hidden;
+  background-color: #2d0a0e;
+}
+
+.welcome-gate__vignette {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  opacity: 0.6;
+  background: radial-gradient(ellipse at center, transparent 0%, rgba(0, 0, 0, 0.6) 100%);
+}
+
+.welcome-gate__seal-wrap {
+  position: absolute;
+  left: 50%;
+  top: 62%;
+  transform: translate(-50%, -50%) translateZ(1px);
+  z-index: 40;
+}
+
 .envelope-scene {
-  perspective: 1200px;
-  transform-style: preserve-3d;
+  position: relative;
+  width: 100%;
+  max-width: 26rem;
+  padding: 0 1.5rem;
+  transform-origin: center center;
+  will-change: transform;
+}
+
+.envelope-scene__card {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 10;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+.envelope-scene__card-inner {
+  will-change: transform;
+  position: relative;
+}
+
+.envelope-scene__swipe-hint {
+  position: absolute;
+  bottom: calc(100% + 0.75rem);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  opacity: 0;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.envelope-scene__swipe-hint-chevrons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  line-height: 1;
+}
+
+.envelope-scene__chevron {
+  display: block;
+  font-size: 1.1rem;
+  color: var(--color-ivory);
+  opacity: 0;
+  animation: chevron-bounce 1.4s ease-in-out infinite;
+}
+
+.envelope-scene__chevron--1 {
+  animation-delay: 0s;
+}
+
+.envelope-scene__chevron--2 {
+  animation-delay: 0.2s;
+}
+
+.envelope-scene__swipe-hint-label {
+  font-family: var(--font-subheading);
+  font-size: 0.6rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+@keyframes chevron-bounce {
+  0%, 100% {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  50% {
+    opacity: 0.9;
+    transform: translateY(-2px);
+  }
+}
+
+.envelope-scene__body {
+  z-index: 20;
+}
+
+.wax-seal__btn {
+  background: transparent;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.wax-seal__hint {
+  letter-spacing: 0.3em;
+}
+
+@media (max-width: 400px) {
+  .wax-seal__hint {
+    letter-spacing: 0.15em;
+    font-size: 0.65rem;
+  }
 }
 
 /* === Section: HeroSection === */

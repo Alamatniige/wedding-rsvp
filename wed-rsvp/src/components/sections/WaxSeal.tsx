@@ -17,7 +17,7 @@ export const WaxSeal = forwardRef<HTMLButtonElement, WaxSealProps>(function WaxS
       aria-label={ariaLabel}
       type="button"
       style={{ willChange: 'transform', cursor: 'pointer' }}
-      className="group relative h-28 w-28 rounded-full outline-none focus-visible:ring-2"
+      className="wax-seal__btn group relative h-28 w-28 outline-none focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-(--color-champagne)"
     >
       <svg
         viewBox="0 0 120 120"
@@ -58,9 +58,8 @@ export const WaxSeal = forwardRef<HTMLButtonElement, WaxSealProps>(function WaxS
         <ellipse cx="44" cy="38" rx="22" ry="14" fill="url(#wax-shine)" />
       </svg>
       <span
-        className="pointer-events-none absolute -bottom-7 left-1/2 -translate-x-1/2 whitespace-nowrap text-xs uppercase"
+        className="wax-seal__hint pointer-events-none absolute -top-4 left-1/2 -translate-x-1/2 max-w-[90vw] truncate text-center text-xs uppercase"
         style={{
-          letterSpacing: '0.3em',
           color: 'rgba(250,247,242,0.75)',
           fontFamily: 'var(--font-subheading)',
         }}
