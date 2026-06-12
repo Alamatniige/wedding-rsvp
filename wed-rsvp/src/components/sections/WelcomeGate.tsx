@@ -1,352 +1,414 @@
 import { useEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
+import { AnimatePresence, motion } from 'framer-motion'
 import { couple } from '../../data/weddingData'
-import { WaxSeal } from './WaxSeal'
 
-const ENVELOPE_TEXTURE = '/env.avif'
 const STORAGE_KEY = 'wedding:envelope-opened'
-const DRAG_COMMIT_THRESHOLD = 64 
-const CARD_PEEK_RATIO = 0.24 
-const DRAG_MAX_RISE_RATIO = 0.75 
 
-type Stage = 'idle' | 'peeking' | 'revealing' | 'done'
+const CARTOUCHE_PATH = [
+  'M125,14',
+  'C 160,14 186,9 201,22',
+  'C 216,35 209,56 221,76',
+  'C 233,98 236,130 232,165',
+  'C 236,205 233,252 221,274',
+  'C 209,294 216,315 201,328',
+  'C 186,341 160,336 125,336',
+  'C 90,336 64,341 49,328',
+  'C 34,315 41,294 29,274',
+  'C 17,252 14,205 18,165',
+  'C 14,130 17,98 29,76',
+  'C 41,56 34,35 49,22',
+  'C 64,9 90,14 125,14',
+  'Z',
+].join(' ')
+
+const weddingWeekday = new Date(couple.weddingDateISO).toLocaleDateString('en-US', {
+  weekday: 'long',
+})
+const PANEL_SIDES = ['top', 'right', 'bottom', 'left'] as const
+const PEEL_ROTATE_X = [-140, 0, 140, 0]
+const PEEL_ROTATE_Y = [0, -140, 0, 140]
+const PEEL_ORIGIN = ['center top', 'right center', 'center bottom', 'left center']
+
+type Stage = 'wrapped' | 'unwrapping' | 'revealed' | 'exiting'
 
 type WelcomeGateProps = {
   onComplete: () => void
 }
 
 export default function WelcomeGate({ onComplete }: WelcomeGateProps) {
-  const overlayRef = useRef<HTMLDivElement>(null)
-  const vignetteRef = useRef<HTMLDivElement>(null)
-  const sceneRef = useRef<HTMLDivElement>(null)
-  const flapWrapRef = useRef<HTMLDivElement>(null)
-  const flapRef = useRef<HTMLDivElement>(null)
   const cardRef = useRef<HTMLDivElement>(null)
-  const cardInnerRef = useRef<HTMLDivElement>(null)
-  const swipeHintRef = useRef<HTMLDivElement>(null)
-  const sealRef = useRef<HTMLButtonElement>(null)
+  const shadowRef = useRef<HTMLDivElement>(null)
+  const promptRef = useRef<HTMLParagraphElement>(null)
+  const knotRef = useRef<HTMLButtonElement>(null)
+  const stringsRef = useRef<SVGSVGElement>(null)
+  const panelRefs = useRef<Array<HTMLDivElement | null>>([])
 
-  const [stage, setStage] = useState<Stage>('idle')
-  const [hidden, setHidden] = useState(false)
+  const [stage, setStage] = useState<Stage>('wrapped')
+  const [skipped, setSkipped] = useState(false)
+  const [leaving, setLeaving] = useState(false)
 
+  const draggingRef = useRef(false)
   const dragStartY = useRef(0)
-  const dragBaseY = useRef(0)
-  const dragLastY = useRef(0)
-  const dragLastT = useRef(0)
-  const dragVel = useRef(0)
 
   useEffect(() => {
     if (sessionStorage.getItem(STORAGE_KEY) === '1') {
-      setHidden(true)
+      setSkipped(true)
       onComplete()
     }
   }, [onComplete])
 
+  /* Idle: gentle sway on the knot so the string reads as interactive */
   useEffect(() => {
-    if (hidden || stage !== 'idle' || !sealRef.current) return
-    const pulse = gsap.to(sealRef.current, {
-      scale: 1.06,
-      duration: 1.4,
-      ease: 'sine.inOut',
-      yoyo: true,
-      repeat: -1,
-    })
+    if (skipped || stage !== 'wrapped' || !knotRef.current) return
+    const sway = gsap.fromTo(
+      knotRef.current,
+      { rotation: -4 },
+      { rotation: 4, duration: 1.6, ease: 'sine.inOut', yoyo: true, repeat: -1 },
+    )
     return () => {
-      pulse.kill()
+      sway.kill()
     }
-  }, [hidden, stage])
+  }, [skipped, stage])
 
-  const triggerZoom = () => {
-    setStage('done')
+  const startUnwrap = () => {
+    if (stage !== 'wrapped') return
+    setStage('unwrapping')
+    gsap.killTweensOf(knotRef.current)
 
-    let gateRevealed = false
-    const revealHero = () => {
-      if (gateRevealed) return
-      gateRevealed = true
-      onComplete()
-    }
+    const panels = panelRefs.current.filter((p): p is HTMLDivElement => p !== null)
 
     const tl = gsap.timeline({
-      onComplete: () => {
-        sessionStorage.setItem(STORAGE_KEY, '1')
-        setHidden(true)
-      },
+      defaults: { ease: 'power3.inOut' },
+      onComplete: () => setStage('revealed'),
     })
 
-    const cardH = cardInnerRef.current?.offsetHeight ?? 220
-    const curY = (gsap.getProperty(cardInnerRef.current, 'y') as number) || 0
-    const targetY = -cardH * 1.45 
-    const remaining = Math.max(0, curY - targetY)
-    const v = Math.max(dragVel.current, 0.2) 
-    const glide = Math.min(0.75, Math.max(0.4, remaining / (v * 1000)))
+    tl.to(knotRef.current, {
+      y: '+=44',
+      scaleY: 1.22,
+      transformOrigin: 'top center',
+      duration: 0.32,
+      ease: 'power2.in',
+    })
+      .to(
+        stringsRef.current,
+        {
+          scaleY: 0,
+          autoAlpha: 0,
+          transformOrigin: 'top center',
+          duration: 0.4,
+          ease: 'power2.in',
+        },
+        '<0.1',
+      )
+      .to(
+        knotRef.current,
+        { y: '+=140', rotation: 28, autoAlpha: 0, duration: 0.45, ease: 'power1.in' },
+        '-=0.25',
+      )
 
-    tl.to(cardInnerRef.current, { y: targetY, duration: glide, ease: 'power2.out' })
-      .to(sceneRef.current, { scale: 6, duration: 1.1, ease: 'power2.in' }, '-=0.08')
-      .to(vignetteRef.current, { opacity: 1, duration: 1.1, ease: 'power2.in' }, '<')
-      .to(overlayRef.current, { backgroundColor: '#0a0204', duration: 1.1, ease: 'power2.in' }, '<')
-      .call(revealHero)
-      .to(overlayRef.current, { opacity: 0, duration: 0.2, ease: 'power2.in' }, '-=0.15')
+    tl.addLabel('peel', '-=0.2')
+    tl.to(
+      panels,
+      {
+        rotateX: (i: number) => PEEL_ROTATE_X[i],
+        rotateY: (i: number) => PEEL_ROTATE_Y[i],
+        transformOrigin: (i: number) => PEEL_ORIGIN[i],
+        duration: 0.9,
+        stagger: 0.08,
+      },
+      'peel',
+    )
+
+    /* Phase 3 — Settle: the revealed card pops gently into place, its drop
+       shadow deepens for tactility, then the "Click to open" prompt fades in */
+    tl.fromTo(
+      cardRef.current,
+      { scale: 0.96 },
+      { scale: 1, duration: 0.5, ease: 'back.out(2)' },
+      'peel+=0.55',
+    )
+      .to(shadowRef.current, { opacity: 1, duration: 0.5, ease: 'power2.out' }, '<')
+      .fromTo(
+        promptRef.current,
+        { y: 8 },
+        { autoAlpha: 1, y: 0, duration: 0.4, ease: 'power2.out' },
+        '>-0.1',
+      )
   }
 
-  const getPeekY = () => -(cardInnerRef.current?.offsetHeight ?? 220) * CARD_PEEK_RATIO
-
-  const handleOpen = () => {
-    if (stage !== 'idle') return
-    setStage('peeking')
-
-    gsap.killTweensOf(sealRef.current)
-
-    const tl = gsap.timeline({ defaults: { ease: 'power3.inOut' } })
-
-    tl.to(sealRef.current, { scale: 0, opacity: 0, duration: 0.3, ease: 'power2.in' })
-      .to(cardRef.current, { opacity: 1, duration: 0.4, ease: 'power3.out' }, '<')
-      .addLabel('flap')
-      .to(flapRef.current, { rotateX: 180, y: 1, duration: 0.7, transformOrigin: 'top center' }, 'flap')
-      .set(flapWrapRef.current, { zIndex: 5 }, 'flap+=0.35')
-      .to(cardInnerRef.current, { y: getPeekY, duration: 0.7, ease: 'power3.out' }, 'flap')
-      .to(swipeHintRef.current, { opacity: 1, duration: 0.4, ease: 'power2.out' }, 'flap+=0.7')
-  }
-
-  const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
-    if (stage !== 'peeking') return
+  const handleKnotPointerDown = (e: React.PointerEvent<HTMLButtonElement>) => {
+    if (stage !== 'wrapped') return
     e.currentTarget.setPointerCapture(e.pointerId)
+    draggingRef.current = true
     dragStartY.current = e.clientY
-    dragBaseY.current = gsap.getProperty(cardInnerRef.current, 'y') as number
-    dragLastY.current = e.clientY
-    dragLastT.current = performance.now()
-    dragVel.current = 0
-    gsap.to(swipeHintRef.current, { opacity: 0, duration: 0.15 })
-    setStage('revealing')
+    gsap.killTweensOf(knotRef.current)
   }
 
-  const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
-    if (stage !== 'revealing') return
-    const delta = dragStartY.current - e.clientY
-    const clampedDelta = Math.max(0, delta) * 1.15
-    const cardH = cardInnerRef.current?.offsetHeight ?? 220
-    const maxRise = -cardH * DRAG_MAX_RISE_RATIO
-    gsap.set(cardInnerRef.current, { y: Math.max(dragBaseY.current - clampedDelta, maxRise) })
-
-    const now = performance.now()
-    const dt = now - dragLastT.current
-    if (dt > 0) {
-      const v = (dragLastY.current - e.clientY) / dt
-      dragVel.current = dragVel.current * 0.4 + v * 0.6
-    }
-    dragLastY.current = e.clientY
-    dragLastT.current = now
+  const handleKnotPointerMove = (e: React.PointerEvent<HTMLButtonElement>) => {
+    if (!draggingRef.current || stage !== 'wrapped') return
+    const delta = Math.max(0, e.clientY - dragStartY.current)
+    gsap.set(knotRef.current, { y: Math.min(delta * 0.55, 72), rotation: 0 })
   }
 
-  const handlePointerUp = (e: React.PointerEvent<HTMLDivElement>) => {
-    if (stage !== 'revealing') return
-    const delta = dragStartY.current - e.clientY
-    if (delta >= DRAG_COMMIT_THRESHOLD) {
-      triggerZoom()
-    } else {
-      setStage('peeking')
-      gsap.to(cardInnerRef.current, { y: getPeekY(), duration: 0.5, ease: 'back.out(1.5)' })
-      gsap.to(swipeHintRef.current, { opacity: 1, duration: 0.3, delay: 0.3 })
-    }
+  const handleKnotPointerUp = () => {
+    if (!draggingRef.current || stage !== 'wrapped') return
+    draggingRef.current = false
+    startUnwrap()
   }
 
-  if (hidden) return null
+  const handleKnotPointerCancel = () => {
+    if (!draggingRef.current) return
+    draggingRef.current = false
+    gsap.to(knotRef.current, { y: 0, duration: 0.4, ease: 'back.out(2)' })
+  }
 
-  const isCardInteractive = stage === 'peeking' || stage === 'revealing'
-  const cardRaised = stage === 'done'
+  const handleCardClick = () => {
+    if (stage !== 'revealed') return
+    setStage('exiting')
+    onComplete()
+    setLeaving(true)
+  }
+
+  if (skipped) return null
+
+  const isRevealed = stage === 'revealed'
 
   return (
-    <div ref={overlayRef} className="welcome-gate">
-      <div ref={vignetteRef} className="welcome-gate__vignette" />
-
-      <div ref={sceneRef} className="envelope-scene">
-        <div
-          className="envelope-scene__inside"
-          style={{
-            position: 'relative',
-            width: '100%',
-            aspectRatio: '7 / 5',
-            zIndex: 1,
-            pointerEvents: 'none',
-            borderRadius: 'var(--radius-sm)',
-            backgroundImage: `url(${ENVELOPE_TEXTURE})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            filter: 'brightness(0.8)',
-          }}
-        />
-
-        <div
-          ref={cardRef}
-          className="envelope-scene__card"
-          style={{
-            zIndex: cardRaised ? 50 : 10,
-            pointerEvents: isCardInteractive ? 'auto' : 'none',
-          }}
-          onPointerDown={handlePointerDown}
-          onPointerMove={handlePointerMove}
-          onPointerUp={handlePointerUp}
+    <AnimatePresence onExitComplete={() => sessionStorage.setItem(STORAGE_KEY, '1')}>
+      {!leaving && (
+        <motion.div
+          key="gate"
+          className="welcome-gate"
+          exit={{ opacity: 0, scale: 1.12 }}
+          transition={{ duration: 0.7, ease: 'easeInOut' }}
         >
-          <div
-            ref={cardInnerRef}
-            className="envelope-scene__card-inner"
-            style={{
-              width: '16rem',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              padding: '2rem 1.5rem',
-              backgroundColor: 'var(--color-ivory)',
-              borderRadius: 'var(--radius-sm)',
-              boxShadow: '0 20px 60px -10px rgba(0,0,0,0.6)',
-              textAlign: 'center',
-              gap: '0.75rem',
-              cursor: stage === 'peeking' ? 'grab' : stage === 'revealing' ? 'grabbing' : 'default',
-              userSelect: 'none',
-              touchAction: 'none',
-            }}
-          >
-            <p
-              style={{
-                fontFamily: 'var(--font-subheading)',
-                fontSize: '0.65rem',
-                letterSpacing: '0.4em',
-                textTransform: 'uppercase',
-                color: '#6b1520',
-              }}
-            >
-              You are invited
-            </p>
+          <div className="welcome-gate__vignette" />
+
+          <div className="gift-scene">
+
+            <div className="gift-backing" />
+
+            <div ref={shadowRef} className="gift-scene__card-shadow" />
+
             <div
-              style={{
-                height: '1px',
-                width: '3.5rem',
-                backgroundColor: 'var(--color-gold)',
-                opacity: 0.6,
-              }}
-            />
-            <h2
-              style={{
-                fontFamily: 'var(--font-display)',
-                fontSize: '1.75rem',
-                fontStyle: 'italic',
-                fontWeight: 300,
-                lineHeight: 1.2,
-                color: 'var(--color-navy)',
+              ref={cardRef}
+              className="invite-card"
+              role="button"
+              tabIndex={isRevealed ? 0 : -1}
+              aria-label="Open the invitation"
+              style={{ cursor: isRevealed ? 'pointer' : 'default' }}
+              onClick={handleCardClick}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') handleCardClick()
               }}
             >
-              {couple.name1}{' '}
-              <span style={{ color: 'var(--color-gold)' }}>&amp;</span>{' '}
-              {couple.name2}
-            </h2>
-            <p
-              style={{
-                fontFamily: 'var(--font-subheading)',
-                fontSize: '0.7rem',
-                letterSpacing: '0.25em',
-                textTransform: 'uppercase',
-                color: 'var(--color-navy-soft)',
-              }}
-            >
-              {couple.weddingDateDisplay}
-            </p>
-          </div>
+              <svg
+                className="invite-card__frame"
+                viewBox="0 0 250 350"
+                preserveAspectRatio="none"
+                aria-hidden="true"
+              >
+                <path
+                  d={CARTOUCHE_PATH}
+                  fill="#f9f2e3"
+                  stroke="#2f2a26"
+                  strokeWidth="2"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d={CARTOUCHE_PATH}
+                  transform="translate(125 175) scale(0.93) translate(-125 -175)"
+                  fill="none"
+                  stroke="#2f2a26"
+                  strokeWidth="1.2"
+                  strokeLinejoin="round"
+                />
+              </svg>
 
-          <div ref={swipeHintRef} className="envelope-scene__swipe-hint">
-            <div className="envelope-scene__swipe-hint-chevrons">
-              <span className="envelope-scene__chevron envelope-scene__chevron--1">&#8963;</span>
-              <span className="envelope-scene__chevron envelope-scene__chevron--2">&#8963;</span>
+              <div className="invite-card__content">
+                <p className="invite-card__intro">
+                  You are invited to
+                  <br />
+                  celebrate the marriage of
+                </p>
+                <h2 className="invite-card__name">{couple.name1}</h2>
+                <h2 className="invite-card__name">
+                  <span className="invite-card__amp">&amp;</span> {couple.name2}
+                </h2>
+                <img
+                  className="invite-card__dog"
+                  src="/dog.png"
+                  alt=""
+                  draggable={false}
+                  onError={(e) => {
+                    e.currentTarget.style.display = 'none'
+                  }}
+                />
+                <p className="invite-card__details">
+                  {weddingWeekday} &bull; {couple.weddingDateDisplay}
+                  <br />
+                  {couple.location}
+                </p>
+                <p className="invite-card__rsvp">
+                  Please RSVP by
+                  <br />
+                  {couple.rsvpByDisplay}
+                </p>
+              </div>
+
+              <svg className="invite-card__grain" aria-hidden="true">
+                <filter id="gate-paper-grain">
+                  <feTurbulence
+                    type="fractalNoise"
+                    baseFrequency="0.8"
+                    numOctaves="2"
+                    stitchTiles="stitch"
+                  />
+                  <feColorMatrix
+                    type="matrix"
+                    values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.55 0"
+                  />
+                </filter>
+                <rect width="100%" height="100%" filter="url(#gate-paper-grain)" />
+              </svg>
             </div>
-            <p className="envelope-scene__swipe-hint-label">swipe up</p>
-          </div>
-        </div>
 
-        <div
-          className="envelope-scene__body"
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: '1.5rem',
-            right: '1.5rem',
-            aspectRatio: '7 / 5',
-            zIndex: 20,
-            pointerEvents: 'none',
-            overflow: 'hidden',
-            borderRadius: 'var(--radius-sm)',
-            backgroundImage: `url(${ENVELOPE_TEXTURE})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            boxShadow: '0 30px 80px -20px rgba(0,0,0,0.75)',
-            clipPath: 'polygon(0% 0%, 50% 50%, 100% 0%, 100% 100%, 0% 100%)',
-          }}
-        >
-          <div
-            style={{
-              pointerEvents: 'none',
-              position: 'absolute',
-              inset: 0,
-              zIndex: 5,
-              background: `
-                linear-gradient(135deg, transparent 49.5%, rgba(0,0,0,0.06) 49.5%, rgba(0,0,0,0.06) 50.5%, transparent 50.5%),
-                linear-gradient(225deg, transparent 49.5%, rgba(0,0,0,0.06) 49.5%, rgba(0,0,0,0.06) 50.5%, transparent 50.5%)
-              `,
-            }}
-          />
-
-          <div
-            style={{
-              position: 'absolute',
-              left: 0,
-              right: 0,
-              bottom: '1rem',
-              zIndex: 10,
-              textAlign: 'center',
-            }}
-          >
-            <p
-              style={{
-                fontFamily: 'var(--font-display)',
-                fontStyle: 'italic',
-                fontSize: '0.7rem',
-                color: 'rgba(45,10,14,0.65)',
-              }}
-            >
-              To our beloved guest
+            <p ref={promptRef} className="gift-scene__prompt">
+              Click to open
             </p>
+
+            <div className="gift-wrap">
+              <svg className="gift-wrap__defs" aria-hidden="true" focusable="false">
+                <defs>
+                  <clipPath id="gate-flap-top" clipPathUnits="objectBoundingBox">
+                    <path d="M 0 0 L 1 0 L 0.5 0.5 Z" />
+                  </clipPath>
+                  <clipPath id="gate-flap-right" clipPathUnits="objectBoundingBox">
+                    <path d="M 1 0 L 1 1 L 0.5 0.5 Z" />
+                  </clipPath>
+                  <clipPath id="gate-flap-bottom" clipPathUnits="objectBoundingBox">
+                    <path d="M 1 1 L 0 1 L 0.5 0.5 Z" />
+                  </clipPath>
+                  <clipPath id="gate-flap-left" clipPathUnits="objectBoundingBox">
+                    <path d="M 0 1 L 0 0 L 0.5 0.5 Z" />
+                  </clipPath>
+                </defs>
+              </svg>
+              {PANEL_SIDES.map((side, i) => (
+                <div
+                  key={side}
+                  ref={(el) => {
+                    panelRefs.current[i] = el
+                  }}
+                  className={`gift-wrap__panel gift-wrap__panel--${side}`}
+                />
+              ))}
+              <svg
+                ref={stringsRef}
+                className="gift-wrap__strings"
+                viewBox="0 0 100 140"
+                preserveAspectRatio="none"
+                aria-hidden="true"
+              >
+                <path
+                  d="M 50 0 C 38 25, 40 50, 50 70 C 60 90, 62 115, 50 140"
+                  fill="none"
+                  stroke="var(--color-gold-light)"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  vectorEffect="non-scaling-stroke"
+                />
+                <path
+                  d="M 50 0 C 62 25, 60 50, 50 70 C 40 90, 38 115, 50 140"
+                  fill="none"
+                  stroke="var(--color-gold-light)"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  vectorEffect="non-scaling-stroke"
+                />
+              </svg>
+            </div>
+
+            <div className="gift-knot-anchor">
+              <button
+                ref={knotRef}
+                type="button"
+                className="gift-knot"
+                aria-label="Pull the string to unwrap the invitation"
+                onPointerDown={handleKnotPointerDown}
+                onPointerMove={handleKnotPointerMove}
+                onPointerUp={handleKnotPointerUp}
+                onPointerCancel={handleKnotPointerCancel}
+              >
+                {/* satin wedding bow; the knot at (60,50) is the SVG center, so the
+                    anchor's translate(-50%,-50%) seats it exactly on the parcel's
+                    top edge with the bottom half overlapping the paper */}
+                <svg viewBox="0 0 120 100" className="gift-knot__bow" aria-hidden="true">
+                  {/* ribbon tails draping down from the knot with a gentle curve */}
+                  <path
+                    d="M 57.5 53 C 53 63, 49 75, 43 90 C 47.5 87, 51 85, 53 79 C 55 70, 56.5 61, 58 53 Z"
+                    fill="var(--color-gold-light)"
+                    stroke="rgba(60, 40, 20, 0.35)"
+                    strokeWidth="1"
+                    strokeLinejoin="round"
+                  />
+                  <path
+                    d="M 62.5 53 C 67 63, 71 75, 77 90 C 72.5 87, 69 85, 67 79 C 65 70, 63.5 61, 62 53 Z"
+                    fill="var(--color-gold-light)"
+                    stroke="rgba(60, 40, 20, 0.35)"
+                    strokeWidth="1"
+                    strokeLinejoin="round"
+                  />
+                  {/* left teardrop loop angled outward, with satin sheen inner path */}
+                  <path
+                    d="M 60 50 C 48 38, 30 24, 18 32 C 8 39, 14 54, 28 56 C 42 58, 54 55, 60 50 Z"
+                    fill="var(--color-gold-light)"
+                    stroke="rgba(60, 40, 20, 0.35)"
+                    strokeWidth="1.2"
+                    strokeLinejoin="round"
+                  />
+                  <path
+                    d="M 58 49 C 47 40, 32 30, 23 36 C 16 41, 21 50, 31 52 C 42 54, 52 52, 58 49 Z"
+                    fill="var(--color-champagne)"
+                    opacity="0.75"
+                  />
+                  {/* right teardrop loop, mirrored */}
+                  <path
+                    d="M 60 50 C 72 38, 90 24, 102 32 C 112 39, 106 54, 92 56 C 78 58, 66 55, 60 50 Z"
+                    fill="var(--color-gold-light)"
+                    stroke="rgba(60, 40, 20, 0.35)"
+                    strokeWidth="1.2"
+                    strokeLinejoin="round"
+                  />
+                  <path
+                    d="M 62 49 C 73 40, 88 30, 97 36 C 104 41, 99 50, 89 52 C 78 54, 68 52, 62 49 Z"
+                    fill="var(--color-champagne)"
+                    opacity="0.75"
+                  />
+                  {/* gathered center knot: circle with fabric gather lines */}
+                  <circle
+                    cx="60"
+                    cy="50"
+                    r="6.5"
+                    fill="var(--color-gold)"
+                    stroke="rgba(60, 40, 20, 0.4)"
+                    strokeWidth="1.2"
+                  />
+                  <path
+                    d="M 56.5 45.5 C 58 50, 58 50, 56.5 54.5 M 60 44.5 C 60.8 50, 60.8 50, 60 55.5 M 63.5 45.5 C 62 50, 62 50, 63.5 54.5"
+                    stroke="rgba(255, 255, 255, 0.35)"
+                    strokeWidth="1"
+                    fill="none"
+                    strokeLinecap="round"
+                  />
+                </svg>
+                <span className="gift-knot__hint">Pull the string</span>
+              </button>
+            </div>
           </div>
-        </div>
-
-        <div
-          ref={flapWrapRef}
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: '1.5rem',
-            right: '1.5rem',
-            aspectRatio: '7 / 5',
-            zIndex: 30,
-            pointerEvents: 'none',
-            perspective: '1200px',
-          }}
-        >
-          <div
-            ref={flapRef}
-            style={{
-              position: 'absolute',
-              inset: 0,
-              backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0.14) 0%, rgba(0,0,0,0) 11%), url(${ENVELOPE_TEXTURE})`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-              clipPath: 'polygon(0 0, 100% 0, 50% 62%)',
-              backfaceVisibility: 'visible',
-            }}
-          />
-        </div>
-
-        <div className="welcome-gate__seal-wrap">
-          <WaxSeal ref={sealRef} onClick={handleOpen} />
-        </div>
-      </div>
-    </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   )
 }

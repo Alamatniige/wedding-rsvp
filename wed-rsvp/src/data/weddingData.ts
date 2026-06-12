@@ -4,6 +4,7 @@ export const couple = {
   monogram: 'J&J',
   weddingDateISO: '2026-09-12T16:00:00',
   weddingDateDisplay: 'September 12, 2026',
+  rsvpByDisplay: 'August 1, 2026',
   location: 'Rosewood Estate, Napa Valley',
 }
 
