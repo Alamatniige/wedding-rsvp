@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Great+Vibes&family=Montserrat:wght@300;400;500;600&family=Noto+Sans+Tagalog&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,300;1,9..144,400&family=Noto+Sans+Tagalog&family=Poppins:wght@300;400;500;600&family=Yellowtail&display=swap");
 @import "tailwindcss";
 
 /* === Design Tokens === */
@@ -42,17 +42,47 @@
   --color-sunset-gold: #f4b860;
   --color-capiz: #fbf6ee;
 
-  /* Typography (docs/styling.md) */
-  --font-names: "Great Vibes", cursive;
-  --font-header: "Cormorant Garamond", Georgia, serif;
-  --font-body: "Montserrat", ui-sans-serif, system-ui, sans-serif;
+  /* Tropical golden-hour sky (pre-wedding parallax page) */
+  --gradient-sky-start: #f6c07a;
+  --gradient-sky-mid: #e8734a;
+  --gradient-sky-end: #7a3b4a;
+  --gradient-sky-progress: 0;
+  --palm-silhouette: #1a2f22;
+  --capiz-panel-bg: rgba(251, 246, 238, 0.62);
+  --capiz-panel-border: rgba(255, 255, 255, 0.45);
+  --capiz-panel-shadow: 0 12px 40px rgba(43, 34, 26, 0.18);
 
-  --font-display: var(--font-header);
-  --font-subheading: var(--font-header);
+  /* Typography — display / body / subheading tokens only for new UI */
+  --font-names: "Yellowtail", "Segoe Script", cursive;
+  --font-header: "Fraunces", Georgia, serif;
+  --font-body: "Poppins", ui-sans-serif, system-ui, sans-serif;
+
+  --font-display: "Fraunces", Georgia, serif;
+  --font-subheading: "Yellowtail", "Segoe Script", cursive;
+  --font-accent: var(--font-subheading);
   --font-sans: var(--font-body);
   --font-handwriting: "Caveat", "Segoe Script", cursive;
   --font-script: var(--font-names);
   --font-baybayin: "Noto Sans Tagalog", "Noto Sans Buhid", sans-serif;
+
+  /* Hero landing + shared footer */
+  --page-bg-image: url('/images/entrance/palm-leaf-bg-1.avif');
+  --page-bg-overlay: rgba(0, 0, 0, 0.28);
+  --page-bg-overlay-start: color-mix(in srgb, var(--gradient-sky-start) 45%, transparent);
+  --page-bg-overlay-mid: color-mix(in srgb, var(--gradient-sky-mid) 40%, transparent);
+  --page-bg-overlay-end: color-mix(in srgb, var(--gradient-sky-end) 55%, transparent);
+  --footer-overlay: rgba(31, 61, 43, 0.55);
+  --footer-text: var(--color-capiz);
+  --hero-cta-bg: var(--color-palm-deep);
+  --hero-cta-bg-hover: var(--color-sunset-coral);
+  --hero-cta-text: var(--color-capiz);
+  --hero-cta-outline-border: color-mix(in srgb, var(--color-capiz) 45%, transparent);
+  --hero-cta-outline-bg: color-mix(in srgb, var(--color-palm-deep) 55%, transparent);
+  --hero-cta-outline-hover: var(--color-sunset-gold);
+  --hero-text: var(--color-capiz);
+  --hero-text-soft: color-mix(in srgb, var(--color-capiz) 78%, transparent);
+  --hero-image-placeholder-bg: color-mix(in srgb, var(--color-capiz) 18%, transparent);
+  --hero-image-placeholder-border: color-mix(in srgb, var(--color-capiz) 35%, transparent);
 
   --spacing-xs: 0.25rem;
   --spacing-sm: 0.5rem;
@@ -695,36 +725,38 @@ p {
   gap: var(--spacing-sm);
   justify-content: center;
   flex-wrap: wrap;
+  align-items: flex-start;
 }
 
 .countdown__block {
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-width: 4.5rem;
+  min-width: 3.25rem;
 }
 
 .countdown__separator {
   font-family: var(--font-display);
   font-weight: 300;
-  font-size: 2rem;
+  font-size: 1.75rem;
   line-height: 1;
   align-self: flex-start;
+  padding-top: 0.15rem;
   opacity: 0.85;
 }
 
 .countdown__value {
   font-family: var(--font-display);
   font-weight: 300;
-  font-size: 2rem;
+  font-size: clamp(1.5rem, 5vw, 2rem);
   line-height: 1;
 }
 
 .countdown__label {
-  font-family: var(--font-subheading);
-  font-variant: small-caps;
-  font-size: 0.7rem;
+  font-family: var(--font-body);
+  font-size: 0.65rem;
   letter-spacing: 0.12em;
+  text-transform: uppercase;
   margin-top: var(--spacing-xs);
   opacity: 0.8;
 }
@@ -1238,6 +1270,884 @@ p {
   background: var(--color-gold);
 }
 
+.rsvp__saved {
+  text-align: center;
+  padding: var(--spacing-lg) 0;
+}
+
+.rsvp__saved-title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 1.5rem;
+  color: var(--color-text);
+  margin-bottom: var(--spacing-sm);
+}
+
+.rsvp__saved-copy {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--color-text-soft);
+  line-height: 1.6;
+}
+
+/* === Pre-wedding parallax page === */
+.pre-wedding-page {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow-x: hidden;
+  color: var(--color-text);
+}
+
+.pre-wedding-page__sky {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-color: var(--gradient-sky-mid);
+  background-image:
+    linear-gradient(var(--page-bg-overlay), var(--page-bg-overlay)),
+    var(--page-bg-image);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.pre-wedding-page__palms {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.pre-wedding-page__palm-layer {
+  position: absolute;
+  will-change: transform;
+}
+
+.pre-wedding-page__palm {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.25));
+}
+
+.pre-wedding-page__palm--flip {
+  transform: scaleX(-1);
+}
+
+.pre-wedding-page__palm-layer--back-left {
+  left: -8%;
+  bottom: -4%;
+  width: min(52vw, 28rem);
+  opacity: 0.55;
+  z-index: 1;
+}
+
+.pre-wedding-page__palm-layer--back-right {
+  right: -10%;
+  bottom: -6%;
+  width: min(58vw, 32rem);
+  opacity: 0.5;
+  z-index: 1;
+}
+
+.pre-wedding-page__palm-layer--mid {
+  left: 50%;
+  bottom: -12%;
+  width: min(70vw, 40rem);
+  margin-left: calc(min(70vw, 40rem) / -2);
+  opacity: 0.35;
+  z-index: 2;
+}
+
+.pre-wedding-page__palm-layer--fore-left {
+  left: -18%;
+  bottom: -18%;
+  width: min(48vw, 22rem);
+  opacity: 0.85;
+  z-index: 3;
+}
+
+.pre-wedding-page__palm-layer--fore-right {
+  right: -16%;
+  bottom: -20%;
+  width: min(44vw, 20rem);
+  opacity: 0.8;
+  z-index: 3;
+}
+
+.pre-wedding-page__content {
+  position: relative;
+  z-index: 4;
+}
+
+.capiz-panel {
+  background: var(--capiz-panel-bg);
+  border: 1px solid var(--capiz-panel-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--capiz-panel-shadow);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+/* === Countdown header === */
+.countdown-header {
+  padding-top: var(--spacing-3xl);
+}
+
+.countdown-header__panel {
+  width: min(100%, 36rem);
+  margin: 0 auto;
+  padding: var(--spacing-2xl) var(--spacing-xl);
+  text-align: center;
+}
+
+.countdown-header__meet {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-text-soft);
+  margin-bottom: var(--spacing-sm);
+  line-height: 1.5;
+}
+
+.countdown-header__venue {
+  color: var(--color-text);
+  font-weight: 500;
+}
+
+.countdown-header__date {
+  font-family: var(--font-subheading);
+  font-size: clamp(1.75rem, 6vw, 2.5rem);
+  color: var(--color-text);
+  margin-bottom: var(--spacing-xl);
+}
+
+.countdown-header__timer {
+  color: var(--color-text);
+}
+
+/* === Save the date reveal === */
+.save-the-date {
+  padding-top: var(--spacing-2xl);
+  padding-bottom: var(--spacing-3xl);
+}
+
+.save-the-date__stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-xl);
+  max-width: 22rem;
+  margin: 0 auto;
+}
+
+.save-the-date__card {
+  width: 100%;
+  padding: var(--spacing-2xl) var(--spacing-xl);
+  text-align: center;
+}
+
+.save-the-date__card-title {
+  font-family: var(--font-subheading);
+  font-size: clamp(2rem, 8vw, 2.75rem);
+  color: var(--color-sunset-coral);
+  margin-bottom: var(--spacing-md);
+}
+
+.save-the-date__card-date {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  color: var(--color-text);
+  margin-bottom: var(--spacing-sm);
+}
+
+.save-the-date__card-venue {
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  color: var(--color-text-soft);
+  line-height: 1.5;
+}
+
+.save-the-date__strip {
+  width: min(100%, 11rem);
+}
+
+.save-the-date__strip-frame {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-md);
+  background: var(--capiz-panel-bg);
+  border: 1px solid var(--capiz-panel-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--capiz-panel-shadow);
+}
+
+.save-the-date__strip-photo {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+}
+
+.save-the-date__note {
+  width: 100%;
+  padding: var(--spacing-lg) var(--spacing-xl);
+  font-family: var(--font-handwriting);
+  font-size: 1.35rem;
+  line-height: 1.5;
+  text-align: center;
+  color: var(--color-text);
+}
+
+/* === Couple names === */
+.couple-names {
+  position: relative;
+  min-height: 85vh;
+  min-height: 85dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: var(--spacing-3xl) var(--spacing-lg);
+}
+
+.couple-names__bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+
+.couple-names__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--gradient-sky-end) 35%, transparent) 0%,
+    color-mix(in srgb, var(--color-palm-deep) 55%, transparent) 100%
+  );
+}
+
+.couple-names__content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  max-width: 28rem;
+}
+
+.couple-names__names {
+  font-family: var(--font-subheading);
+  font-size: clamp(3rem, 14vw, 5rem);
+  line-height: 1.05;
+  color: var(--color-capiz);
+  margin-bottom: var(--spacing-xl);
+  text-shadow: 0 2px 24px color-mix(in srgb, var(--color-palm-deep) 40%, transparent);
+}
+
+.couple-names__ampersand {
+  display: block;
+  font-size: 0.55em;
+  margin: var(--spacing-xs) 0;
+  color: var(--color-sunset-gold);
+}
+
+.couple-names__cta {
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: var(--spacing-md) var(--spacing-xl);
+  border-radius: var(--radius-full);
+  background: var(--color-sunset-coral);
+  color: var(--color-capiz);
+  border: 1px solid color-mix(in srgb, var(--color-sunset-gold) 50%, transparent);
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.couple-names__cta:hover {
+  background: var(--color-sunset-gold);
+  color: var(--color-palm-deep);
+}
+
+.couple-names__cta:focus-visible {
+  outline: 2px solid var(--color-sunset-gold);
+  outline-offset: 3px;
+}
+
+/* === Contact block === */
+.contact-block__panel {
+  width: min(100%, 28rem);
+  margin: 0 auto;
+  padding: var(--spacing-2xl) var(--spacing-xl);
+  text-align: center;
+}
+
+.contact-block__heading {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(1.5rem, 5vw, 1.85rem);
+  color: var(--color-text);
+  margin-bottom: var(--spacing-md);
+}
+
+.contact-block__body {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--color-text-soft);
+  margin-bottom: var(--spacing-xl);
+}
+
+.contact-block__back {
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text);
+  background: transparent;
+  border-bottom: 1px solid var(--color-sunset-coral);
+  padding: var(--spacing-xs) 0;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.contact-block__back:hover {
+  color: var(--color-sunset-coral);
+}
+
+/* === Address form === */
+.address-form {
+  background: transparent;
+  padding: var(--spacing-3xl) var(--spacing-lg);
+}
+
+.address-form__panel {
+  max-width: 28rem;
+  margin: 0 auto;
+  padding: var(--spacing-2xl) var(--spacing-xl);
+  transition: box-shadow 0.4s ease, border-color 0.4s ease;
+}
+
+.address-form--highlight .address-form__panel {
+  border-color: var(--color-sunset-gold);
+  box-shadow:
+    var(--capiz-panel-shadow),
+    0 0 0 2px color-mix(in srgb, var(--color-sunset-gold) 55%, transparent);
+}
+
+.address-form .section-label,
+.address-form .section-title {
+  text-align: center;
+}
+
+.address-form .section-divider {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.address-form__helper {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  text-align: center;
+  color: var(--color-text-soft);
+  margin-bottom: var(--spacing-xl);
+}
+
+.address-form__body {
+  position: relative;
+  min-height: 12rem;
+}
+
+.address-form__field {
+  margin-bottom: var(--spacing-lg);
+}
+
+.address-form__label {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-sunset-coral);
+  margin-bottom: var(--spacing-sm);
+}
+
+.address-form__input,
+.address-form__textarea {
+  width: 100%;
+  padding: var(--spacing-md);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  border: 1px solid var(--capiz-panel-border);
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--color-capiz) 70%, transparent);
+  color: var(--color-text);
+  resize: vertical;
+}
+
+.address-form__input:focus,
+.address-form__textarea:focus {
+  outline: 2px solid var(--color-sunset-gold);
+  outline-offset: 2px;
+}
+
+.address-form__error {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  color: var(--color-sunset-coral);
+  margin-top: var(--spacing-xs);
+}
+
+.address-form__nav {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--spacing-xl);
+}
+
+.address-form__btn {
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: var(--spacing-md) var(--spacing-xl);
+  border-radius: var(--radius-full);
+  background: var(--color-palm-deep);
+  color: var(--color-capiz);
+  transition: background 0.2s ease, opacity 0.2s ease;
+}
+
+.address-form__btn:hover:not(:disabled) {
+  background: var(--color-sunset-coral);
+}
+
+.address-form__btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.address-form__saved {
+  text-align: center;
+  padding: var(--spacing-lg) 0;
+}
+
+.address-form__saved-title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 1.5rem;
+  color: var(--color-text);
+  margin-bottom: var(--spacing-sm);
+}
+
+.address-form__saved-copy {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--color-text-soft);
+  line-height: 1.6;
+}
+
+/* === Hero landing (post-gate) === */
+.hero-landing {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-3xl) var(--spacing-lg);
+  text-align: center;
+  max-width: 40rem;
+  margin-inline: auto;
+  color: var(--hero-text);
+}
+
+.hero-landing__meet {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--hero-text-soft);
+  margin: 0 0 var(--spacing-sm);
+}
+
+.hero-landing__venue {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(1.5rem, 4vw, 2.25rem);
+  color: var(--hero-text);
+  margin: 0 0 var(--spacing-xl);
+  line-height: 1.25;
+}
+
+.hero-landing__images {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-md);
+  margin: 0 auto var(--spacing-xl);
+  width: 100%;
+  max-width: 28rem;
+}
+
+@media (min-width: 640px) {
+  .hero-landing__images {
+    grid-template-columns: 1fr 1fr;
+    max-width: 36rem;
+  }
+}
+
+.hero-landing__image-frame {
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  background: var(--hero-image-placeholder-bg);
+  border: 1px solid var(--hero-image-placeholder-border);
+}
+
+.hero-landing__image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero-landing__image-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--hero-text-soft);
+  padding: var(--spacing-md);
+  text-align: center;
+}
+
+.hero-landing__hope {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-style: italic;
+  font-size: clamp(1.1rem, 2.5vw, 1.35rem);
+  color: var(--hero-text);
+  margin: 0 0 var(--spacing-lg);
+}
+
+.hero-landing__timer {
+  display: flex;
+  justify-content: center;
+  margin-bottom: var(--spacing-xl);
+}
+
+.hero-landing .countdown__value,
+.hero-landing .countdown__separator {
+  color: var(--hero-text);
+}
+
+.hero-landing .countdown__label {
+  color: var(--hero-text-soft);
+}
+
+.hero-landing__cta {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.hero-landing__cta:focus-visible {
+  outline: 2px solid var(--color-sunset-gold);
+  outline-offset: 4px;
+}
+
+/* === RSVP form === */
+.rsvp-form {
+  background: transparent;
+  padding: var(--spacing-3xl) var(--spacing-lg);
+}
+
+.rsvp-form__panel {
+  max-width: 32rem;
+  margin: 0 auto;
+  padding: var(--spacing-2xl) var(--spacing-xl);
+}
+
+.rsvp-form .section-label,
+.rsvp-form .section-title {
+  text-align: center;
+}
+
+.rsvp-form .section-divider {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.rsvp-form__helper {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  text-align: center;
+  color: var(--color-text-soft);
+  margin-bottom: var(--spacing-xl);
+}
+
+.rsvp-form__row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-lg);
+  margin-bottom: var(--spacing-lg);
+}
+
+@media (min-width: 640px) {
+  .rsvp-form__row {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.rsvp-form__field {
+  margin-bottom: var(--spacing-lg);
+}
+
+.rsvp-form__row .rsvp-form__field {
+  margin-bottom: 0;
+}
+
+.rsvp-form__label {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-sunset-coral);
+  margin-bottom: var(--spacing-sm);
+}
+
+.rsvp-form__input {
+  width: 100%;
+  padding: var(--spacing-md);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  border: 1px solid var(--capiz-panel-border);
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--color-capiz) 70%, transparent);
+  color: var(--color-text);
+}
+
+.rsvp-form__input:focus {
+  outline: 2px solid var(--color-sunset-gold);
+  outline-offset: 2px;
+}
+
+.rsvp-form__error {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  color: var(--color-sunset-coral);
+  margin-top: var(--spacing-xs);
+}
+
+.rsvp-form__nav {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--spacing-xl);
+}
+
+.rsvp-form__btn {
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: var(--spacing-md) var(--spacing-xl);
+  border-radius: var(--radius-full);
+  background: var(--color-palm-deep);
+  color: var(--color-capiz);
+  transition: background 0.2s ease, opacity 0.2s ease;
+}
+
+.rsvp-form__btn:hover:not(:disabled) {
+  background: var(--color-sunset-coral);
+}
+
+.rsvp-form__btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.rsvp-form__btn--submitted {
+  opacity: 0.75;
+}
+
+/* === Shared Footer (hero / rsvp variants) === */
+.site-footer {
+  position: relative;
+  isolation: isolate;
+  min-height: min(70vh, 32rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-3xl) var(--spacing-lg);
+  text-align: center;
+  color: var(--footer-text);
+  overflow: hidden;
+}
+
+.site-footer--hero {
+  min-height: 25vh;
+  min-height: 25dvh;
+  padding: var(--spacing-lg);
+}
+
+.site-footer__bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.site-footer__bg-image {
+  display: block;
+  width: 100%;
+  height: 120%;
+  object-fit: cover;
+  object-position: center;
+  will-change: transform;
+}
+
+.site-footer__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: var(--footer-overlay);
+  pointer-events: none;
+}
+
+.site-footer__content {
+  position: relative;
+  z-index: 2;
+  max-width: 28rem;
+}
+
+.site-footer__initials {
+  font-family: var(--font-accent);
+  font-size: clamp(3.5rem, 12vw, 6rem);
+  line-height: 1;
+  margin: 0 0 var(--spacing-md);
+  color: var(--footer-text);
+}
+
+.site-footer--hero .site-footer__initials {
+  font-size: clamp(2.5rem, 8vw, 4rem);
+  margin: 0;
+}
+
+.site-footer__message {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-style: italic;
+  font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+  line-height: 1.6;
+  margin: 0;
+  color: var(--footer-text);
+}
+
+.thank-you {
+  min-height: 70vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-3xl) var(--spacing-lg) var(--spacing-3xl);
+}
+
+.thank-you__panel {
+  width: min(100%, 28rem);
+  padding: var(--spacing-3xl) var(--spacing-xl);
+  text-align: center;
+}
+
+.thank-you__seal {
+  width: 5.5rem;
+  height: 5.5rem;
+  margin: 0 auto var(--spacing-lg);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: radial-gradient(
+    circle at 35% 30%,
+    var(--color-sunset-gold),
+    var(--color-sunset-coral) 55%,
+    var(--color-palm-deep) 100%
+  );
+  box-shadow:
+    inset 0 0 0 3px color-mix(in srgb, var(--color-capiz) 35%, transparent),
+    0 8px 24px color-mix(in srgb, var(--color-palm-deep) 35%, transparent);
+}
+
+.thank-you__monogram {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--color-capiz);
+}
+
+.thank-you__label {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-text-soft);
+  margin-bottom: var(--spacing-md);
+}
+
+.thank-you__title {
+  font-family: var(--font-subheading);
+  font-weight: 400;
+  font-size: clamp(2.25rem, 8vw, 3rem);
+  color: var(--color-text);
+  margin-bottom: var(--spacing-md);
+}
+
+.thank-you__message {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--color-text-soft);
+}
+
+.wedding-day-placeholder {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-2xl);
+  background: var(--color-bg);
+}
+
+.wedding-day-placeholder__copy {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--color-text-soft);
+  text-align: center;
+}
+
 /* === Section: Registry === */
 .registry {
   background: var(--color-surface);
@@ -1305,43 +2215,4 @@ p {
 .registry__qr {
   margin: var(--spacing-lg) auto 0;
   border-radius: var(--radius-md);
-}
-
-/* === UI: Footer === */
-.site-footer {
-  background: var(--color-navy);
-  color: var(--color-ivory);
-  padding: var(--spacing-3xl) var(--spacing-lg);
-  text-align: center;
-}
-
-.site-footer__message {
-  font-family: var(--font-display);
-  font-weight: 300;
-  font-style: italic;
-  font-size: clamp(1rem, 2.5vw, 1.25rem);
-  line-height: 1.8;
-  max-width: 36rem;
-  margin: 0 auto var(--spacing-2xl);
-  opacity: 0.9;
-}
-
-.site-footer__coordinator {
-  font-size: 0.9rem;
-  margin-bottom: var(--spacing-xl);
-  opacity: 0.75;
-}
-
-.site-footer__coordinator-name {
-  font-family: var(--font-subheading);
-  font-variant: small-caps;
-  letter-spacing: 0.1em;
-  display: block;
-  margin-bottom: var(--spacing-xs);
-}
-
-.site-footer__attribution {
-  font-size: 0.75rem;
-  opacity: 0.5;
-  letter-spacing: 0.05em;
 }

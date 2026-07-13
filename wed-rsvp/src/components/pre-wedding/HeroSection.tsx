@@ -1,7 +1,7 @@
 import { couple, hero } from '../../data/weddingData'
-import ParallaxImage from '../ui/ParallaxImage'
-import AnimatedText from '../ui/AnimatedText'
-import CountdownTimer from '../ui/CountdownTimer'
+import ParallaxImage from '../shared/ParallaxImage'
+import AnimatedText from '../shared/AnimatedText'
+import CountdownTimer from './CountdownTimer'
 
 type HeroSectionProps = {
   gateOpen: boolean

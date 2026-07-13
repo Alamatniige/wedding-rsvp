@@ -1,31 +1,23 @@
 import { useState } from 'react'
 import { createFileRoute } from '@tanstack/react-router'
-import PhotoboothGate from '../components/sections/PhotoboothGate'
-import HeroSection from '../components/sections/HeroSection'
-import OurStory from '../components/sections/OurStory'
-import Itinerary from '../components/sections/Itinerary'
-import TravelAccommodations from '../components/sections/TravelAccommodations'
-import RSVPForm from '../components/sections/RSVPForm'
-import Registry from '../components/sections/Registry'
-import Footer from '../components/ui/Footer'
+import PhotoboothGate from '../components/pre-wedding/PhotoboothGate'
+import PreWeddingPage from '../components/pre-wedding/PreWeddingPage'
+import WeddingDayPlaceholder from '../components/wedding-day/WeddingDayPlaceholder'
 
 export const Route = createFileRoute('/')({ component: App })
 
 function App() {
+  const { weddingMode } = Route.useRouteContext()
   const [gateOpen, setGateOpen] = useState(false)
+
+  if (weddingMode === 'wedding-day') {
+    return <WeddingDayPlaceholder />
+  }
 
   return (
     <>
       <PhotoboothGate onComplete={() => setGateOpen(true)} />
-      <main>
-        <HeroSection gateOpen={gateOpen} />
-        <OurStory />
-        <Itinerary />
-        <TravelAccommodations />
-        <RSVPForm />
-        <Registry />
-        <Footer />
-      </main>
+      <PreWeddingPage gateOpen={gateOpen} />
     </>
   )
 }

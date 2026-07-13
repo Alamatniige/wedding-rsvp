@@ -2,9 +2,9 @@ export const couple = {
   name1: 'Jianne',
   name2: 'Joe',
   monogram: 'J&J',
-  weddingDateISO: '2026-09-12T16:00:00',
+  weddingDateISO: '2027-04-27T16:00:00',
   weddingDateDisplay: '04. 27. 2027',
-  rsvpByDisplay: '04. 27. 2027',
+  rsvpByDisplay: 'April 27, 2027',
   location: 'Villa D’este, Tagaytay, Philippines',
 }
 
@@ -12,6 +12,28 @@ export const hero = {
   backgroundImageUrl:
     'https://images.unsplash.com/photo-1519741497674-611481863552?w=1920&q=80',
   tagline: 'Together with their families',
+}
+
+/** Hero landing route (post-welcome-gate) — plain photos, not polaroid/strip. */
+export const heroLanding = {
+  meetUsPrefix: 'Meet us at',
+  venue: couple.location,
+  hopeMessage: 'We hope to meet you…',
+  ctaLabel: 'RSVP',
+  images: [
+    {
+      id: 'couple',
+      src: '/images/entrance/couple-photo.png',
+      alt: `${couple.name1} and ${couple.name2}`,
+    },
+    // Placeholder — replace when a second hero photo is provided
+    {
+      id: 'placeholder-1',
+      src: '',
+      alt: 'Wedding photo placeholder',
+      placeholder: true,
+    },
+  ] as const,
 }
 
 export type StoryCard = {
@@ -162,6 +184,51 @@ export const travel = {
   ],
 }
 
+export const countdown = {
+  meetUsPrefix: 'Meet us at',
+  venue: couple.location,
+  dateDisplay: couple.weddingDateDisplay,
+}
+
+export const coupleSection = {
+  backgroundImageUrl: hero.backgroundImageUrl,
+  ctaLabel: 'Share Your Address',
+}
+
+/** @deprecated Orphaned AddressForm only — live form uses rsvpForm. */
+export const addressForm = {
+  label: 'Your Details',
+  title: 'Mailing Address',
+  helper:
+    'Please share your mailing address so we can send the official invitation.',
+  fullNameLabel: 'Full Name',
+  mailingAddressLabel: 'Mailing Address',
+  additionalDetailsLabel: 'Additional Details',
+  additionalDetailsPlaceholder: 'Apartment, landmarks, or delivery notes (optional)',
+  submitLabel: 'Submit',
+  savedTitle: 'Saved',
+  savedCopy: 'Your details are saved. Scroll down for a little thank-you.',
+  fullNameRequired: 'Please enter your full name.',
+  mailingAddressRequired: 'Please enter your mailing address.',
+}
+
+export const rsvpForm = {
+  label: 'RSVP',
+  title: 'Let Us Know',
+  helper: `Please reply by ${couple.rsvpByDisplay} so we can celebrate with you.`,
+  firstNameLabel: 'First Name',
+  lastNameLabel: 'Last Name',
+  emailLabel: 'Email Address',
+  submitLabel: 'Submit',
+  submittingLabel: 'Saving…',
+  submittedLabel: 'Submitted',
+  firstNameRequired: 'Please enter your first name.',
+  lastNameRequired: 'Please enter your last name.',
+  emailRequired: 'Please enter your email address.',
+  emailInvalid: 'Please enter a valid email address.',
+}
+
+/** @deprecated Orphaned attendance wizard only — live form uses rsvpForm. */
 export const rsvp = {
   dietaryOptions: [
     'No dietary restrictions',
@@ -196,6 +263,10 @@ export const registry = {
 }
 
 export const footer = {
+  coupleBackgroundImageUrl: '/images/entrance/couple-photo.png',
+  initials: couple.monogram,
+  heroMessage: '',
+  rsvpThankYouMessage: 'Thank you for celebrating with us.',
   closingMessage:
     'We are so grateful to share this day with you. Your love and support have shaped our journey, and we cannot wait to celebrate together.',
   coordinatorName: 'Sarah Mitchell',
@@ -220,4 +291,37 @@ export const entranceGate = {
   couplePhotoSrc: '/images/entrance/couple-photo.png',
   pullPrompt: 'Pull the film down to reveal photos',
   exitCta: 'Open the Invitation',
+}
+
+export const saveTheDate = {
+  cardTitle: 'Save the Date',
+  cardSubtitle: couple.weddingDateDisplay,
+  cardVenue: couple.location,
+  note: 'Can’t wait to celebrate with you under the palms.',
+  stripPhotoSrc: entranceGate.couplePhotoSrc,
+  stripAlt: `${couple.name1} and ${couple.name2}`,
+}
+
+export const contactBlock = {
+  heading: 'Questions?',
+  body: `Reach out to our day-of coordinator, ${footer.coordinatorName}, at ${footer.coordinatorPhone} or ${footer.coordinatorEmail}.`,
+  goBackLabel: 'Go Back',
+}
+
+export const preWeddingParallax = {
+  /** Main page background for Hero + RSVP routes */
+  pageBackgroundSrc: '/images/entrance/palm-leaf-bg-1.avif',
+  palmBackLeftSrc: '/images/entrance/palm-tree-1.png',
+  palmBackRightSrc: '/images/entrance/palm-tree-2.png',
+  palmMidSrc: '/images/entrance/twin-palm-tree.png',
+  palmForeLeftSrc: '/images/entrance/palm-tree-slanted.png',
+  palmForeRightSrc: '/images/entrance/palm-tree-leaves.png',
+}
+
+export const thankYou = {
+  label: 'With love',
+  title: 'Thank You!',
+  message:
+    'Your address is saved. We cannot wait to send your invitation and celebrate with you under the golden hour sky.',
+  monogram: couple.monogram,
 }

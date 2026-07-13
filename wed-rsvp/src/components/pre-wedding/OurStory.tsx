@@ -4,7 +4,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { story } from '../../data/weddingData'
 import { useGSAP } from '../../hooks/useGSAP'
 import { fadeUpOnScroll, parallaxOnScroll } from '../../hooks/useScrollTrigger'
-import StoryPhotoCard from '../ui/StoryPhotoCard'
+import StoryPhotoCard from './StoryPhotoCard'
 
 const SLANTS_DESKTOP = [-2.5, 1.8, -1.2, 2.2, -1.8, 1.5]
 const SLANTS_MOBILE = [-1.5, 1.2, -0.8, 1.4, -1.2, 1]
