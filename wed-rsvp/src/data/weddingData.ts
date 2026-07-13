@@ -208,3 +208,13 @@ export const siteMeta = {
   title: `${couple.name1} & ${couple.name2} — Wedding`,
   description: `Join ${couple.name1} and ${couple.name2} on ${couple.weddingDateDisplay} at ${couple.location}.`,
 }
+
+export const entranceGate = {
+  greeting: 'We are getting married!',
+  saveTheDateLabel: 'Save the Date',
+  photoboothMachineSrc: '/images/entrance/photobooth-machine.png',
+  palmBackgroundSrc: '/images/entrance/palm-background.png',
+  couplePhotoSrc: '/images/entrance/couple-photo.jpg',
+  pullPrompt: 'Pull the tab at the top downward',
+  exitCta: 'Open the Invitation',
+}

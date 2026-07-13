@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { createFileRoute } from '@tanstack/react-router'
-import WelcomeGate from '../components/sections/WelcomeGate'
+import PhotoboothGate from '../components/sections/PhotoboothGate'
 import HeroSection from '../components/sections/HeroSection'
 import OurStory from '../components/sections/OurStory'
 import Itinerary from '../components/sections/Itinerary'
@@ -16,7 +16,7 @@ function App() {
 
   return (
     <>
-      <WelcomeGate onComplete={() => setGateOpen(true)} />
+      <PhotoboothGate onComplete={() => setGateOpen(true)} />
       <main>
         <HeroSection gateOpen={gateOpen} />
         <OurStory />
