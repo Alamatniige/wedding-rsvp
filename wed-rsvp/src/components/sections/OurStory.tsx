@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { story } from '../../data/weddingData'
@@ -10,14 +10,12 @@ const SLANTS_DESKTOP = [-2.5, 1.8, -1.2, 2.2, -1.8, 1.5]
 const SLANTS_MOBILE = [-1.5, 1.2, -0.8, 1.4, -1.2, 1]
 const PARALLAX_OFFSETS = [-35, -55, -25, -45, -30, -50]
 
-function getSlant(index: number) {
-  const isMobile = typeof window !== 'undefined' && window.innerWidth < 640
+function getSlant(index: number, isMobile: boolean) {
   const slants = isMobile ? SLANTS_MOBILE : SLANTS_DESKTOP
   return slants[index % slants.length]
 }
 
-function getParallaxY(index: number) {
-  const isMobile = typeof window !== 'undefined' && window.innerWidth < 640
+function getParallaxY(index: number, isMobile: boolean) {
   const offset = PARALLAX_OFFSETS[index % PARALLAX_OFFSETS.length]
   return isMobile ? -20 : offset
 }
@@ -75,10 +73,18 @@ export default function OurStory() {
   const quoteRef = useRef<HTMLParagraphElement>(null)
   const galleryRef = useRef<HTMLDivElement>(null)
   const [flippedId, setFlippedId] = useState<string | null>(null)
+  const [isMobile, setIsMobile] = useState(false)
 
   const handleFlip = (id: string) => {
     setFlippedId((prev) => (prev === id ? null : id))
   }
+
+  useEffect(() => {
+    const updateIsMobile = () => setIsMobile(window.innerWidth < 640)
+    updateIsMobile()
+    window.addEventListener('resize', updateIsMobile)
+    return () => window.removeEventListener('resize', updateIsMobile)
+  }, [])
 
   useGSAP(() => {
     if (!sectionRef.current || !quoteRef.current || !galleryRef.current) return
@@ -114,11 +120,11 @@ export default function OurStory() {
         parallaxOnScroll({
           trigger: card,
           target: slant,
-          y: getParallaxY(index),
+          y: getParallaxY(index, isMobile),
         })
       })
     }
-  }, [])
+  }, [isMobile])
 
   return (
     <section ref={sectionRef} id="story" className="our-story section-wrap">
@@ -133,7 +139,7 @@ export default function OurStory() {
           <StoryPhotoCard
             key={card.id}
             card={card}
-            slant={getSlant(index)}
+            slant={getSlant(index, isMobile)}
             isFlipped={flippedId === card.id}
             onFlip={() => handleFlip(card.id)}
           />

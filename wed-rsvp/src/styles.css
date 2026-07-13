@@ -1,36 +1,58 @@
-@import url("https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=Poppins:wght@400;500;600&family=Yellowtail&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Great+Vibes&family=Montserrat:wght@300;400;500;600&family=Noto+Sans+Tagalog&display=swap");
 @import "tailwindcss";
 
 /* === Design Tokens === */
 :root {
-  --color-ivory: #faf7f2;
-  --color-blush: #f5e6e0;
-  --color-champagne: #e8d5b5;
-  --color-navy: #1a2a3a;
-  --color-navy-soft: #3d4f5f;
-  --color-gold: #b8956a;
-  --color-gold-light: #d4b896;
-  --color-white: #ffffff;
-  --color-overlay: rgba(26, 42, 58, 0.45);
+  /* Brand palette (docs/styling.md) */
+  --bg-cream: #faf7f2;
+  --text-espresso: #2b221a;
+  --accent-terracotta: #c2775c;
+  --leaf-green: #606c38;
+  --twine-tan: #b59a73;
+  --capiz-white: rgba(255, 255, 255, 0.75);
 
-  --color-text: var(--color-navy);
-  --color-text-soft: var(--color-navy-soft);
-  --color-text-inverse: var(--color-ivory);
-  --color-bg: var(--color-ivory);
+  /* Neutrals & warm tints */
+  --color-espresso-soft: #6b5544;
+  --color-terracotta-light: #d89a80;
+  --color-ivory: var(--bg-cream);
+  --color-cream: var(--bg-cream);
+  --color-blush: #f3e3da;
+  --color-champagne: #ecdcc2;
+  --color-leaf: var(--leaf-green);
+  --color-twine: var(--twine-tan);
+  --color-white: #ffffff;
+  --color-overlay: rgba(43, 34, 26, 0.45);
+
+  /* Semantic aliases — repointed to the new palette so no component needs changing */
+  --color-navy: var(--text-espresso);
+  --color-navy-soft: var(--color-espresso-soft);
+  --color-gold: var(--accent-terracotta);
+  --color-gold-light: var(--color-terracotta-light);
+
+  --color-text: var(--text-espresso);
+  --color-text-soft: var(--color-espresso-soft);
+  --color-text-inverse: var(--bg-cream);
+  --color-bg: var(--bg-cream);
   --color-surface: var(--color-white);
-  --color-line: rgba(26, 42, 58, 0.12);
-  --color-accent: var(--color-gold);
+  --color-line: rgba(181, 154, 115, 0.4);
+  --color-accent: var(--accent-terracotta);
 
   --color-palm-deep: #1f3d2b;
   --color-sunset-coral: #e8734a;
   --color-sunset-gold: #f4b860;
   --color-capiz: #fbf6ee;
 
-  --font-display: "Fraunces", Georgia, serif;
-  --font-subheading: "Fraunces", Georgia, serif;
-  --font-sans: "Poppins", ui-sans-serif, system-ui, sans-serif;
+  /* Typography (docs/styling.md) */
+  --font-names: "Great Vibes", cursive;
+  --font-header: "Cormorant Garamond", Georgia, serif;
+  --font-body: "Montserrat", ui-sans-serif, system-ui, sans-serif;
+
+  --font-display: var(--font-header);
+  --font-subheading: var(--font-header);
+  --font-sans: var(--font-body);
   --font-handwriting: "Caveat", "Segoe Script", cursive;
-  --font-script: "Yellowtail", "Segoe Script", cursive;
+  --font-script: var(--font-names);
+  --font-baybayin: "Noto Sans Tagalog", "Noto Sans Buhid", sans-serif;
 
   --spacing-xs: 0.25rem;
   --spacing-sm: 0.5rem;
@@ -154,7 +176,7 @@ p {
 .section-divider {
   width: 3rem;
   height: 1px;
-  background: var(--color-gold);
+  background: var(--color-leaf);
   margin: var(--spacing-md) auto var(--spacing-xl);
 }
 
@@ -171,10 +193,63 @@ p {
   overflow-x: hidden;
   overflow-y: auto;
   background-color: var(--color-palm-deep);
-  background-image: url('/images/entrance/palm-background.png');
-  background-size: cover;
-  background-position: center;
   color: var(--color-capiz);
+}
+
+.photobooth-gate__palm {
+  pointer-events: none;
+  position: fixed;
+  bottom: 0;
+  z-index: 0;
+  height: min(85vh, 46rem);
+  width: auto;
+  opacity: 0.9;
+  filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.35));
+}
+
+.photobooth-gate__palm-backdrop {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.22;
+}
+
+.photobooth-gate__palm--left {
+  left: 0;
+  /* flipped copy of the slanted tree, raised so it doesn't collide with the right one */
+  bottom: 24%;
+  transform: translateX(-22%) scaleX(-1);
+  transform-origin: bottom center;
+}
+
+.photobooth-gate__palm--right {
+  right: 0;
+  transform: translateX(28%);
+  transform-origin: bottom right;
+}
+
+@media (max-width: 40rem) {
+  .photobooth-gate__palm-backdrop {
+    opacity: 0.2;
+  }
+
+  .photobooth-gate__palm {
+    height: min(42vh, 20rem);
+    opacity: 0.7;
+  }
+
+  .photobooth-gate__palm--left {
+    bottom: 30%;
+    transform: translateX(-34%) scaleX(-1);
+  }
+
+  .photobooth-gate__palm--right {
+    transform: translateX(36%);
+  }
 }
 
 .photobooth-gate__vignette {
@@ -186,6 +261,58 @@ p {
   background:
     radial-gradient(ellipse at center, transparent 0%, rgba(31, 61, 43, 0.8) 100%),
     linear-gradient(to bottom, rgba(31, 61, 43, 0.35) 0%, rgba(0, 0, 0, 0.55) 100%);
+}
+
+.photobooth-gate__baybayin {
+  pointer-events: none;
+  position: fixed;
+  top: 50%;
+  right: clamp(0.35rem, 2.5vw, 2rem);
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.9rem;
+  transform: translateY(-50%);
+  color: var(--color-sunset-gold);
+  opacity: 0.5;
+  will-change: transform, opacity;
+}
+
+.photobooth-gate__baybayin::before,
+.photobooth-gate__baybayin::after {
+  content: "";
+  width: 1px;
+  height: clamp(1.75rem, 8vh, 3.5rem);
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    currentColor 45%,
+    currentColor 55%,
+    transparent
+  );
+  opacity: 0.6;
+}
+
+.photobooth-gate__baybayin-text {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  font-family: var(--font-baybayin);
+  font-size: clamp(1.75rem, 4vw, 2.75rem);
+  line-height: 1;
+  letter-spacing: 0.22em;
+}
+
+@media (max-width: 40rem) {
+  .photobooth-gate__baybayin {
+    right: 0.2rem;
+    gap: 0.6rem;
+  }
+
+  .photobooth-gate__baybayin-text {
+    font-size: 1.4rem;
+    letter-spacing: 0.2em;
+  }
 }
 
 .photobooth-gate__stage {
@@ -202,6 +329,20 @@ p {
     calc(var(--spacing-2xl) + env(safe-area-inset-bottom, 0px));
 }
 
+.photobooth-gate__text-leaves {
+  pointer-events: none;
+  position: absolute;
+  top: clamp(-2.8rem, -5vw, -1rem);
+  left: 50%;
+  z-index: 1;
+  width: clamp(13rem, 46vw, 20rem);
+  height: auto;
+  opacity: 0.9;
+  transform: translateX(-51%) rotate(-10deg);
+  transform-origin: center;
+  filter: drop-shadow(0 10px 22px rgba(0, 0, 0, 0.3));
+}
+
 .photobooth-gate__greeting {
   margin: 0 0 var(--spacing-sm);
   font-family: var(--font-script);
@@ -210,15 +351,17 @@ p {
   line-height: 1.2;
   text-align: center;
   color: var(--color-sunset-gold);
+  opacity: 0;
   will-change: transform, opacity;
 }
 
 .photobooth-gate__names {
   margin: 0 0 var(--spacing-lg);
-  font-family: var(--font-display);
-  font-size: clamp(2rem, 7vw, 2.75rem);
+  font-family: var(--font-names);
+  font-size: clamp(2.5rem, 8vw, 3.5rem);
   font-weight: 400;
-  line-height: 1.15;
+  opacity: 0;
+  line-height: 1.2;
   text-align: center;
   color: var(--color-capiz);
   will-change: transform, opacity;
@@ -231,11 +374,13 @@ p {
   align-items: center;
   width: 100%;
   margin-bottom: var(--spacing-md);
+  overflow: visible;
 }
 
 .photobooth-gate__machine {
   position: relative;
   width: min(16rem, 72vw);
+  opacity: 0;
   will-change: transform, opacity;
 }
 
@@ -259,6 +404,10 @@ p {
   pointer-events: none;
 }
 
+.photobooth-gate__strip-window--revealed {
+  overflow: visible;
+}
+
 .photobooth-gate__strip {
   position: relative;
   display: flex;
@@ -269,9 +418,12 @@ p {
   margin: 0;
   padding: 0.24rem;
   border-radius: 2px;
-  background: var(--color-sunset-gold);
+  background: var(--bg-cream);
   box-shadow: inset 0 0 0 1px rgba(31, 61, 43, 0.12);
-  transform-origin: center center;
+  transform-origin: top center;
+  /* Hidden by default so the strip never paints in the revealed position before
+     GSAP measures + fades it in (avoids a flash of the full strip on load). */
+  opacity: 0;
   will-change: transform, opacity;
   cursor: grab;
   touch-action: none;
@@ -287,6 +439,7 @@ p {
   outline: 2px solid var(--color-sunset-gold);
   outline-offset: 2px;
 }
+
 
 .photobooth-gate__strip--revealed {
   cursor: default;
@@ -307,7 +460,7 @@ p {
 
 .photobooth-gate__strip-photo {
   display: block;
-  flex: 1;
+  flex: 1 1 0;
   width: 100%;
   min-height: 0;
   object-fit: cover;
@@ -322,7 +475,7 @@ p {
   gap: 0.15rem;
   padding: 0.3rem 0.25rem 0.35rem;
   border-radius: 0 0 2px 2px;
-  background: linear-gradient(to bottom, var(--color-sunset-gold), #e8a84a);
+  background: linear-gradient(to bottom, var(--bg-cream));
 }
 
 .photobooth-gate__strip-grip {
@@ -365,6 +518,7 @@ p {
   text-transform: uppercase;
   text-align: center;
   color: var(--color-sunset-gold);
+  opacity: 0;
   will-change: transform, opacity;
 }
 
@@ -389,9 +543,9 @@ p {
 .photobooth-gate__date {
   margin: 0;
   font-family: var(--font-sans);
-  font-size: 0.8rem;
-  font-weight: 500;
-  letter-spacing: 0.22em;
+  font-size: clamp(1.05rem, 3.8vw, 1.4rem);
+  font-weight: 600;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: rgba(251, 246, 238, 0.9);
   will-change: transform, opacity;
@@ -438,9 +592,15 @@ p {
     padding-top: calc(var(--spacing-3xl) + env(safe-area-inset-top, 0px));
   }
 
+  .photobooth-gate__text-leaves {
+    top: -2.25rem;
+    width: 21rem;
+  }
+
   .photobooth-gate__machine {
     width: 18rem;
   }
+
 }
 
 @media (max-width: 400px) {
@@ -498,11 +658,11 @@ p {
 }
 
 .hero-section__names {
-  font-family: var(--font-display);
-  font-weight: 300;
-  font-size: clamp(3rem, 10vw, 6rem);
-  line-height: 1.1;
-  letter-spacing: 0.04em;
+  font-family: var(--font-names);
+  font-weight: 400;
+  font-size: clamp(3.25rem, 11vw, 6.5rem);
+  line-height: 1.15;
+  letter-spacing: 0.01em;
   margin-bottom: var(--spacing-md);
 }
 
@@ -731,7 +891,7 @@ p {
   top: 0;
   bottom: 0;
   width: 2px;
-  background: var(--color-gold);
+  background: var(--color-leaf);
   transform-origin: top center;
 }
 
@@ -747,7 +907,7 @@ p {
   width: 0.75rem;
   height: 0.75rem;
   border-radius: 50%;
-  background: var(--color-gold);
+  background: var(--color-leaf);
   border: 2px solid var(--color-blush);
 }
 

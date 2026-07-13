@@ -8,8 +8,8 @@ type TimeLeft = {
   seconds: number
 }
 
-function calcTimeLeft(target: Date): TimeLeft {
-  const diff = target.getTime() - Date.now()
+function calcTimeLeft(targetTime: number): TimeLeft {
+  const diff = targetTime - Date.now()
   if (diff <= 0) {
     return { days: 0, hours: 0, minutes: 0, seconds: 0 }
   }
@@ -26,21 +26,23 @@ function pad(n: number) {
 }
 
 export default function CountdownTimer() {
-  const target = new Date(couple.weddingDateISO)
-  const [timeLeft, setTimeLeft] = useState<TimeLeft>(() => calcTimeLeft(target))
+  const targetTime = new Date(couple.weddingDateISO).getTime()
+  const [timeLeft, setTimeLeft] = useState<TimeLeft | null>(null)
 
   useEffect(() => {
+    setTimeLeft(calcTimeLeft(targetTime))
+
     const id = setInterval(() => {
-      setTimeLeft(calcTimeLeft(target))
+      setTimeLeft(calcTimeLeft(targetTime))
     }, 1000)
     return () => clearInterval(id)
-  }, [])
+  }, [targetTime])
 
   const blocks = [
-    { value: pad(timeLeft.days), label: 'Days' },
-    { value: pad(timeLeft.hours), label: 'Hours' },
-    { value: pad(timeLeft.minutes), label: 'Minutes' },
-    { value: pad(timeLeft.seconds), label: 'Seconds' },
+    { value: timeLeft ? pad(timeLeft.days) : '--', label: 'Days' },
+    { value: timeLeft ? pad(timeLeft.hours) : '--', label: 'Hours' },
+    { value: timeLeft ? pad(timeLeft.minutes) : '--', label: 'Minutes' },
+    { value: timeLeft ? pad(timeLeft.seconds) : '--', label: 'Seconds' },
   ]
 
   return (

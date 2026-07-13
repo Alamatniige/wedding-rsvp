@@ -3,9 +3,9 @@ export const couple = {
   name2: 'Joe',
   monogram: 'J&J',
   weddingDateISO: '2026-09-12T16:00:00',
-  weddingDateDisplay: 'September 12, 2026',
-  rsvpByDisplay: 'August 1, 2026',
-  location: 'Rosewood Estate, Napa Valley',
+  weddingDateDisplay: '04. 27. 2027',
+  rsvpByDisplay: '04. 27. 2027',
+  location: 'Villa D’este, Tagaytay, Philippines',
 }
 
 export const hero = {
@@ -211,10 +211,13 @@ export const siteMeta = {
 
 export const entranceGate = {
   greeting: 'We are getting married!',
+  // Couple's names written in Baybayin (old Filipino script): "Jianne - Joe"
+  baybayinNames: 'ᜇ᜔ᜌᜒᜀᜈ᜔ - ᜇ᜔ᜌᜓ',
   saveTheDateLabel: 'Save the Date',
   photoboothMachineSrc: '/images/entrance/photobooth-machine.png',
-  palmBackgroundSrc: '/images/entrance/palm-background.png',
-  couplePhotoSrc: '/images/entrance/couple-photo.jpg',
-  pullPrompt: 'Pull the tab at the top downward',
+  palmTreeLeftSrc: '/images/entrance/palm-tree-slanted.png',
+  palmTreeRightSrc: '/images/entrance/palm-tree-slanted.png',
+  couplePhotoSrc: '/images/entrance/couple-photo.png',
+  pullPrompt: 'Pull the film down to reveal photos',
   exitCta: 'Open the Invitation',
 }
