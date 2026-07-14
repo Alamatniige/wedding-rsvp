@@ -17,7 +17,6 @@ type PhotoboothGateProps = {
 export default function PhotoboothGate({ onComplete }: PhotoboothGateProps) {
   const greetingRef = useRef<HTMLParagraphElement>(null)
   const namesRef = useRef<HTMLHeadingElement>(null)
-  const baybayinRef = useRef<HTMLDivElement>(null)
   const machineRef = useRef<HTMLDivElement>(null)
   const machineImgRef = useRef<HTMLImageElement>(null)
   const stripWindowRef = useRef<HTMLDivElement>(null)
@@ -292,7 +291,6 @@ export default function PhotoboothGate({ onComplete }: PhotoboothGateProps) {
 
     const greeting = greetingRef.current
     const names = namesRef.current
-    const baybayin = baybayinRef.current
     const machine = machineRef.current
     const strip = stripRef.current
     const saveLabel = saveLabelRef.current
@@ -304,9 +302,6 @@ export default function PhotoboothGate({ onComplete }: PhotoboothGateProps) {
     gsap.set([greeting, names, machine], { opacity: 0, y: 24 })
     if (strip && !stripLayoutReadyRef.current && !stripIntroPlayedRef.current) {
       gsap.set(strip, { opacity: 0, rotate: 0, scale: 1 })
-    }
-    if (baybayin) {
-      gsap.set(baybayin, { opacity: 0, x: 24, yPercent: -50 })
     }
     gsap.set(machine, { scale: 0.92 })
     if (saveLabel && date && exit) {
@@ -324,11 +319,6 @@ export default function PhotoboothGate({ onComplete }: PhotoboothGateProps) {
         ease: 'power2.out',
         onComplete: () => tryInitStripLayoutRef.current(),
       }, '-=0.35')
-      .add(() => {
-        if (baybayin) {
-          gsap.to(baybayin, { opacity: 0.5, x: 0, duration: 1.1, ease: 'power2.out' })
-        }
-      }, 0.6)
   }, [skipped])
 
   useEffect(() => {
@@ -383,19 +373,13 @@ export default function PhotoboothGate({ onComplete }: PhotoboothGateProps) {
           exit={{ opacity: 0, scale: 1.08 }}
           transition={{ duration: 0.7, ease: 'easeInOut' }}
         >
-          <div className="photobooth-gate__vignette" aria-hidden="true" />
-
           <img
             className="photobooth-gate__palm-backdrop"
-            src="/images/entrance/palm-leaf-bg-1.avif"
+            src="/images/entrance/wed-bg.jpg"
             alt=""
             aria-hidden="true"
             draggable={false}
           />
-
-          <div ref={baybayinRef} className="photobooth-gate__baybayin" aria-hidden="true">
-            <span className="photobooth-gate__baybayin-text">{entranceGate.baybayinNames}</span>
-          </div>
 
           <div className="photobooth-gate__stage">
             <p ref={greetingRef} className="photobooth-gate__greeting">

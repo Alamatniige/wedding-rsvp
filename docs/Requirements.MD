@@ -85,12 +85,12 @@ Same integration contract as the old gate: `{ onComplete: () => void }`, called 
 - Full-screen fixed overlay. Background uses `palm-background.png` (mock) — the client wants palm trees + Filipino/tropical vibes here, so treat this image as the scene's backdrop, not a decorative corner element
 - A soft dark gradient/vignette overlay on top of the background image for text legibility (same technique the old gate used, just repoint the tokens to the new tropical palette below)
 
-### Tropical palette (add to `:root`, alongside existing tokens — don't delete tokens other sections still use)
+### Vintage botanical palette (from `wed-bg.jpg` — see `docs/styling.md`)
 ```css
---color-palm-deep: #1f3d2b;
---color-sunset-coral: #e8734a;
---color-sunset-gold: #f4b860;
---color-capiz: #fbf6ee;
+--color-palm-deep: #2a3236;
+--color-sunset-coral: #c0866a;
+--color-sunset-gold: #c9a27a;
+--color-capiz: #f5f2ea;
 ```
 
 ### Stage 1 — Greeting + names

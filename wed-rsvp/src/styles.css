@@ -1,29 +1,34 @@
-@import url("https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,300;1,9..144,400&family=Noto+Sans+Tagalog&family=Poppins:wght@300;400;500;600&family=Yellowtail&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,300;1,9..144,400&family=Noto+Sans+Tagalog&family=Pinyon+Script&family=Poppins:wght@300;400;500;600&family=Yellowtail&display=swap");
 @import "tailwindcss";
 
 /* === Design Tokens === */
 :root {
-  /* Brand palette (docs/styling.md) */
-  --bg-cream: #faf7f2;
-  --text-espresso: #2b221a;
-  --accent-terracotta: #c2775c;
-  --leaf-green: #606c38;
-  --twine-tan: #b59a73;
-  --capiz-white: rgba(255, 255, 255, 0.75);
+  /* Brand palette — vintage botanical (wed-bg.jpg) */
+  --bg-cream: #ede9df;
+  --text-espresso: #262b30;
+  --accent-terracotta: #c0866a;
+  --leaf-green: #3d464b; /* slate foliage; name kept for compatibility */
+  --twine-tan: #918578;
+  --capiz-white: rgba(245, 242, 234, 0.75);
 
   /* Neutrals & warm tints */
-  --color-espresso-soft: #6b5544;
-  --color-terracotta-light: #d89a80;
+  --color-espresso-soft: #5a6166;
+  --color-terracotta-light: #d4a890;
   --color-ivory: var(--bg-cream);
   --color-cream: var(--bg-cream);
-  --color-blush: #f3e3da;
-  --color-champagne: #ecdcc2;
+  --color-blush: #e8ddd4;
+  --color-champagne: #d4cbb8;
   --color-leaf: var(--leaf-green);
   --color-twine: var(--twine-tan);
   --color-white: #ffffff;
-  --color-overlay: rgba(43, 34, 26, 0.45);
+  --color-overlay: rgba(38, 43, 48, 0.45);
 
-  /* Semantic aliases — repointed to the new palette so no component needs changing */
+  --color-palm-deep: #2a3236;
+  --color-sunset-coral: #c0866a;
+  --color-sunset-gold: #c9a27a;
+  --color-capiz: #f5f2ea;
+
+  /* Semantic aliases — components inherit mural palette via these */
   --color-navy: var(--text-espresso);
   --color-navy-soft: var(--color-espresso-soft);
   --color-gold: var(--accent-terracotta);
@@ -31,47 +36,49 @@
 
   --color-text: var(--text-espresso);
   --color-text-soft: var(--color-espresso-soft);
-  --color-text-inverse: var(--bg-cream);
+  --color-text-inverse: var(--color-capiz);
   --color-bg: var(--bg-cream);
-  --color-surface: var(--color-white);
-  --color-line: rgba(181, 154, 115, 0.4);
+  --color-surface: #f5f2ea;
+  --color-line: rgba(151, 146, 133, 0.45);
   --color-accent: var(--accent-terracotta);
 
-  --color-palm-deep: #1f3d2b;
-  --color-sunset-coral: #e8734a;
-  --color-sunset-gold: #f4b860;
-  --color-capiz: #fbf6ee;
-
-  /* Tropical golden-hour sky (pre-wedding parallax page) */
-  --gradient-sky-start: #f6c07a;
-  --gradient-sky-mid: #e8734a;
-  --gradient-sky-end: #7a3b4a;
+  /* Soft parchment → terracotta → slate (pre-wedding parallax) */
+  --gradient-sky-start: #d4cbb8;
+  --gradient-sky-mid: #c0866a;
+  --gradient-sky-end: #3d464b;
   --gradient-sky-progress: 0;
-  --palm-silhouette: #1a2f22;
-  --capiz-panel-bg: rgba(251, 246, 238, 0.62);
+  --palm-silhouette: #262b30;
+  --capiz-panel-bg: rgba(245, 242, 234, 0.62);
   --capiz-panel-border: rgba(255, 255, 255, 0.45);
-  --capiz-panel-shadow: 0 12px 40px rgba(43, 34, 26, 0.18);
+  --capiz-panel-shadow: 0 12px 40px rgba(38, 43, 48, 0.18);
 
   /* Typography — display / body / subheading tokens only for new UI */
-  --font-names: "Yellowtail", "Segoe Script", cursive;
+  --font-names: "Pinyon Script", "Segoe Script", cursive;
   --font-header: "Fraunces", Georgia, serif;
   --font-body: "Poppins", ui-sans-serif, system-ui, sans-serif;
 
   --font-display: "Fraunces", Georgia, serif;
-  --font-subheading: "Yellowtail", "Segoe Script", cursive;
+  --font-subheading: "Pinyon Script", "Segoe Script", cursive;
   --font-accent: var(--font-subheading);
   --font-sans: var(--font-body);
   --font-handwriting: "Caveat", "Segoe Script", cursive;
   --font-script: var(--font-names);
   --font-baybayin: "Noto Sans Tagalog", "Noto Sans Buhid", sans-serif;
 
-  /* Hero landing + shared footer */
+  /* Gate text on light mural — charcoal + soft parchment halo */
+  --gate-text: var(--text-espresso);
+  --gate-text-soft: var(--color-espresso-soft);
+  --gate-text-shadow:
+    0 1px 0 rgba(245, 242, 234, 0.9),
+    0 0 18px rgba(237, 233, 223, 0.75);
+
+  /* Hero styling + shared footer */
   --page-bg-image: url('/images/entrance/palm-leaf-bg-1.avif');
   --page-bg-overlay: rgba(0, 0, 0, 0.28);
   --page-bg-overlay-start: color-mix(in srgb, var(--gradient-sky-start) 45%, transparent);
   --page-bg-overlay-mid: color-mix(in srgb, var(--gradient-sky-mid) 40%, transparent);
   --page-bg-overlay-end: color-mix(in srgb, var(--gradient-sky-end) 55%, transparent);
-  --footer-overlay: rgba(31, 61, 43, 0.55);
+  --footer-overlay: rgba(42, 50, 54, 0.55);
   --footer-text: var(--color-capiz);
   --hero-cta-bg: var(--color-palm-deep);
   --hero-cta-bg-hover: var(--color-sunset-coral);
@@ -99,9 +106,9 @@
   --radius-xl: 2rem;
   --radius-full: 9999px;
 
-  --shadow-sm: 0 2px 8px rgba(26, 42, 58, 0.06);
-  --shadow-md: 0 8px 24px rgba(26, 42, 58, 0.1);
-  --shadow-lg: 0 16px 48px rgba(26, 42, 58, 0.14);
+  --shadow-sm: 0 2px 8px rgba(38, 43, 48, 0.06);
+  --shadow-md: 0 8px 24px rgba(38, 43, 48, 0.1);
+  --shadow-lg: 0 16px 48px rgba(38, 43, 48, 0.14);
 
   --z-gate: 100;
   --z-modal: 60;
@@ -245,7 +252,7 @@ p {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  opacity: 0.22;
+  opacity: 1;
 }
 
 .photobooth-gate__palm--left {
@@ -263,10 +270,6 @@ p {
 }
 
 @media (max-width: 40rem) {
-  .photobooth-gate__palm-backdrop {
-    opacity: 0.2;
-  }
-
   .photobooth-gate__palm {
     height: min(42vh, 20rem);
     opacity: 0.7;
@@ -279,69 +282,6 @@ p {
 
   .photobooth-gate__palm--right {
     transform: translateX(36%);
-  }
-}
-
-.photobooth-gate__vignette {
-  pointer-events: none;
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  opacity: 0.75;
-  background:
-    radial-gradient(ellipse at center, transparent 0%, rgba(31, 61, 43, 0.8) 100%),
-    linear-gradient(to bottom, rgba(31, 61, 43, 0.35) 0%, rgba(0, 0, 0, 0.55) 100%);
-}
-
-.photobooth-gate__baybayin {
-  pointer-events: none;
-  position: fixed;
-  top: 50%;
-  right: clamp(0.35rem, 2.5vw, 2rem);
-  z-index: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.9rem;
-  transform: translateY(-50%);
-  color: var(--color-sunset-gold);
-  opacity: 0.5;
-  will-change: transform, opacity;
-}
-
-.photobooth-gate__baybayin::before,
-.photobooth-gate__baybayin::after {
-  content: "";
-  width: 1px;
-  height: clamp(1.75rem, 8vh, 3.5rem);
-  background: linear-gradient(
-    to bottom,
-    transparent,
-    currentColor 45%,
-    currentColor 55%,
-    transparent
-  );
-  opacity: 0.6;
-}
-
-.photobooth-gate__baybayin-text {
-  writing-mode: vertical-rl;
-  text-orientation: mixed;
-  font-family: var(--font-baybayin);
-  font-size: clamp(1.75rem, 4vw, 2.75rem);
-  line-height: 1;
-  letter-spacing: 0.22em;
-}
-
-@media (max-width: 40rem) {
-  .photobooth-gate__baybayin {
-    right: 0.2rem;
-    gap: 0.6rem;
-  }
-
-  .photobooth-gate__baybayin-text {
-    font-size: 1.4rem;
-    letter-spacing: 0.2em;
   }
 }
 
@@ -375,12 +315,15 @@ p {
 
 .photobooth-gate__greeting {
   margin: 0 0 var(--spacing-sm);
-  font-family: var(--font-script);
-  font-size: clamp(1.75rem, 6vw, 2.5rem);
-  font-weight: 400;
-  line-height: 1.2;
+  font-family: var(--font-sans);
+  font-size: clamp(0.78rem, 2.6vw, 0.95rem);
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  line-height: 1.35;
   text-align: center;
-  color: var(--color-sunset-gold);
+  color: var(--gate-text);
+  text-shadow: var(--gate-text-shadow);
   opacity: 0;
   will-change: transform, opacity;
 }
@@ -388,12 +331,13 @@ p {
 .photobooth-gate__names {
   margin: 0 0 var(--spacing-lg);
   font-family: var(--font-names);
-  font-size: clamp(2.5rem, 8vw, 3.5rem);
+  font-size: clamp(3.1rem, 11vw, 4.5rem);
   font-weight: 400;
   opacity: 0;
-  line-height: 1.2;
+  line-height: 1.15;
   text-align: center;
-  color: var(--color-capiz);
+  color: var(--gate-text);
+  text-shadow: var(--gate-text-shadow);
   will-change: transform, opacity;
 }
 
@@ -449,7 +393,7 @@ p {
   padding: 0.24rem;
   border-radius: 2px;
   background: var(--bg-cream);
-  box-shadow: inset 0 0 0 1px rgba(31, 61, 43, 0.12);
+  box-shadow: inset 0 0 0 1px rgba(42, 50, 54, 0.12);
   transform-origin: top center;
   /* Hidden by default so the strip never paints in the revealed position before
      GSAP measures + fades it in (avoids a flash of the full strip on load). */
@@ -513,7 +457,7 @@ p {
   width: 2.25rem;
   height: 0.22rem;
   border-radius: var(--radius-full);
-  background: rgba(31, 61, 43, 0.35);
+  background: rgba(42, 50, 54, 0.35);
   box-shadow: 0 1px 0 rgba(255, 255, 255, 0.35);
 }
 
@@ -521,8 +465,8 @@ p {
   display: block;
   width: 0.55rem;
   height: 0.55rem;
-  border-right: 2px solid rgba(31, 61, 43, 0.55);
-  border-bottom: 2px solid rgba(31, 61, 43, 0.55);
+  border-right: 2px solid rgba(42, 50, 54, 0.55);
+  border-bottom: 2px solid rgba(42, 50, 54, 0.55);
   transform: rotate(45deg) translateY(-2px);
   animation: photobooth-pull-nudge 1.1s ease-in-out infinite;
 }
@@ -564,20 +508,22 @@ p {
 .photobooth-gate__save-label {
   margin: 0;
   font-family: var(--font-script);
-  font-size: clamp(1.75rem, 5.5vw, 2.25rem);
+  font-size: clamp(2.15rem, 7vw, 3rem);
   line-height: 1.2;
-  color: var(--color-sunset-gold);
+  color: var(--gate-text);
+  text-shadow: var(--gate-text-shadow);
   will-change: transform, opacity;
 }
 
 .photobooth-gate__date {
   margin: 0;
-  font-family: var(--font-sans);
-  font-size: clamp(1.05rem, 3.8vw, 1.4rem);
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: rgba(251, 246, 238, 0.9);
+  font-family: var(--font-script);
+  font-size: clamp(1.85rem, 6vw, 2.5rem);
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  text-transform: none;
+  color: var(--gate-text);
+  text-shadow: var(--gate-text-shadow);
   will-change: transform, opacity;
 }
 
@@ -591,9 +537,8 @@ p {
 
 .photobooth-gate__exit-cta {
   padding: 0.85rem 1.75rem;
-  border: 1px solid rgba(251, 246, 238, 0.45);
-  border-radius: var(--radius-full);
-  background: rgba(31, 61, 43, 0.55);
+  border: 1px solid rgba(245, 242, 234, 0.45);
+  background: rgba(42, 50, 54, 0.55);
   backdrop-filter: blur(6px);
   font-family: var(--font-sans);
   font-size: 0.75rem;
