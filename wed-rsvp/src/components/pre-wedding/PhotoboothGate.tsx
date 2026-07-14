@@ -381,6 +381,8 @@ export default function PhotoboothGate({ onComplete }: PhotoboothGateProps) {
             draggable={false}
           />
 
+          <div className="photobooth-gate__scrim" aria-hidden="true" />
+
           <div className="photobooth-gate__stage">
             <p ref={greetingRef} className="photobooth-gate__greeting">
               {entranceGate.greeting}
