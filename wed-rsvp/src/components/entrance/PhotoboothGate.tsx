@@ -10,8 +10,13 @@ const PULL_THRESHOLD = 0.72
 const PEEK_RATIO = 0.12
 const PULSE_OFFSET = 15
 
+export type GateRevealOptions = {
+  /** True only when the user clicks "Open the Invitation" — wait for gate fade. */
+  delayed?: boolean
+}
+
 type PhotoboothGateProps = {
-  onComplete: () => void
+  onComplete: (options?: GateRevealOptions) => void
 }
 
 export default function PhotoboothGate({ onComplete }: PhotoboothGateProps) {
@@ -34,6 +39,7 @@ export default function PhotoboothGate({ onComplete }: PhotoboothGateProps) {
   const dragStartOffsetRef = useRef(0)
   const isDraggingRef = useRef(false)
 
+  // Must start false on server + first client paint (sessionStorage is client-only).
   const [skipped, setSkipped] = useState(false)
   const [leaving, setLeaving] = useState(false)
   const [photoRevealed, setPhotoRevealed] = useState(false)
@@ -140,9 +146,14 @@ export default function PhotoboothGate({ onComplete }: PhotoboothGateProps) {
   }, [])
 
   useEffect(() => {
-    if (sessionStorage.getItem(STORAGE_KEY) === '1') {
-      setSkipped(true)
-      onComplete()
+    // Returning visitors: skip gate and reveal invitation immediately (no delay).
+    try {
+      if (sessionStorage.getItem(STORAGE_KEY) === '1') {
+        setSkipped(true)
+        onComplete({ delayed: false })
+      }
+    } catch {
+      // sessionStorage may be unavailable
     }
   }, [onComplete])
 
@@ -359,7 +370,8 @@ export default function PhotoboothGate({ onComplete }: PhotoboothGateProps) {
 
   const handleExit = () => {
     setLeaving(true)
-    onComplete()
+    // Delay invitation fly-by only for this button path (gate fade ~0.7s).
+    onComplete({ delayed: true })
   }
 
   if (skipped) return null

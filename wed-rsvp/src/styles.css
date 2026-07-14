@@ -1712,6 +1712,10 @@ p {
   color: var(--hero-text);
 }
 
+.hero-landing__anim {
+  opacity: 0;
+}
+
 .hero-landing__meet {
   font-family: var(--font-body);
   font-size: 0.875rem;
@@ -1758,6 +1762,7 @@ p {
 
 .invitation-collage__piece {
   position: absolute;
+  opacity: 0;
   will-change: transform, opacity;
 }
 
@@ -2006,6 +2011,15 @@ p {
   .invitation-collage__piece--leaves {
     width: 46%;
     right: 2%;
+  }
+
+  .invitation-collage__save-date-invite {
+    top: 0.55rem;
+    right: 0.7rem;
+    max-width: 42%;
+    font-size: clamp(0.42rem, 2.4vw, 0.55rem);
+    letter-spacing: 0.06em;
+    line-height: 1.25;
   }
 }
 

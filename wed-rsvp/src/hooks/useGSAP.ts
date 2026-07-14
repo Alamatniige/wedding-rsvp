@@ -14,10 +14,9 @@ const useIsomorphicLayoutEffect =
 
 export function useGSAP(callback: GSAPCallback, deps: React.DependencyList = []) {
   const callbackRef = useRef(callback)
-
-  useEffect(() => {
-    callbackRef.current = callback
-  })
+  // Must update during render — layout effects run before passive useEffect,
+  // so a post-paint ref update leaves the previous closure (e.g. animate=false).
+  callbackRef.current = callback
 
   useIsomorphicLayoutEffect(() => {
     const ctx = gsap.context(() => {

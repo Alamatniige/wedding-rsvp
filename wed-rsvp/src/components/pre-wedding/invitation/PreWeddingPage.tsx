@@ -1,8 +1,8 @@
 import { useRef, type CSSProperties } from 'react'
 import { Link } from '@tanstack/react-router'
+import gsap from 'gsap'
 import { heroLanding, preWeddingParallax } from '../../../data/weddingData'
 import { useGSAP } from '../../../hooks/useGSAP'
-import { fadeUpOnScroll } from '../../../hooks/useScrollTrigger'
 import { Button } from '../../ui/button'
 import Footer from '../../shared/Footer'
 import CountdownTimer from './CountdownTimer'
@@ -10,22 +10,39 @@ import InvitationCollage from './elements/InvitationCollage'
 
 type PreWeddingPageProps = {
   gateOpen: boolean
+  /** Seconds — set only when user clicked Open Invitation (gate still fading). */
+  revealDelay?: number
 }
 
-export default function PreWeddingPage({ gateOpen }: PreWeddingPageProps) {
+export default function PreWeddingPage({
+  gateOpen,
+  revealDelay = 0,
+}: PreWeddingPageProps) {
   const heroRef = useRef<HTMLElement>(null)
 
   useGSAP(() => {
     const hero = heroRef.current
-    if (!hero || !gateOpen) return
+    if (!hero) return
 
-    fadeUpOnScroll({
-      trigger: hero,
-      targets: hero.querySelectorAll('.hero-landing__anim'),
-      start: 'top 90%',
-      stagger: 0.1,
+    const targets = hero.querySelectorAll('.hero-landing__anim')
+    if (targets.length === 0) return
+
+    // Hero is already in the first viewport post-gate — don't wait on scroll.
+    gsap.set(targets, { opacity: 0, y: 36 })
+
+    if (!gateOpen) return
+
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+    gsap.to(targets, {
+      opacity: 1,
+      y: 0,
+      duration: reduceMotion ? 0.35 : 0.8,
+      stagger: reduceMotion ? 0.04 : 0.1,
+      delay: revealDelay,
+      ease: 'power2.out',
     })
-  }, [gateOpen])
+  }, [gateOpen, revealDelay])
 
   return (
     <main className="pre-wedding-page pre-wedding-page--hero">
@@ -51,7 +68,7 @@ export default function PreWeddingPage({ gateOpen }: PreWeddingPageProps) {
             {heroLanding.date}
           </p>
 
-          <InvitationCollage animate={gateOpen} />
+          <InvitationCollage animate={gateOpen} revealDelay={revealDelay} />
 
           <p className="hero-landing__hope hero-landing__anim">
             {heroLanding.hopeMessage}

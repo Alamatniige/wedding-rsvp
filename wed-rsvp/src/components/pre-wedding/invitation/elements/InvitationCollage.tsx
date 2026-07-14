@@ -1,6 +1,5 @@
 import { useRef } from 'react'
 import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '../../../../hooks/useGSAP'
 import SaveTheDateCard from './SaveTheDateCard'
 import CelebrationCard from './CelebrationCard'
@@ -8,19 +7,22 @@ import FilmStrip from './FilmStrip'
 import Polaroid from './Polaroid'
 import PalmLeaves from './PalmLeaves'
 
-gsap.registerPlugin(ScrollTrigger)
-
 type InvitationCollageProps = {
   /** When false, skip entry motion (e.g. gate still closed). */
   animate?: boolean
+  /** Seconds — only set when revealing after Open Invitation click. */
+  revealDelay?: number
 }
 
-export default function InvitationCollage({ animate = true }: InvitationCollageProps) {
+export default function InvitationCollage({
+  animate = true,
+  revealDelay = 0,
+}: InvitationCollageProps) {
   const rootRef = useRef<HTMLDivElement>(null)
 
   useGSAP(() => {
     const root = rootRef.current
-    if (!root || !animate) return
+    if (!root) return
 
     const film = root.querySelector<HTMLElement>('[data-collage-piece="film"]')
     const polaroid = root.querySelector<HTMLElement>('[data-collage-piece="polaroid"]')
@@ -33,6 +35,11 @@ export default function InvitationCollage({ animate = true }: InvitationCollageP
     )
     if (pieces.length === 0) return
 
+    // Keep pieces hidden while the entrance gate is still covering the page.
+    gsap.set(pieces, { opacity: 0 })
+
+    if (!animate) return
+
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
     if (reduceMotion) {
@@ -43,23 +50,19 @@ export default function InvitationCollage({ animate = true }: InvitationCollageP
           opacity: 1,
           duration: 0.4,
           stagger: 0.05,
+          delay: revealDelay,
           ease: 'power2.out',
-          scrollTrigger: {
-            trigger: root,
-            start: 'top 85%',
-            toggleActions: 'play none none none',
-            once: true,
-          },
         },
       )
       return
     }
 
-    gsap.set(film, { opacity: 0, xPercent: -80, y: 40 })
-    gsap.set(polaroid, { opacity: 0, xPercent: 90, y: -30 })
-    gsap.set(saveDate, { opacity: 0, yPercent: -70, x: 20 })
-    gsap.set(postcard, { opacity: 0, yPercent: 80, x: -10 })
-    gsap.set(leaves, { opacity: 0, xPercent: 70, yPercent: 60 })
+    // Fly-by from each side — delayed only after Open Invitation, not on reload skip.
+    gsap.set(film, { opacity: 0, xPercent: -95, y: 56 })
+    gsap.set(polaroid, { opacity: 0, xPercent: 105, y: -40 })
+    gsap.set(saveDate, { opacity: 0, yPercent: -85, x: 28 })
+    gsap.set(postcard, { opacity: 0, yPercent: 95, x: -16 })
+    gsap.set(leaves, { opacity: 0, xPercent: 85, yPercent: 70 })
 
     const settle = {
       opacity: 1,
@@ -67,44 +70,18 @@ export default function InvitationCollage({ animate = true }: InvitationCollageP
       y: 0,
       xPercent: 0,
       yPercent: 0,
-      duration: 1.05,
+      duration: 1.15,
       ease: 'power3.out' as const,
     }
 
-    const tl = gsap.timeline({ paused: true, defaults: { overwrite: 'auto' } })
-
-    tl.to(saveDate, settle, 0)
-      .to(postcard, settle, 0.12)
-      .to(film, settle, 0.2)
-      .to(polaroid, settle, 0.28)
-      .to(leaves, settle, 0.38)
-
-    let played = false
-    const playEntry = () => {
-      if (played) return
-      played = true
-      tl.play(0)
-    }
-
-    ScrollTrigger.create({
-      trigger: root,
-      start: 'top 90%',
-      once: true,
-      onEnter: playEntry,
-      // Hero sits in the first viewport after the gate — fire if already visible.
-      onRefresh: (self) => {
-        if (self.isActive || self.progress > 0) playEntry()
-      },
-    })
-
-    ScrollTrigger.refresh()
-
-    // Immediate play when collage is already on-screen (post-gate).
-    const rect = root.getBoundingClientRect()
-    if (rect.top < window.innerHeight * 0.9 && rect.bottom > 0) {
-      playEntry()
-    }
-  }, [animate])
+    gsap
+      .timeline({ delay: revealDelay, defaults: { overwrite: 'auto' } })
+      .to(saveDate, settle, 0)
+      .to(postcard, settle, 0.14)
+      .to(film, settle, 0.22)
+      .to(polaroid, settle, 0.3)
+      .to(leaves, settle, 0.4)
+  }, [animate, revealDelay])
 
   return (
     <div ref={rootRef} className="invitation-collage" aria-label="Wedding invitation collage">
