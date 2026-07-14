@@ -1,10 +1,11 @@
 import * as React from 'react'
 import { Slot } from '@radix-ui/react-slot'
-import { cva, type VariantProps } from 'class-variance-authority'
+import { cva } from 'class-variance-authority'
+import type { VariantProps } from 'class-variance-authority'
 import { cn } from '#/lib/utils'
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center gap-2 whitespace-nowrap transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-sunset-gold)] focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 rounded-none cursor-pointer',
+  'inline-flex items-center justify-center gap-2 whitespace-nowrap font-[family-name:var(--font-body)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-sunset-gold)] focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 rounded-none cursor-pointer',
   {
     variants: {
       variant: {
@@ -13,7 +14,7 @@ const buttonVariants = cva(
         secondary:
           'bg-[var(--color-capiz)] text-[var(--color-text)] font-medium hover:bg-[color-mix(in_srgb,var(--color-capiz)_85%,transparent)]',
         outline:
-          'border border-solid border-[color:rgba(245,242,234,0.45)] bg-[rgba(42,50,54,0.55)] text-[var(--color-capiz)] no-underline font-semibold uppercase tracking-[0.18em] backdrop-blur-[6px] hover:border-[color:var(--color-sunset-gold)] hover:text-[var(--color-sunset-gold)] hover:bg-[rgba(42,50,54,0.55)]',
+          'border border-solid border-[color:rgba(245,242,234,0.45)] bg-[rgba(42,50,54,0.55)] text-[var(--color-capiz)] no-underline font-normal uppercase tracking-[0.18em] backdrop-blur-[6px] hover:border-[color:var(--color-sunset-gold)] hover:text-[var(--color-sunset-gold)] hover:bg-[rgba(42,50,54,0.55)]',
         ghost:
           'bg-transparent text-[var(--color-capiz)] font-medium hover:bg-[color-mix(in_srgb,var(--color-capiz)_12%,transparent)]',
         link: 'bg-transparent text-[var(--color-capiz)] font-medium underline-offset-4 hover:underline',
