@@ -2238,6 +2238,7 @@ p {
   object-fit: cover;
   object-position: center;
   will-change: transform;
+  filter: grayscale(1) contrast(1.05);
 }
 
 .site-footer__overlay {
