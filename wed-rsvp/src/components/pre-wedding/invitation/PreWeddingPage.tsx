@@ -1,10 +1,10 @@
 import { useRef, type CSSProperties } from 'react'
 import { Link } from '@tanstack/react-router'
-import { heroLanding, preWeddingParallax } from '../../data/weddingData'
-import { useGSAP } from '../../hooks/useGSAP'
-import { fadeUpOnScroll } from '../../hooks/useScrollTrigger'
-import { Button } from '../ui/button'
-import Footer from '../shared/Footer'
+import { heroLanding, preWeddingParallax } from '../../../data/weddingData'
+import { useGSAP } from '../../../hooks/useGSAP'
+import { fadeUpOnScroll } from '../../../hooks/useScrollTrigger'
+import { Button } from '../../ui/button'
+import Footer from '../../shared/Footer'
 import CountdownTimer from './CountdownTimer'
 
 type PreWeddingPageProps = {
@@ -46,20 +46,17 @@ export default function PreWeddingPage({ gateOpen }: PreWeddingPageProps) {
           <h1 className="hero-landing__venue hero-landing__anim">
             {heroLanding.venue}
           </h1>
+          <p className="hero-landing__date hero-landing__anim">
+            {heroLanding.date}
+          </p>
 
           <div className="hero-landing__images hero-landing__anim">
             {heroLanding.images.map((image) => (
               <div key={image.id} className="hero-landing__image-frame">
-                {'placeholder' in image && image.placeholder ? (
-                  <div className="hero-landing__image-placeholder">
-                    Photo placeholder
-                  </div>
+                {image.id === 'couple' ? (
+                  <img className="hero-landing__image" src={image.src} alt={image.alt} />
                 ) : (
-                  <img
-                    className="hero-landing__image"
-                    src={image.src}
-                    alt={image.alt}
-                  />
+                  <div className="hero-landing__image-placeholder">Photo placeholder</div>
                 )}
               </div>
             ))}
@@ -68,15 +65,16 @@ export default function PreWeddingPage({ gateOpen }: PreWeddingPageProps) {
           <p className="hero-landing__hope hero-landing__anim">
             {heroLanding.hopeMessage}
           </p>
+
           <div className="hero-landing__timer hero-landing__anim">
             <CountdownTimer />
           </div>
-          <Button
-            asChild
-            variant="outline"
-            size="lg"
-            className="hero-landing__cta hero-landing__anim"
-          >
+
+          <p className="hero-landing__description hero-landing__anim">
+            {heroLanding.description}
+          </p>
+          
+          <Button asChild variant="outline" size="lg" className="hero-landing__anim">
             <Link to="/rsvp">{heroLanding.ctaLabel}</Link>
           </Button>
         </section>

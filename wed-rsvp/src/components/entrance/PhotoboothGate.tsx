@@ -3,9 +3,9 @@ import gsap from 'gsap'
 import { AnimatePresence, motion } from 'framer-motion'
 import { couple, entranceGate } from '../../data/weddingData'
 import { useGSAP } from '../../hooks/useGSAP'
+import { Button } from '../ui/button'
 
 const STORAGE_KEY = 'wedding:photobooth-opened'
-const STRIP_PHOTO_COUNT = 4
 const PULL_THRESHOLD = 0.72
 const PEEK_RATIO = 0.12
 const PULSE_OFFSET = 15
@@ -430,11 +430,11 @@ export default function PhotoboothGate({ onComplete }: PhotoboothGateProps) {
                     onKeyDown={handleKeyDown}
                   >
                     <div className="photobooth-gate__strip-photos">
-                      {Array.from({ length: STRIP_PHOTO_COUNT }, (_, index) => (
+                      {entranceGate.couplePhotoSrcs.map((src, index) => (
                         <img
-                          key={index}
+                          key={src}
                           className="photobooth-gate__strip-photo"
-                          src={entranceGate.couplePhotoSrc}
+                          src={src}
                           alt={index === 0 ? `${couple.name1} and ${couple.name2}` : ''}
                           width={320}
                           height={320}
@@ -466,15 +466,16 @@ export default function PhotoboothGate({ onComplete }: PhotoboothGateProps) {
             </div>
 
             <div className="photobooth-gate__exit-wrap">
-              <button
+              <Button
                 ref={exitRef}
                 type="button"
-                className="photobooth-gate__exit-cta"
+                variant="outline"
+                size="lg"
                 aria-label="Open the invitation"
                 onClick={handleExit}
               >
                 {entranceGate.exitCta}
-              </button>
+              </Button>
             </div>
           </div>
         </motion.div>

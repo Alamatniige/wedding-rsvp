@@ -1,5 +1,5 @@
 import { Fragment, useEffect, useState } from 'react'
-import { WEDDING_DATE, WEDDING_TIMEZONE } from '../../lib/wedding-mode'
+import { WEDDING_DATE, WEDDING_TIMEZONE } from '../../../lib/wedding-mode'
 
 type TimeLeft = {
   months: number

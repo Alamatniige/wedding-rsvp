@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { createFileRoute } from '@tanstack/react-router'
-import PhotoboothGate from '../components/pre-wedding/PhotoboothGate'
-import PreWeddingPage from '../components/pre-wedding/PreWeddingPage'
+import PhotoboothGate from '../components/entrance/PhotoboothGate'
+import PreWeddingPage from '../components/pre-wedding/invitation/PreWeddingPage'
 import WeddingDayPlaceholder from '../components/wedding-day/WeddingDayPlaceholder'
 
 export const Route = createFileRoute('/')({ component: App })

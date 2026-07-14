@@ -10,7 +10,7 @@ export const couple = {
 
 export const hero = {
   backgroundImageUrl:
-    'https://images.unsplash.com/photo-1519741497674-611481863552?w=1920&q=80',
+    '/images/entrance/wed-bg.jpg',
   tagline: 'Together with their families',
 }
 
@@ -18,8 +18,10 @@ export const hero = {
 export const heroLanding = {
   meetUsPrefix: 'Meet us at',
   venue: couple.location,
-  hopeMessage: 'We hope to meet you…',
-  ctaLabel: 'RSVP',
+  hopeMessage: 'We hope you can join us in...',
+  date: 'Tuesday, 27th of April, 2027',
+  description: 'Formal invitation to follow. Please Click below to share your address!',
+  ctaLabel: 'Share Your Details',
   images: [
     {
       id: 'couple',
@@ -213,12 +215,14 @@ export const addressForm = {
 }
 
 export const rsvpForm = {
-  label: 'RSVP',
-  title: 'Let Us Know',
-  helper: `Please reply by ${couple.rsvpByDisplay} so we can celebrate with you.`,
+  backLabel: 'Go Back',
+  title: 'Details',
+  description: 'We’d love for you to be part of our celebration! Please share your mailing address so we can send the official invitation with all the details for our wedding day.',
+  helper: `Please kindly reply by ${couple.rsvpByDisplay}.`,
   firstNameLabel: 'First Name',
   lastNameLabel: 'Last Name',
   emailLabel: 'Email Address',
+  additionalDetailsLabel: 'Additional Details',
   submitLabel: 'Submit',
   submittingLabel: 'Saving…',
   submittedLabel: 'Submitted',
@@ -263,10 +267,10 @@ export const registry = {
 }
 
 export const footer = {
-  coupleBackgroundImageUrl: '/images/entrance/couple-photo.png',
-  initials: couple.monogram,
+  coupleBackgroundImageUrl: '/images/couple/footer.avif',
+  initials: 'Jianne & Joe',
   heroMessage: '',
-  rsvpThankYouMessage: 'Thank you for celebrating with us.',
+  rsvpThankYouMessage: 'Thank you for your response. We cannot wait to celebrate our new chapter with you!',
   closingMessage:
     'We are so grateful to share this day with you. Your love and support have shaped our journey, and we cannot wait to celebrate together.',
   coordinatorName: 'Sarah Mitchell',
@@ -283,12 +287,16 @@ export const siteMeta = {
 export const entranceGate = {
   greeting: 'We are getting married!',
   // Couple's names written in Baybayin (old Filipino script): "Jianne - Joe"
-  baybayinNames: 'ᜇ᜔ᜌᜒᜀᜈ᜔ - ᜇ᜔ᜌᜓ',
   saveTheDateLabel: 'Save the Date',
   photoboothMachineSrc: '/images/entrance/photobooth-machine.png',
   palmTreeLeftSrc: '/images/entrance/palm-tree-slanted.png',
   palmTreeRightSrc: '/images/entrance/palm-tree-slanted.png',
-  couplePhotoSrc: '/images/entrance/couple-photo.png',
+  couplePhotoSrcs: [
+    '/images/couple/couple-1.jpg',
+    '/images/couple/couple-2.jpg',
+    '/images/couple/couple-3.jpg',
+    '/images/couple/couple-4.jpg',
+  ],
   pullPrompt: 'Pull the film down to reveal photos',
   exitCta: 'Open the Invitation',
 }
@@ -298,7 +306,7 @@ export const saveTheDate = {
   cardSubtitle: couple.weddingDateDisplay,
   cardVenue: couple.location,
   note: 'Can’t wait to celebrate with you under the palms.',
-  stripPhotoSrc: entranceGate.couplePhotoSrc,
+  stripPhotoSrcs: entranceGate.couplePhotoSrcs,
   stripAlt: `${couple.name1} and ${couple.name2}`,
 }
 
@@ -310,7 +318,7 @@ export const contactBlock = {
 
 export const preWeddingParallax = {
   /** Main page background for Hero + RSVP routes */
-  pageBackgroundSrc: '/images/entrance/palm-leaf-bg-1.avif',
+  pageBackgroundSrc: '/images/entrance/wed-bg.jpg',
   palmBackLeftSrc: '/images/entrance/palm-tree-1.png',
   palmBackRightSrc: '/images/entrance/palm-tree-2.png',
   palmMidSrc: '/images/entrance/twin-palm-tree.png',
