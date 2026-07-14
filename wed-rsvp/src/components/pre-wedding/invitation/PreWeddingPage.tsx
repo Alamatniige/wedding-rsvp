@@ -6,6 +6,7 @@ import { fadeUpOnScroll } from '../../../hooks/useScrollTrigger'
 import { Button } from '../../ui/button'
 import Footer from '../../shared/Footer'
 import CountdownTimer from './CountdownTimer'
+import InvitationCollage from './elements/InvitationCollage'
 
 type PreWeddingPageProps = {
   gateOpen: boolean
@@ -50,17 +51,7 @@ export default function PreWeddingPage({ gateOpen }: PreWeddingPageProps) {
             {heroLanding.date}
           </p>
 
-          <div className="hero-landing__images hero-landing__anim">
-            {heroLanding.images.map((image) => (
-              <div key={image.id} className="hero-landing__image-frame">
-                {image.id === 'couple' ? (
-                  <img className="hero-landing__image" src={image.src} alt={image.alt} />
-                ) : (
-                  <div className="hero-landing__image-placeholder">Photo placeholder</div>
-                )}
-              </div>
-            ))}
-          </div>
+          <InvitationCollage animate={gateOpen} />
 
           <p className="hero-landing__hope hero-landing__anim">
             {heroLanding.hopeMessage}

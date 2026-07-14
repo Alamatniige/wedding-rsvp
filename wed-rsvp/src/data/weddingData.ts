@@ -14,7 +14,7 @@ export const hero = {
   tagline: 'Together with their families',
 }
 
-/** Hero landing route (post-welcome-gate) — plain photos, not polaroid/strip. */
+/** Hero landing route (post-welcome-gate). */
 export const heroLanding = {
   meetUsPrefix: 'Meet us at',
   venue: couple.location,
@@ -22,20 +22,32 @@ export const heroLanding = {
   date: 'Tuesday, 27th of April, 2027',
   description: 'Formal invitation to follow. Please Click below to share your address!',
   ctaLabel: 'Share Your Details',
-  images: [
-    {
-      id: 'couple',
-      src: '/images/entrance/couple-photo.png',
-      alt: `${couple.name1} and ${couple.name2}`,
-    },
-    // Placeholder — replace when a second hero photo is provided
-    {
-      id: 'placeholder-1',
-      src: '',
-      alt: 'Wedding photo placeholder',
-      placeholder: true,
-    },
-  ] as const,
+}
+
+/** Flat-lay invitation collage on the hero landing. */
+export const invitationCollage = {
+  saveTheDate: {
+    inviteLine: 'We kindly invite you to our wedding with love.',
+    title: 'Save the Date',
+    names: `${couple.name1} & ${couple.name2}`,
+  },
+  celebration: {
+    details: `The celebration is to be held on ${heroLanding.date} at ${couple.location}.`,
+    note: `We'd love for you to join us at the wedding. ${couple.name1} & ${couple.name2}.`,
+    footer: 'Formal invitation to follow.',
+  },
+  filmStripSrcs: [
+    '/images/couple/couple-1.jpg',
+    '/images/couple/couple-2.jpg',
+    '/images/couple/couple-3.jpg',
+    '/images/couple/couple-4.jpg',
+  ],
+  filmStripAlt: `${couple.name1} and ${couple.name2}`,
+  polaroid: {
+    src: '/images/couple/couple-1.jpg',
+    alt: `${couple.name1} and ${couple.name2}`,
+  },
+  palmLeavesSrc: '/images/entrance/palm-tree-leaves.png',
 }
 
 export type StoryCard = {
