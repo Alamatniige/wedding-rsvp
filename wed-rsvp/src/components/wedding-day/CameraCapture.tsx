@@ -2,11 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import type { TouchEvent, TouchList } from 'react'
 import { Flashlight, FlashlightOff, Images, SwitchCamera } from 'lucide-react'
 import { Button } from '../ui/button'
-import {
-  appendPhoto,
-  MAX_PHOTOS_PER_GUEST,
-  readPhotos,
-} from './storage'
+import { appendPhoto, MAX_PHOTOS_PER_GUEST, readPhotos } from './storage'
 import type { WeddingDayPhoto, WeddingDaySession } from './storage'
 
 type FacingMode = 'user' | 'environment'
@@ -78,12 +74,12 @@ export default function CameraCapture({
       return
     }
     const getCaps = (
-      track as MediaStreamTrack & {
+      track as unknown as {
         getCapabilities?: () => Record<string, unknown>
       }
     ).getCapabilities
     const caps = getCaps?.call(track)
-    const supported = Boolean(caps && caps.torch === true)
+    const supported = caps?.torch === true
     setTorchSupported(supported)
     if (!supported) setTorchOn(false)
   }, [])
@@ -264,7 +260,10 @@ export default function CameraCapture({
   const FlashIcon = torchOn ? Flashlight : FlashlightOff
 
   return (
-    <section className="wd-camera wd-camera--instant" aria-labelledby="wd-camera-title">
+    <section
+      className="wd-camera wd-camera--instant"
+      aria-labelledby="wd-camera-title"
+    >
       <header className="wd-camera__header">
         <p className="wd-camera__count" aria-live="polite">
           {atCap
@@ -330,33 +329,38 @@ export default function CameraCapture({
             onTouchMove={onTouchMove}
             onTouchEnd={onTouchEnd}
           >
-            {/*
-              Digital pinch-to-zoom via CSS transform only.
-              This is NOT optical/hardware zoom — unsupported on iOS Safari.
-            */}
-            <div
-              className="wd-camera__zoom"
-              style={{ transform: `scale(${zoom})` }}
-            >
-              <video
-                ref={videoRef}
-                className="wd-camera__video"
-                playsInline
-                muted
-                autoPlay
-                aria-label="Live camera preview"
-              />
+            <div className="wd-camera__viewfinder">
+              {/*
+                Digital pinch-to-zoom via CSS transform only.
+                This is NOT optical/hardware zoom — unsupported on iOS Safari.
+              */}
+              <div
+                className="wd-camera__zoom"
+                style={{ transform: `scale(${zoom})` }}
+              >
+                <video
+                  ref={videoRef}
+                  className="wd-camera__video"
+                  playsInline
+                  muted
+                  autoPlay
+                  aria-label="Live camera preview"
+                />
+              </div>
+              {freezeFrame ? (
+                <img
+                  src={freezeFrame}
+                  alt=""
+                  className={`wd-camera__freeze${freezing ? ' is-visible' : ''}`}
+                />
+              ) : null}
+              {starting ? (
+                <p className="wd-camera__loading">Starting camera…</p>
+              ) : null}
             </div>
-            {freezeFrame ? (
-              <img
-                src={freezeFrame}
-                alt=""
-                className={`wd-camera__freeze${freezing ? ' is-visible' : ''}`}
-              />
-            ) : null}
-            {starting ? (
-              <p className="wd-camera__loading">Starting camera…</p>
-            ) : null}
+            <p className="wd-camera__film-caption">
+              Jianne &amp; Joe <span>Wedding day</span>
+            </p>
           </div>
 
           {flyingPhoto ? (

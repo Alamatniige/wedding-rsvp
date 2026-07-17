@@ -141,12 +141,14 @@ export default function Gallery({
                       alt=""
                       className="wd-gallery__img"
                     />
-                    <span className="wd-gallery__caption">
-                      {item.isMine ? 'You' : item.guestLabel}
+                    <span className="wd-gallery__polaroid-caption">
+                      <span className="wd-gallery__caption">
+                        {item.isMine ? 'You' : item.guestLabel}
+                      </span>
+                      {timeLabel ? (
+                        <span className="wd-gallery__time">{timeLabel}</span>
+                      ) : null}
                     </span>
-                    {timeLabel ? (
-                      <span className="wd-gallery__time">{timeLabel}</span>
-                    ) : null}
                   </button>
                 </motion.li>
               )

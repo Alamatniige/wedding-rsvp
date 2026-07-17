@@ -24,7 +24,10 @@ export default function PostCapture({
   onViewGallery,
 }: PostCaptureProps) {
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
-  const guests = useMemo(() => (revealed ? readGalleryGuests() : []), [revealed])
+  const guests = useMemo(
+    () => (revealed ? readGalleryGuests() : []),
+    [revealed],
+  )
 
   if (!revealed) {
     return (
@@ -63,11 +66,14 @@ export default function PostCapture({
                         alt=""
                         className="wd-post__preview-image"
                       />
-                      {timeLabel ? (
-                        <span className="wd-post__preview-time">
-                          {timeLabel}
-                        </span>
-                      ) : null}
+                      <span className="wd-post__preview-caption">
+                        <span>Moment {index + 1}</span>
+                        {timeLabel ? (
+                          <span className="wd-post__preview-time">
+                            {timeLabel}
+                          </span>
+                        ) : null}
+                      </span>
                     </div>
                   )
                 })}
@@ -102,7 +108,10 @@ export default function PostCapture({
     lightboxIndex != null ? (photos[lightboxIndex] ?? null) : null
 
   return (
-    <section className="wd-post wd-post--revealed" aria-labelledby="wd-post-title">
+    <section
+      className="wd-post wd-post--revealed"
+      aria-labelledby="wd-post-title"
+    >
       <header className="wd-gallery__header wd-gallery__header--wide">
         <button
           type="button"
@@ -156,9 +165,12 @@ export default function PostCapture({
                   alt=""
                   className="wd-post__preview-image wd-post__preview-image--clear"
                 />
-                {timeLabel ? (
-                  <span className="wd-post__preview-time">{timeLabel}</span>
-                ) : null}
+                <span className="wd-post__preview-caption">
+                  <span>Moment {index + 1}</span>
+                  {timeLabel ? (
+                    <span className="wd-post__preview-time">{timeLabel}</span>
+                  ) : null}
+                </span>
               </button>
             )
           })}
