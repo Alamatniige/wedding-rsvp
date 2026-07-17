@@ -9,9 +9,17 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as WeddingDayRouteImport } from './routes/wedding-day'
 import { Route as RsvpRouteImport } from './routes/rsvp'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as WeddingDayIndexRouteImport } from './routes/wedding-day.index'
+import { Route as WeddingDayAdminRouteImport } from './routes/wedding-day.admin'
 
+const WeddingDayRoute = WeddingDayRouteImport.update({
+  id: '/wedding-day',
+  path: '/wedding-day',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RsvpRoute = RsvpRouteImport.update({
   id: '/rsvp',
   path: '/rsvp',
@@ -22,35 +30,72 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const WeddingDayIndexRoute = WeddingDayIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => WeddingDayRoute,
+} as any)
+const WeddingDayAdminRoute = WeddingDayAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => WeddingDayRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/rsvp': typeof RsvpRoute
+  '/wedding-day': typeof WeddingDayRouteWithChildren
+  '/wedding-day/admin': typeof WeddingDayAdminRoute
+  '/wedding-day/': typeof WeddingDayIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/rsvp': typeof RsvpRoute
+  '/wedding-day/admin': typeof WeddingDayAdminRoute
+  '/wedding-day': typeof WeddingDayIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/rsvp': typeof RsvpRoute
+  '/wedding-day': typeof WeddingDayRouteWithChildren
+  '/wedding-day/admin': typeof WeddingDayAdminRoute
+  '/wedding-day/': typeof WeddingDayIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/rsvp'
+  fullPaths:
+    | '/'
+    | '/rsvp'
+    | '/wedding-day'
+    | '/wedding-day/admin'
+    | '/wedding-day/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/rsvp'
-  id: '__root__' | '/' | '/rsvp'
+  to: '/' | '/rsvp' | '/wedding-day/admin' | '/wedding-day'
+  id:
+    | '__root__'
+    | '/'
+    | '/rsvp'
+    | '/wedding-day'
+    | '/wedding-day/admin'
+    | '/wedding-day/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   RsvpRoute: typeof RsvpRoute
+  WeddingDayRoute: typeof WeddingDayRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/wedding-day': {
+      id: '/wedding-day'
+      path: '/wedding-day'
+      fullPath: '/wedding-day'
+      preLoaderRoute: typeof WeddingDayRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/rsvp': {
       id: '/rsvp'
       path: '/rsvp'
@@ -65,12 +110,41 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/wedding-day/': {
+      id: '/wedding-day/'
+      path: '/'
+      fullPath: '/wedding-day/'
+      preLoaderRoute: typeof WeddingDayIndexRouteImport
+      parentRoute: typeof WeddingDayRoute
+    }
+    '/wedding-day/admin': {
+      id: '/wedding-day/admin'
+      path: '/admin'
+      fullPath: '/wedding-day/admin'
+      preLoaderRoute: typeof WeddingDayAdminRouteImport
+      parentRoute: typeof WeddingDayRoute
+    }
   }
 }
+
+interface WeddingDayRouteChildren {
+  WeddingDayAdminRoute: typeof WeddingDayAdminRoute
+  WeddingDayIndexRoute: typeof WeddingDayIndexRoute
+}
+
+const WeddingDayRouteChildren: WeddingDayRouteChildren = {
+  WeddingDayAdminRoute: WeddingDayAdminRoute,
+  WeddingDayIndexRoute: WeddingDayIndexRoute,
+}
+
+const WeddingDayRouteWithChildren = WeddingDayRoute._addFileChildren(
+  WeddingDayRouteChildren,
+)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   RsvpRoute: RsvpRoute,
+  WeddingDayRoute: WeddingDayRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

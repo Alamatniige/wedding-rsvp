@@ -1,10 +1,9 @@
 import { useCallback, useState } from 'react'
 import { createFileRoute } from '@tanstack/react-router'
-import PhotoboothGate, {
-  type GateRevealOptions,
-} from '../components/entrance/PhotoboothGate'
+import PhotoboothGate from '../components/entrance/PhotoboothGate'
+import type { GateRevealOptions } from '../components/entrance/PhotoboothGate'
 import PreWeddingPage from '../components/pre-wedding/invitation/PreWeddingPage'
-import WeddingDayPlaceholder from '../components/wedding-day/WeddingDayPlaceholder'
+import WeddingDayFlow from '../components/wedding-day/WeddingDayFlow'
 
 /** Seconds to wait after Open Invitation so fly-by plays as the gate clears. */
 const GATE_BUTTON_REVEAL_DELAY = 0.45
@@ -23,7 +22,7 @@ function App() {
   }, [])
 
   if (weddingMode === 'wedding-day') {
-    return <WeddingDayPlaceholder />
+    return <WeddingDayFlow />
   }
 
   return (

@@ -1,12 +1,12 @@
-import { useRef, type CSSProperties } from 'react'
-import { createFileRoute } from '@tanstack/react-router'
+import { useRef } from 'react'
+import type { CSSProperties } from 'react'
+import { Navigate, createFileRoute } from '@tanstack/react-router'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { preWeddingParallax } from '../data/weddingData'
 import { useGSAP } from '../hooks/useGSAP'
 import RSVPForm from '../components/pre-wedding/rsvp/RSVPForm'
 import Footer from '../components/shared/Footer'
-import WeddingDayPlaceholder from '../components/wedding-day/WeddingDayPlaceholder'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -18,7 +18,7 @@ function RsvpPage() {
   const { weddingMode } = Route.useRouteContext()
 
   if (weddingMode === 'wedding-day') {
-    return <WeddingDayPlaceholder />
+    return <Navigate to="/" />
   }
 
   return <RsvpContent />
