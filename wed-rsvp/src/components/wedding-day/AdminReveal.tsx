@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 import type { FormEvent } from 'react'
+import { Link, useRouter } from '@tanstack/react-router'
+import { setWeddingDayPreview } from '../../lib/wedding-mode'
 import { Button } from '../ui/button'
 import {
   readAdminOk,
@@ -15,12 +17,22 @@ import {
  */
 const ADMIN_PASSCODE = 'reveal2027'
 
-export default function AdminReveal() {
+type AdminRevealProps = {
+  initialPreviewEnabled: boolean
+}
+
+export default function AdminReveal({
+  initialPreviewEnabled,
+}: AdminRevealProps) {
+  const router = useRouter()
   const [ready, setReady] = useState(false)
   const [authed, setAuthed] = useState(false)
   const [passcode, setPasscode] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [revealed, setRevealed] = useState(false)
+  const [previewEnabled, setPreviewEnabled] = useState(initialPreviewEnabled)
+  const [previewSaving, setPreviewSaving] = useState(false)
+  const [previewError, setPreviewError] = useState<string | null>(null)
 
   useEffect(() => {
     setAuthed(readAdminOk())
@@ -44,6 +56,22 @@ export default function AdminReveal() {
     const next = !revealed
     writeRevealed(next)
     setRevealed(next)
+  }
+
+  async function toggleWeddingDayPreview() {
+    const next = !previewEnabled
+    setPreviewSaving(true)
+    setPreviewError(null)
+
+    try {
+      await setWeddingDayPreview({ data: { enabled: next } })
+      setPreviewEnabled(next)
+      await router.invalidate()
+    } catch {
+      setPreviewError('Could not update preview mode. Please try again.')
+    } finally {
+      setPreviewSaving(false)
+    }
   }
 
   return (
@@ -108,6 +136,36 @@ export default function AdminReveal() {
                   >
                     <span className="wd-toggle__knob" />
                   </button>
+                </div>
+                <p className="wd-copy">
+                  Preview the wedding-day website before the scheduled date.
+                  This setting applies only to this browser.
+                </p>
+                <div className="wd-admin__toggle-row">
+                  <span className="wd-admin__status" aria-live="polite">
+                    Wedding-day preview is {previewEnabled ? 'on' : 'off'}
+                  </span>
+                  <button
+                    type="button"
+                    className={`wd-toggle${previewEnabled ? ' is-on' : ''}`}
+                    role="switch"
+                    aria-checked={previewEnabled}
+                    aria-label="Toggle wedding-day website preview"
+                    disabled={previewSaving}
+                    onClick={toggleWeddingDayPreview}
+                  >
+                    <span className="wd-toggle__knob" />
+                  </button>
+                </div>
+                {previewError ? (
+                  <p className="wd-error" role="alert">
+                    {previewError}
+                  </p>
+                ) : null}
+                <div className="mt-6 flex justify-center">
+                  <Button asChild size="lg" className="w-full sm:w-auto">
+                    <Link to="/">View website</Link>
+                  </Button>
                 </div>
               </>
             )}

@@ -6,5 +6,7 @@ export const Route = createFileRoute('/wedding-day/admin')({
 })
 
 function WeddingDayAdminPage() {
-  return <AdminReveal />
+  const { weddingDayPreviewEnabled } = Route.useRouteContext()
+
+  return <AdminReveal initialPreviewEnabled={weddingDayPreviewEnabled} />
 }

@@ -7,8 +7,8 @@ import {
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
 import { TanStackDevtools } from '@tanstack/react-devtools'
 import { siteMeta } from '../data/weddingData'
-import { getWeddingMode  } from '../lib/wedding-mode'
-import type {WeddingMode} from '../lib/wedding-mode';
+import { getWeddingMode } from '../lib/wedding-mode'
+import type { WeddingMode } from '../lib/wedding-mode'
 
 import appCss from '../styles.css?url'
 
@@ -18,6 +18,7 @@ export const Route = createRootRoute({
     return {
       weddingMode: result.mode,
       weddingModeOverridden: result.overridden,
+      weddingDayPreviewEnabled: result.previewEnabled,
     }
   },
   head: () => ({
@@ -81,7 +82,7 @@ function DevModeBanner({ mode }: { mode: WeddingMode }) {
         pointerEvents: 'none',
       }}
     >
-      DEV mode: {mode}
+      Preview mode: {mode}
     </div>
   )
 }
