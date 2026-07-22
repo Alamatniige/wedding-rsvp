@@ -33,7 +33,7 @@ export const invitationCollage = {
   },
   celebration: {
     details: `The celebration is to be held on ${heroLanding.date} at ${couple.location}.`,
-    note: `We'd love for you to join us at the wedding. ${couple.name1} & ${couple.name2}.`,
+    note: `We'd love for you to join us at the wedding.`,
     footer: 'Formal invitation to follow.',
   },
   filmStripSrcs: [

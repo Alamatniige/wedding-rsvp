@@ -17,7 +17,7 @@ In local dev, force mode with `WEDDING_MODE=wedding-day` or `pre-wedding` in `.e
 
 - `/` — mode-gated entry (QR target)
 - `/wedding-day` — redirects to `/` (legacy alias)
-- `/wedding-day/admin` — coordinator reveal toggle (passcode: `reveal2027`)
+- `/admin` — coordinator reveal toggle (passcode: `reveal2027`)
 
 ## Swap-out points for a real backend
 
