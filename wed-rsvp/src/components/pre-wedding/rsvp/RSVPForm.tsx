@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import type { FormEvent } from 'react'
 import { Link } from '@tanstack/react-router'
 import { rsvpForm } from '../../../data/weddingData'
+import { sendRSVPEmail } from '../../../lib/email'
 import { Button } from '../../ui/button'
 
 type FormState = {
@@ -58,6 +59,7 @@ function readSavedPayload(): FormState | null {
 export default function RSVPForm() {
   const [form, setForm] = useState<FormState>(initialState)
   const [errors, setErrors] = useState<FormErrors>({})
+  const [submissionNote, setSubmissionNote] = useState<string | null>(null)
   const [status, setStatus] = useState<'editing' | 'submitting' | 'submitted'>(
     'editing',
   )
@@ -87,12 +89,13 @@ export default function RSVPForm() {
     return next
   }
 
-  const handleSubmit = (event: FormEvent) => {
+  const handleSubmit = async (event: FormEvent) => {
     event.preventDefault()
     if (status !== 'editing') return
 
     const nextErrors = validate()
     setErrors(nextErrors)
+    setSubmissionNote(null)
     if (Object.keys(nextErrors).length > 0) return
 
     setStatus('submitting')
@@ -109,6 +112,29 @@ export default function RSVPForm() {
       localStorage.setItem(RSVP_STORAGE_KEY, JSON.stringify(payload))
     } catch {
       // Private mode may block storage; still show submitted UI.
+    }
+
+    try {
+      const result = await sendRSVPEmail({
+        data: {
+          firstName: payload.firstName,
+          lastName: payload.lastName,
+          email: payload.email,
+          additionalDetails: payload.additionalDetails,
+        },
+      })
+
+      const skippedMessages = [result.confirmation, result.invitation]
+        .filter((email) => email.status === 'skipped')
+        .map((email) => email.reason)
+
+      if (skippedMessages.length > 0) {
+        setSubmissionNote(skippedMessages.join(' '))
+      }
+    } catch {
+      setSubmissionNote(
+        'Your details were saved, but your confirmation and invitation emails could not be sent right now.',
+      )
     }
 
     setStatus('submitted')
@@ -198,9 +224,7 @@ export default function RSVPForm() {
             inputMode="email"
             value={form.email}
             disabled={submitDisabled}
-            onChange={(e) =>
-              setForm((f) => ({ ...f, email: e.target.value }))
-            }
+            onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
             aria-invalid={Boolean(errors.email)}
             aria-describedby={errors.email ? 'rsvp-email-error' : undefined}
           />
@@ -212,10 +236,7 @@ export default function RSVPForm() {
         </div>
 
         <div className="rsvp-form__field">
-          <label
-            className="rsvp-form__label"
-            htmlFor="rsvp-additional-details"
-          >
+          <label className="rsvp-form__label" htmlFor="rsvp-additional-details">
             {rsvpForm.additionalDetailsLabel}
           </label>
           <textarea
@@ -235,10 +256,7 @@ export default function RSVPForm() {
             }
           />
           {errors.additionalDetails ? (
-            <p
-              id="rsvp-additional-details-error"
-              className="rsvp-form__error"
-            >
+            <p id="rsvp-additional-details-error" className="rsvp-form__error">
               {errors.additionalDetails}
             </p>
           ) : null}
@@ -254,6 +272,11 @@ export default function RSVPForm() {
             {buttonLabel}
           </Button>
         </div>
+        {submissionNote ? (
+          <p className="rsvp-form__helper" role="status">
+            {submissionNote}
+          </p>
+        ) : null}
       </form>
     </section>
   )
