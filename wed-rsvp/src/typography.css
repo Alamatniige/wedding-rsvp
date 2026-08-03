@@ -700,7 +700,7 @@ button {
 }
 
 .rsvp-form__back:hover {
-  color: var(--color-sunset-gold);
+  color: var(--color-champagne);
 }
 
 .rsvp-form__title {
@@ -714,7 +714,6 @@ button {
 .rsvp-form__description,
 .rsvp-form__helper {
   font-family: var(--font-body);
-  font-size: clamp(1.2rem, 4.2vw, 1.5rem);
   font-weight: 600;
   letter-spacing: 0.14em;
   line-height: 1.5;
@@ -722,17 +721,19 @@ button {
 }
 
 .rsvp-form__description {
+  font-size: clamp(1.2rem, 4.2vw, 1.5rem);
   color: var(--hero-text);
 }
 
 .rsvp-form__helper {
+  font-size: clamp(1rem, 3.5vw, 1.2rem);
   color: var(--hero-text-soft);
 }
 
 .rsvp-form__helper-date {
   display: block;
   margin-top: 0.2em;
-  font-size: 1.2em;
+  font-size: 1.35em;
   font-weight: 700;
   letter-spacing: 0.1em;
   color: var(--hero-text);
@@ -770,7 +771,7 @@ button {
 .rsvp-form__error {
   font-family: var(--font-body);
   font-size: 0.8rem;
-  color: var(--color-sunset-gold);
+  color: var(--color-champagne);
 }
 
 /* === Site footer === */

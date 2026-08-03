@@ -15,7 +15,7 @@
 :root {
   /* Brand palette — vintage botanical (wed-bg.jpg) + warm gold mood board */
   --butterscotch: #a88862;
-  --venetian-gold: #c4b896;
+  --venetian-gold: #d3c79f;
   --ice-yellow: #ebe2cf;
 
   --bg-cream: color-mix(in srgb, var(--ice-yellow) 55%, #ede9df);
@@ -31,7 +31,11 @@
   --color-ivory: var(--bg-cream);
   --color-cream: var(--bg-cream);
   --color-blush: color-mix(in srgb, var(--bg-cream) 78%, var(--accent-terracotta));
-  --color-champagne: var(--venetian-gold);
+  --color-champagne: color-mix(
+    in srgb,
+    var(--venetian-gold) 40%,
+    var(--ice-yellow)
+  );
   --color-leaf: var(--leaf-green);
   --color-twine: var(--twine-tan);
   --color-white: #ffffff;
@@ -1517,7 +1521,11 @@ p {
 
 .invitation-collage__save-date,
 .invitation-collage__postcard {
-  background: #f7f3eb;
+  background-color: #f7f3eb;
+  background-image: url('/images/card-texture/paper-texture.avif');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   border: 1px solid rgba(30, 20, 15, 0.35);
   box-shadow:
     0 1px 0 rgba(255, 255, 255, 0.6) inset,
@@ -1576,13 +1584,17 @@ p {
   gap: 0.4rem;
   /* Clockwise */
   transform: rotate(8deg);
-  background-image: repeating-linear-gradient(
-    transparent,
-    transparent 1.55rem,
-    rgba(40, 30, 25, 0.1) 1.55rem,
-    rgba(40, 30, 25, 0.1) calc(1.55rem + 1px)
-  );
-  background-position: 0 2.6rem;
+  background-image:
+    repeating-linear-gradient(
+      transparent,
+      transparent 1.55rem,
+      rgba(40, 30, 25, 0.1) 1.55rem,
+      rgba(40, 30, 25, 0.1) calc(1.55rem + 1px)
+    ),
+    url('/images/card-texture/paper-texture.avif');
+  background-size: auto, cover;
+  background-position: 0 2.6rem, center;
+  background-repeat: repeat, no-repeat;
 }
 
 .invitation-collage__postcard::after {
@@ -1776,7 +1788,7 @@ p {
 .rsvp-form__textarea {
   width: 100%;
   padding: var(--spacing-md);
-  border: 1px solid color-mix(in srgb, white 28%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-champagne) 40%, transparent);
   border-radius: 0;
   background: var(--glass-bg);
   backdrop-filter: blur(6px);
@@ -1791,7 +1803,7 @@ p {
 .rsvp-form__input:focus,
 .rsvp-form__textarea:focus {
   outline: none;
-  border-color: color-mix(in srgb, white 55%, transparent);
+  border-color: color-mix(in srgb, var(--color-champagne) 70%, transparent);
 }
 
 .rsvp-form__input:disabled,
@@ -1811,7 +1823,13 @@ p {
 }
 
 .rsvp-form__nav [data-slot='button'] {
-  border-color: color-mix(in srgb, white 28%, transparent);
+  border-color: color-mix(in srgb, var(--color-champagne) 40%, transparent);
+  color: color-mix(in srgb, var(--color-champagne) 85%, transparent);
+}
+
+.rsvp-form__nav [data-slot='button']:hover:not(:disabled) {
+  border-color: color-mix(in srgb, var(--color-champagne) 70%, transparent);
+  color: var(--color-champagne);
 }
 
 /* === Shared Footer (hero / rsvp variants) === */
