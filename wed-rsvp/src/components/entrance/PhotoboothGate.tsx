@@ -483,7 +483,7 @@ export default function PhotoboothGate({ onComplete }: PhotoboothGateProps) {
                 type="button"
                 variant="outline"
                 size="lg"
-                aria-label="Open the invitation"
+                aria-label="Open invitation"
                 onClick={handleExit}
               >
                 {entranceGate.exitCta}

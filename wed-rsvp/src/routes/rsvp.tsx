@@ -6,7 +6,6 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { preWeddingParallax } from '../data/weddingData'
 import { useGSAP } from '../hooks/useGSAP'
 import RSVPForm from '../components/pre-wedding/rsvp/RSVPForm'
-import Footer from '../components/shared/Footer'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -62,7 +61,6 @@ function RsvpContent() {
 
       <div className="pre-wedding-page__content">
         <RSVPForm />
-        <Footer variant="rsvp" />
       </div>
     </main>
   )

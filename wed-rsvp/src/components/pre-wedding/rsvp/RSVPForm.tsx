@@ -153,7 +153,7 @@ export default function RSVPForm() {
       <Link to="/" className="rsvp-form__back">
         {rsvpForm.backLabel}
       </Link>
-      <h2 className="rsvp-form__title">{rsvpForm.title}</h2>
+      <h2 className=" ">{rsvpForm.title}</h2>
       <p className="rsvp-form__description">{rsvpForm.description}</p>
       <p className="rsvp-form__helper">{rsvpForm.helper}</p>
 

@@ -158,19 +158,19 @@ function renderPolaroid(
 
   context.fillStyle = '#2a3236'
   context.textBaseline = 'middle'
-  context.font = '600 46px Poppins, sans-serif'
+  context.font = '600 46px "Cormorant Garamond", Georgia, serif'
   context.fillText(guestLabel, FRAME, 1265, 720)
 
   if (timeLabel) {
     context.fillStyle = '#6e6b64'
-    context.font = '400 32px Poppins, sans-serif'
+    context.font = '400 32px "Cormorant Garamond", Georgia, serif'
     context.textAlign = 'right'
     context.fillText(timeLabel, EXPORT_WIDTH - FRAME, 1265)
     context.textAlign = 'left'
   }
 
   context.fillStyle = '#c0866a'
-  context.font = 'italic 42px Fraunces, Georgia, serif'
+  context.font = '400 42px "Carolyna Pro Black", "Segoe Script", cursive'
   context.fillText('Jianne & Joe · Wedding Day', FRAME, 1340)
 
   return canvas

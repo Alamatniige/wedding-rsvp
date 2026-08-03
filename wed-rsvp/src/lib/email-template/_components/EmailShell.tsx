@@ -51,8 +51,8 @@ export function EmailShell({
           }}
         />
         <Font
-          fontFamily="Poppins"
-          fallbackFontFamily="Arial"
+          fontFamily="Cormorant Garamond"
+          fallbackFontFamily="Georgia"
           webFont={{
             url: googleFontsUrl,
             format: 'woff2',
@@ -61,8 +61,8 @@ export function EmailShell({
           fontStyle="normal"
         />
         <Font
-          fontFamily="Poppins"
-          fallbackFontFamily="Arial"
+          fontFamily="Cormorant Garamond"
+          fallbackFontFamily="Georgia"
           webFont={{
             url: googleFontsUrl,
             format: 'woff2',
@@ -71,12 +71,18 @@ export function EmailShell({
           fontStyle="normal"
         />
         <Font
-          fontFamily="Pinyon Script"
-          fallbackFontFamily="cursive"
+          fontFamily="Cormorant Garamond"
+          fallbackFontFamily="Georgia"
           webFont={{
             url: googleFontsUrl,
             format: 'woff2',
           }}
+          fontWeight={600}
+          fontStyle="normal"
+        />
+        <Font
+          fontFamily="Carolyna Pro Black"
+          fallbackFontFamily="cursive"
           fontWeight={400}
           fontStyle="normal"
         />

@@ -4,7 +4,6 @@ import gsap from 'gsap'
 import { heroLanding, preWeddingParallax } from '../../../data/weddingData'
 import { useGSAP } from '../../../hooks/useGSAP'
 import { Button } from '../../ui/button'
-import Footer from '../../shared/Footer'
 import CountdownTimer from './CountdownTimer'
 import InvitationCollage from './elements/InvitationCollage'
 
@@ -86,8 +85,6 @@ export default function PreWeddingPage({
             <Link to="/rsvp">{heroLanding.ctaLabel}</Link>
           </Button>
         </section>
-
-        <Footer variant="hero" />
       </div>
     </main>
   )

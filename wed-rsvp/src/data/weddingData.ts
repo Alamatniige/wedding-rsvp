@@ -3,8 +3,9 @@ export const couple = {
   name2: 'Joe',
   monogram: 'J&J',
   weddingDateISO: '2027-04-27T16:00:00',
-  weddingDateDisplay: '04. 27. 2027',
+  weddingDateDisplay: '27. 04. 2027',
   rsvpByDisplay: 'April 27, 2027',
+  replyByDisplay: '1st December, 2026',
   location: 'Villa D’este, Tagaytay, Philippines',
 }
 
@@ -19,8 +20,8 @@ export const heroLanding = {
   meetUsPrefix: 'Meet us at',
   venue: couple.location,
   hopeMessage: 'We hope you can join us in...',
-  date: 'Tuesday, 27th of April, 2027',
-  description: 'Formal invitation to follow. Please Click below to share your address!',
+  date: 'Tuesday, 27th April, 2027',
+  description: 'Formal invitation to follow. Please click below to share your email address!',
   ctaLabel: 'Share Your Details',
 }
 
@@ -32,7 +33,7 @@ export const invitationCollage = {
     names: `${couple.name1} & ${couple.name2}`,
   },
   celebration: {
-    details: `The celebration is to be held on ${heroLanding.date} at ${couple.location}.`,
+    details: `Tuesday, 27th April, 2027. Villa D'este, Tagaytay, Philippines.`,
     note: `We'd love for you to join us at the wedding.`,
     footer: 'Formal invitation to follow.',
   },
@@ -230,7 +231,7 @@ export const rsvpForm = {
   backLabel: 'Go Back',
   title: 'Details',
   description: 'We’d love for you to be part of our celebration! Please share your mailing address so we can send the official invitation with all the details for our wedding day.',
-  helper: `Please kindly reply by ${couple.rsvpByDisplay}.`,
+  helper: `Please kindly reply by ${couple.replyByDisplay}.`,
   firstNameLabel: 'First Name',
   lastNameLabel: 'Last Name',
   emailLabel: 'Email Address',
@@ -310,7 +311,7 @@ export const entranceGate = {
     '/images/couple/couple-4.jpg',
   ],
   pullPrompt: 'Pull the film down to reveal photos',
-  exitCta: 'Open the Invitation',
+  exitCta: 'Open invitation',
 }
 
 export const saveTheDate = {

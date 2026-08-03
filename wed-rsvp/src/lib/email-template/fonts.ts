@@ -1,8 +1,8 @@
-/** Same Google Fonts families as `src/styles.css` (`--font-names`, `--font-body`). */
+/** Same families as `src/styles.css` (`--font-names`, `--font-body`). */
 export const googleFontsUrl =
-  'https://fonts.googleapis.com/css2?family=Pinyon+Script&family=Poppins:wght@400;500&display=swap'
+  'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap'
 
 export const fontStacks = {
-  names: "'Pinyon Script', 'Segoe Script', cursive",
-  body: "'Poppins', ui-sans-serif, system-ui, sans-serif",
+  names: "'Carolyna Pro Black', 'Segoe Script', cursive",
+  body: "'Cormorant Garamond', Georgia, serif",
 } as const
