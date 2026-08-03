@@ -1,4 +1,5 @@
-import { useRef, type CSSProperties } from 'react'
+import { useRef } from 'react'
+import type { CSSProperties } from 'react'
 import { Link } from '@tanstack/react-router'
 import gsap from 'gsap'
 import { heroLanding, preWeddingParallax } from '../../../data/weddingData'

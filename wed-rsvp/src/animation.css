@@ -1,0 +1,127 @@
+/* === Shared utilities === */
+.will-animate {
+  will-change: transform, opacity;
+}
+
+/* === Photobooth gate === */
+.photobooth-gate__greeting,
+.photobooth-gate__names,
+.photobooth-gate__pull-prompt {
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+.photobooth-gate__machine,
+.photobooth-gate__strip {
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+.photobooth-gate__save-label,
+.photobooth-gate__date {
+  will-change: transform, opacity;
+}
+
+.photobooth-gate__strip-chevron {
+  animation: photobooth-pull-nudge 1.1s ease-in-out infinite;
+}
+
+.photobooth-gate__strip--revealed .photobooth-gate__strip-chevron {
+  animation: none;
+}
+
+@keyframes photobooth-pull-nudge {
+  0%,
+  100% {
+    transform: rotate(45deg) translateY(-2px);
+  }
+
+  50% {
+    transform: rotate(45deg) translateY(2px);
+  }
+}
+
+/* === Pre-wedding page === */
+.pre-wedding-page__palm-layer {
+  will-change: transform;
+}
+
+/* === Hero landing === */
+.hero-landing__anim {
+  opacity: 0;
+}
+
+/* === Invitation collage === */
+.invitation-collage__piece {
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+/* === Site footer === */
+.site-footer__bg-image {
+  will-change: transform;
+}
+
+/* === Wedding day (wd-*) === */
+.wd-welcome__scroll svg {
+  animation: wd-scroll-bounce 1.8s ease-in-out infinite;
+}
+
+@keyframes wd-scroll-bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(0.35rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wd-welcome__scroll svg {
+    animation: none;
+  }
+}
+
+.wd-camera__zoom {
+  will-change: transform;
+}
+
+.wd-camera__flying-photo {
+  animation: wd-photo-fly 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes wd-photo-fly {
+  from {
+    top: 43%;
+    right: 50%;
+    width: min(65vw, 18rem);
+    height: min(78vw, 21.6rem);
+    padding: clamp(0.45rem, 2vw, 0.8rem);
+    padding-bottom: clamp(1.1rem, 5vw, 2.6rem);
+    border-radius: 0.18rem;
+    filter: blur(0);
+    opacity: 1;
+    transform: translate(50%, -50%) rotate(-2deg) scale(1);
+  }
+
+  to {
+    top: calc(max(var(--spacing-xl), env(safe-area-inset-top, 0px)) + 0.1rem);
+    right: max(1.25rem, calc((100vw - 40rem) / 2));
+    width: 2.75rem;
+    height: 3.1rem;
+    padding: 0.18rem 0.18rem 0.45rem;
+    border-radius: 0.08rem;
+    filter: blur(1.5px);
+    opacity: 0.35;
+    transform: translate(0, 0) rotate(2deg) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wd-camera__flying-photo {
+    animation: none;
+    display: none;
+  }
+}
