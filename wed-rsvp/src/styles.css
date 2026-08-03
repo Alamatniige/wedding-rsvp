@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap');
 @import 'tailwindcss';
 @import './typography.css';
 @import './animation.css';
@@ -1548,7 +1548,7 @@ p {
   content: '';
   position: absolute;
   inset: 0.4rem;
-  border: 1px solid color-mix(in srgb, var(--venetian-gold) 55%, transparent);
+  border: 1px solid color-mix(in srgb, var(--butterscotch) 55%, transparent);
   pointer-events: none;
 }
 
@@ -1790,7 +1790,7 @@ p {
   padding: var(--spacing-md);
   border: 1px solid color-mix(in srgb, var(--color-champagne) 40%, transparent);
   border-radius: 0;
-  background: var(--glass-bg);
+  background: color-mix(in srgb, var(--glass-pigment) 42%, transparent);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
 }
@@ -1803,7 +1803,7 @@ p {
 .rsvp-form__input:focus,
 .rsvp-form__textarea:focus {
   outline: none;
-  border-color: color-mix(in srgb, var(--color-champagne) 70%, transparent);
+  border-color: color-mix(in srgb, var(--color-champagne) 45%, transparent);
 }
 
 .rsvp-form__input:disabled,
@@ -1823,13 +1823,15 @@ p {
 }
 
 .rsvp-form__nav [data-slot='button'] {
-  border-color: color-mix(in srgb, var(--color-champagne) 40%, transparent);
-  color: color-mix(in srgb, var(--color-champagne) 85%, transparent);
+  border-color: color-mix(in srgb, var(--color-champagne) 22%, transparent);
+  color: var(--color-capiz);
+  background: color-mix(in srgb, var(--glass-pigment) 32%, transparent);
 }
 
 .rsvp-form__nav [data-slot='button']:hover:not(:disabled) {
-  border-color: color-mix(in srgb, var(--color-champagne) 70%, transparent);
-  color: var(--color-champagne);
+  border-color: color-mix(in srgb, var(--color-champagne) 45%, transparent);
+  color: var(--color-white);
+  background: color-mix(in srgb, var(--glass-pigment) 40%, transparent);
 }
 
 /* === Shared Footer (hero / rsvp variants) === */

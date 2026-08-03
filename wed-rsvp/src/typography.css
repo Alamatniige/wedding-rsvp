@@ -55,8 +55,8 @@ button {
 
 .photobooth-gate__greeting {
   font-family: var(--font-body);
-  font-size: clamp(1.05rem, 3.6vw, 1.25rem);
-  font-weight: 300;
+  font-size: clamp(1.15rem, 3.6vw, 1.35rem);
+  font-weight: 700;
   letter-spacing: 0.14em;
   line-height: 1.3;
   text-align: center;
@@ -610,7 +610,7 @@ button {
 }
 
 .invitation-collage__save-date {
-  color: var(--color-champagne);
+  color: var(--color-white);
 }
 
 .invitation-collage__save-date-invite {
@@ -621,7 +621,7 @@ button {
   text-transform: uppercase;
   line-height: 1.3;
   text-align: right;
-  color: var(--color-champagne);
+  color: var(--butterscotch);
 }
 
 .invitation-collage__save-date-title {
@@ -631,13 +631,13 @@ button {
   line-height: 1;
   white-space: nowrap;
   text-align: center;
-  color: var(--color-champagne);
+  color: var(--butterscotch);
 }
 
 .invitation-collage__save-date-names {
   font-family: var(--font-script);
   font-size: clamp(1rem, 2.6vw, 1.3rem);
-  color: var(--color-champagne);
+  color: var(--butterscotch);
   line-height: 1.2;
 }
 
@@ -649,7 +649,7 @@ button {
   text-transform: uppercase;
   line-height: 1.4;
   text-align: center;
-  color: var(--color-champagne);
+  color: var(--butterscotch);
 }
 
 .invitation-collage__postcard-note {
@@ -657,7 +657,7 @@ button {
   font-weight: 400;
   font-size: clamp(1.35rem, 3.6vw, 1.9rem);
   line-height: 1.15;
-  color: var(--color-champagne);
+  color: var(--butterscotch);
   text-align: center;
 }
 
@@ -667,7 +667,7 @@ button {
   letter-spacing: 0.1em;
   text-transform: uppercase;
   text-align: center;
-  color: var(--color-champagne);
+  color: var(--butterscotch);
 }
 
 @media (max-width: 639px) {
