@@ -1,6 +1,6 @@
 # Wedding-day components
 
-Photobooth prototype (frontend-only): welcome gate → email lookup / same-day signup → camera capture → reveal-gated gallery.
+Photobooth flow: Supabase-backed email lookup / same-day signup → camera capture → reveal-gated gallery.
 
 After reveal, guests can browse per-guest thumbnail strips, open a full-size lightbox, and download photos.
 
@@ -17,21 +17,19 @@ In local dev, force mode with `WEDDING_MODE=wedding-day` or `pre-wedding` in `.e
 
 - `/` — mode-gated entry (QR target)
 - `/wedding-day` — redirects to `/` (legacy alias)
-- `/admin` — coordinator reveal toggle (passcode: `reveal2027`)
+- `/admin` — Supabase Auth-protected RSVP CRUD and coordinator controls
 
-## Swap-out points for a real backend
+## Persistence
 
-- [`mockGuests.ts`](./mockGuests.ts) — replace hardcoded guest list with API lookup
-- [`storage.ts`](./storage.ts) — replace localStorage with server persistence; photo cap, same-day registration, and admin gate are **client-only placeholders** today
+- RSVP lookup and same-day guest registration use server-only Supabase operations.
+- [`storage.ts`](./storage.ts) still keeps photobooth sessions, photos, and gallery reveal state in localStorage. Photo persistence and the photo cap remain browser-local.
 
 ## localStorage keys
 
-| Key | Purpose |
-|-----|---------|
-| `wedding:wd-session` | Matched guest session `{ guestId, email }` |
+| Key                           | Purpose                                                                           |
+| ----------------------------- | --------------------------------------------------------------------------------- |
+| `wedding:wd-session`          | Matched guest session `{ guestId, email }`                                        |
 | `wedding:wd-photos:{guestId}` | Photo records `{ dataUrl, capturedAt }` (max 10; legacy string arrays still read) |
-| `wedding:wd-local-guests` | Same-day walk-up registrations on this device |
-| `wedding:gallery-revealed` | Global gallery reveal flag |
-| `wedding:wd-admin-ok` | Client-side admin unlock marker |
+| `wedding:gallery-revealed`    | Global gallery reveal flag                                                        |
 
 Keep pre-wedding invitation/RSVP code out of this folder.

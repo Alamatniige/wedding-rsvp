@@ -7,26 +7,35 @@ export type RSVPConfirmationEmailProps = {
   guestName: string
   guestEmail: string
   additionalDetails?: string
+  event?: 'created' | 'updated'
+  submissionSource?: string
 }
 
 function RSVPConfirmationEmail({
   guestName,
   guestEmail,
   additionalDetails,
+  event = 'created',
+  submissionSource = 'pre_wedding',
 }: RSVPConfirmationEmailProps) {
+  const isUpdate = event === 'updated'
+
   return (
     <EmailShell
-      previewText={`RSVP received for ${guestName}`}
-      eyebrow="RSVP Confirmed"
-      title={thankYou.title}
+      previewText={`RSVP ${isUpdate ? 'updated' : 'received'} for ${guestName}`}
+      eyebrow={isUpdate ? 'RSVP Updated' : 'RSVP Confirmed'}
+      title={isUpdate ? 'Your details are updated' : thankYou.title}
       titleStyle="saveLabel"
       subtitle={couple.weddingDateDisplay}
     >
       <Section style={layoutStyles.section}>
         <Text style={textStyles.body}>Hi {guestName},</Text>
         <Text style={{ ...textStyles.body, marginTop: '16px' }}>
-          Thank you for sharing your details with us. We&apos;ve received your
-          RSVP, and your formal invitation is on its way in a separate email.
+          {isUpdate
+            ? 'Your RSVP details have been updated. The latest information is shown below.'
+            : submissionSource === 'wedding_day'
+              ? 'Thank you for joining the celebration. We have saved your guest details.'
+              : 'Thank you for sharing your details with us. We have received your RSVP, and your formal invitation is on its way in a separate email.'}
         </Text>
       </Section>
 
@@ -95,6 +104,8 @@ RSVPConfirmationEmail.PreviewProps = {
   guestName: 'Joaquin Reyes',
   guestEmail: 'joaquin@example.com',
   additionalDetails: 'Looking forward to celebrating with you both.',
+  event: 'created',
+  submissionSource: 'pre_wedding',
 } satisfies RSVPConfirmationEmailProps
 
 export default RSVPConfirmationEmail

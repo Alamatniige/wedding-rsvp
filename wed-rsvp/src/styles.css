@@ -30,7 +30,11 @@
   --color-terracotta-light: #d4a890;
   --color-ivory: var(--bg-cream);
   --color-cream: var(--bg-cream);
-  --color-blush: color-mix(in srgb, var(--bg-cream) 78%, var(--accent-terracotta));
+  --color-blush: color-mix(
+    in srgb,
+    var(--bg-cream) 78%,
+    var(--accent-terracotta)
+  );
   --color-champagne: color-mix(
     in srgb,
     var(--venetian-gold) 40%,
@@ -43,11 +47,7 @@
 
   --color-palm-deep: #2a3236;
   --color-sunset-coral: #c0866a;
-  --color-sunset-gold: color-mix(
-    in srgb,
-    var(--butterscotch) 55%,
-    #c9a27a
-  );
+  --color-sunset-gold: color-mix(in srgb, var(--butterscotch) 55%, #c9a27a);
   --color-capiz: color-mix(in srgb, var(--ice-yellow) 70%, #f5f2ea);
 
   /* Semantic aliases — components inherit mural palette via these */
@@ -71,7 +71,11 @@
   --gradient-sky-progress: 0;
   --palm-silhouette: #262b30;
   --capiz-panel-bg: color-mix(in srgb, var(--color-capiz) 58%, transparent);
-  --capiz-panel-border: color-mix(in srgb, var(--venetian-gold) 40%, transparent);
+  --capiz-panel-border: color-mix(
+    in srgb,
+    var(--venetian-gold) 40%,
+    transparent
+  );
   --capiz-panel-shadow: 0 12px 40px rgba(38, 43, 48, 0.18);
 
   /* Warm glass — Butterscotch deepened with palm so fills stay muted, not bright */
@@ -84,7 +88,11 @@
   --glass-bg-strong: color-mix(in srgb, var(--glass-pigment) 74%, transparent);
   --glass-bg-soft: color-mix(in srgb, var(--glass-pigment) 48%, transparent);
   --glass-border: color-mix(in srgb, var(--venetian-gold) 32%, transparent);
-  --glass-border-strong: color-mix(in srgb, var(--venetian-gold) 45%, transparent);
+  --glass-border-strong: color-mix(
+    in srgb,
+    var(--venetian-gold) 45%,
+    transparent
+  );
 
   /* Typography — cursive: Carolyna · print: Cormorant Garamond */
   --font-names: 'Carolyna Pro Black', 'Segoe Script', cursive;
@@ -1593,7 +1601,9 @@ p {
     ),
     url('/images/card-texture/paper-texture.avif');
   background-size: auto, cover;
-  background-position: 0 2.6rem, center;
+  background-position:
+    0 2.6rem,
+    center;
   background-repeat: repeat, no-repeat;
 }
 
@@ -2883,6 +2893,62 @@ p {
   padding: var(--spacing-lg);
   background: var(--glass-bg-soft);
   border: 1px solid var(--glass-border);
+}
+
+.wd-page__content.wd-admin-page {
+  width: min(72rem, calc(100% - 2rem));
+}
+
+.wd-admin__heading,
+.wd-admin__controls,
+.wd-admin__editor,
+.wd-admin__records {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.wd-admin__heading {
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--spacing-lg);
+}
+
+.wd-admin__crud {
+  display: grid;
+  gap: var(--spacing-xl);
+  margin-top: var(--spacing-xl);
+}
+
+.wd-admin__editor,
+.wd-admin__record {
+  padding: var(--spacing-lg);
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg-soft);
+}
+
+.wd-admin__record h3,
+.wd-admin__record p {
+  margin: 0;
+}
+
+.wd-admin__record {
+  display: grid;
+  gap: var(--spacing-sm);
+}
+
+.wd-admin__divider {
+  margin: var(--spacing-2xl) 0;
+  border: 0;
+  border-top: 1px solid var(--glass-border);
+}
+
+@media (min-width: 56rem) {
+  .wd-admin__crud {
+    grid-template-columns: minmax(18rem, 0.85fr) minmax(22rem, 1.15fr);
+    align-items: start;
+  }
 }
 
 .wd-toggle {

@@ -6,8 +6,6 @@
 export const WD_SESSION_KEY = 'wedding:wd-session'
 export const WD_PHOTOS_PREFIX = 'wedding:wd-photos:'
 export const WD_REVEALED_KEY = 'wedding:gallery-revealed'
-export const WD_ADMIN_OK_KEY = 'wedding:wd-admin-ok'
-export const WD_LOCAL_GUESTS_KEY = 'wedding:wd-local-guests'
 
 /** Client-only photo cap for this prototype — MUST be re-enforced server-side once a backend exists. */
 export const MAX_PHOTOS_PER_GUEST = 10
@@ -20,13 +18,6 @@ export type WeddingDaySession = {
 export type WeddingDayPhoto = {
   dataUrl: string
   capturedAt: string | null
-}
-
-export type LocalGuest = {
-  id: string
-  firstName: string
-  lastName: string
-  email: string
 }
 
 function safeParseJson<T>(raw: string | null): T | null {
@@ -135,61 +126,6 @@ export function appendPhoto(
   }
 }
 
-export function readLocalGuests(): LocalGuest[] {
-  try {
-    const parsed = safeParseJson<unknown>(
-      localStorage.getItem(WD_LOCAL_GUESTS_KEY),
-    )
-    if (!Array.isArray(parsed)) return []
-    return parsed.filter((item): item is LocalGuest => {
-      if (!item || typeof item !== 'object') return false
-      const g = item as Partial<LocalGuest>
-      return (
-        typeof g.id === 'string' &&
-        typeof g.firstName === 'string' &&
-        typeof g.lastName === 'string' &&
-        typeof g.email === 'string'
-      )
-    })
-  } catch {
-    return []
-  }
-}
-
-export function findLocalGuestByEmail(email: string): LocalGuest | undefined {
-  const normalized = email.trim().toLowerCase()
-  if (!normalized) return undefined
-  return readLocalGuests().find(
-    (guest) => guest.email.toLowerCase() === normalized,
-  )
-}
-
-export function registerLocalGuest(input: {
-  email: string
-  firstName: string
-  lastName: string
-}): LocalGuest {
-  const email = input.email.trim().toLowerCase()
-  const firstName = input.firstName.trim()
-  const lastName = input.lastName.trim()
-  const existing = findLocalGuestByEmail(email)
-  if (existing) return existing
-
-  const guest: LocalGuest = {
-    id: `local-${crypto.randomUUID()}`,
-    firstName,
-    lastName,
-    email,
-  }
-  const guests = [...readLocalGuests(), guest]
-  try {
-    localStorage.setItem(WD_LOCAL_GUESTS_KEY, JSON.stringify(guests))
-  } catch {
-    // private mode / unavailable storage
-  }
-  return guest
-}
-
 export function readRevealed(): boolean {
   try {
     return localStorage.getItem(WD_REVEALED_KEY) === 'true'
@@ -201,26 +137,6 @@ export function readRevealed(): boolean {
 export function writeRevealed(revealed: boolean): void {
   try {
     localStorage.setItem(WD_REVEALED_KEY, revealed ? 'true' : 'false')
-  } catch {
-    // private mode / unavailable storage
-  }
-}
-
-export function readAdminOk(): boolean {
-  try {
-    return localStorage.getItem(WD_ADMIN_OK_KEY) === 'true'
-  } catch {
-    return false
-  }
-}
-
-export function writeAdminOk(ok: boolean): void {
-  try {
-    if (ok) {
-      localStorage.setItem(WD_ADMIN_OK_KEY, 'true')
-    } else {
-      localStorage.removeItem(WD_ADMIN_OK_KEY)
-    }
   } catch {
     // private mode / unavailable storage
   }
@@ -266,10 +182,7 @@ export type GalleryGuestSummary = {
 
 /** One summary per guest who has at least one photo. */
 export function readGalleryGuests(): GalleryGuestSummary[] {
-  const byGuest = new Map<
-    string,
-    GalleryGuestSummary & { sortIndex: number }
-  >()
+  const byGuest = new Map<string, GalleryGuestSummary & { sortIndex: number }>()
   for (const entry of readAllGalleryPhotos()) {
     const existing = byGuest.get(entry.guestId)
     if (!existing) {

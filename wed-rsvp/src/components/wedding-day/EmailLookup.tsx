@@ -3,12 +3,8 @@ import type { FormEvent } from 'react'
 import { ChevronDown } from 'lucide-react'
 import { Button } from '../ui/button'
 import { couple } from '../../data/weddingData'
-import { findGuestByEmail } from './mockGuests'
-import {
-  findLocalGuestByEmail,
-  registerLocalGuest,
-  writeSession,
-} from './storage'
+import { createRSVP, findRSVPByEmail } from '../../lib/rsvp/server'
+import { writeSession } from './storage'
 import type { WeddingDaySession } from './storage'
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -26,6 +22,7 @@ export default function EmailLookup({ onMatched }: EmailLookupProps) {
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
   const [error, setError] = useState<string | null>(null)
+  const [submitting, setSubmitting] = useState(false)
   const [fieldErrors, setFieldErrors] = useState<{
     email?: string
     firstName?: string
@@ -51,7 +48,7 @@ export default function EmailLookup({ onMatched }: EmailLookupProps) {
     setLastName('')
   }
 
-  function handleLookupSubmit(event: FormEvent) {
+  async function handleLookupSubmit(event: FormEvent) {
     event.preventDefault()
     setError(null)
     setFieldErrors({})
@@ -66,24 +63,31 @@ export default function EmailLookup({ onMatched }: EmailLookupProps) {
       return
     }
 
-    const guest = findGuestByEmail(trimmed)
-    if (!guest) {
-      openSignup(trimmed)
-      setError(
-        "We couldn't find an RSVP with that email. Sign up below to join the celebration.",
-      )
-      return
-    }
+    setSubmitting(true)
+    try {
+      const guest = await findRSVPByEmail({ data: { email: trimmed } })
+      if (!guest) {
+        openSignup(trimmed)
+        setError(
+          "We couldn't find an RSVP with that email. Sign up below to join the celebration.",
+        )
+        return
+      }
 
-    const session: WeddingDaySession = {
-      guestId: guest.id,
-      email: guest.email,
+      const session: WeddingDaySession = {
+        guestId: guest.id,
+        email: guest.email,
+      }
+      writeSession(session)
+      onMatched(session)
+    } catch {
+      setError('Guest lookup is unavailable. Please try again.')
+    } finally {
+      setSubmitting(false)
     }
-    writeSession(session)
-    onMatched(session)
   }
 
-  function handleSignupSubmit(event: FormEvent) {
+  async function handleSignupSubmit(event: FormEvent) {
     event.preventDefault()
     setError(null)
 
@@ -105,36 +109,50 @@ export default function EmailLookup({ onMatched }: EmailLookupProps) {
       return
     }
 
-    const seeded = findGuestByEmail(trimmedEmail)
-    if (seeded && !findLocalGuestByEmail(trimmedEmail)) {
+    setSubmitting(true)
+    try {
+      const existing = await findRSVPByEmail({
+        data: { email: trimmedEmail },
+      })
+      if (existing) {
+        const session: WeddingDaySession = {
+          guestId: existing.id,
+          email: existing.email,
+        }
+        writeSession(session)
+        onMatched(session)
+        return
+      }
+
+      const result = await createRSVP({
+        data: {
+          email: trimmedEmail,
+          firstName: trimmedFirst,
+          lastName: trimmedLast,
+          additionalDetails: '',
+          submissionSource: 'wedding_day',
+        },
+      })
       const session: WeddingDaySession = {
-        guestId: seeded.id,
-        email: seeded.email,
+        guestId: result.record.id,
+        email: result.record.email,
       }
       writeSession(session)
       onMatched(session)
-      return
+    } catch (submissionError) {
+      setError(
+        submissionError instanceof Error
+          ? submissionError.message
+          : 'Could not save your guest details. Please try again.',
+      )
+    } finally {
+      setSubmitting(false)
     }
-
-    const guest = registerLocalGuest({
-      email: trimmedEmail,
-      firstName: trimmedFirst,
-      lastName: trimmedLast,
-    })
-    const session: WeddingDaySession = {
-      guestId: guest.id,
-      email: guest.email,
-    }
-    writeSession(session)
-    onMatched(session)
   }
 
   return (
     <div className="wd-welcome">
-      <section
-        className="wd-welcome__hero"
-        aria-labelledby="wd-welcome-title"
-      >
+      <section className="wd-welcome__hero" aria-labelledby="wd-welcome-title">
         <p className="wd-eyebrow">Wedding Day</p>
         <h1 id="wd-welcome-title" className="wd-welcome__title">
           Welcome
@@ -198,8 +216,8 @@ export default function EmailLookup({ onMatched }: EmailLookupProps) {
                 </p>
               ) : null}
               <div className="wd-actions">
-                <Button type="submit" size="lg">
-                  Continue
+                <Button type="submit" size="lg" disabled={submitting}>
+                  {submitting ? 'Checking…' : 'Continue'}
                 </Button>
               </div>
             </form>
@@ -271,9 +289,7 @@ export default function EmailLookup({ onMatched }: EmailLookupProps) {
                     onChange={(e) => setFirstName(e.target.value)}
                     aria-invalid={fieldErrors.firstName ? true : undefined}
                     aria-describedby={
-                      fieldErrors.firstName
-                        ? 'wd-first-name-error'
-                        : undefined
+                      fieldErrors.firstName ? 'wd-first-name-error' : undefined
                     }
                   />
                   {fieldErrors.firstName ? (
@@ -316,8 +332,8 @@ export default function EmailLookup({ onMatched }: EmailLookupProps) {
               </div>
 
               <div className="wd-actions wd-actions--row">
-                <Button type="submit" size="lg">
-                  Start capturing
+                <Button type="submit" size="lg" disabled={submitting}>
+                  {submitting ? 'Saving…' : 'Start capturing'}
                 </Button>
                 <Button
                   type="button"

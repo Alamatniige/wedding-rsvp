@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import type { FormEvent } from 'react'
 import { Link } from '@tanstack/react-router'
 import { rsvpForm } from '../../../data/weddingData'
-import { sendRSVPEmail } from '../../../lib/email'
+import { createRSVP, findRSVPByEmail } from '../../../lib/rsvp/server'
 import { Button } from '../../ui/button'
 
 type FormState = {
@@ -34,8 +34,11 @@ function readSavedPayload(): FormState | null {
   try {
     const raw = localStorage.getItem(RSVP_STORAGE_KEY)
     if (!raw) return null
-    const parsed = JSON.parse(raw) as Partial<FormState>
+    const parsed = JSON.parse(raw) as Partial<FormState> & {
+      persisted?: unknown
+    }
     if (
+      parsed.persisted === true &&
       typeof parsed.firstName === 'string' &&
       typeof parsed.lastName === 'string' &&
       typeof parsed.email === 'string'
@@ -66,9 +69,29 @@ export default function RSVPForm() {
 
   useEffect(() => {
     const saved = readSavedPayload()
-    if (saved) {
-      setForm(saved)
-      setStatus('submitted')
+    if (!saved) return
+
+    let cancelled = false
+    setForm(saved)
+    void findRSVPByEmail({ data: { email: saved.email } })
+      .then((record) => {
+        if (cancelled) return
+        if (record) {
+          setStatus('submitted')
+        } else {
+          try {
+            localStorage.removeItem(RSVP_STORAGE_KEY)
+          } catch {
+            // Private mode may block storage.
+          }
+        }
+      })
+      .catch(() => {
+        // A local hint must never prevent a fresh database submission.
+      })
+
+    return () => {
+      cancelled = true
     }
   }, [])
 
@@ -106,38 +129,51 @@ export default function RSVPForm() {
       email: form.email.trim(),
       additionalDetails: form.additionalDetails.trim(),
       savedAt: new Date().toISOString(),
+      persisted: true,
     }
 
     try {
-      localStorage.setItem(RSVP_STORAGE_KEY, JSON.stringify(payload))
-    } catch {
-      // Private mode may block storage; still show submitted UI.
-    }
-
-    try {
-      const result = await sendRSVPEmail({
+      const result = await createRSVP({
         data: {
           firstName: payload.firstName,
           lastName: payload.lastName,
           email: payload.email,
           additionalDetails: payload.additionalDetails,
+          submissionSource: 'pre_wedding',
         },
       })
 
-      const skippedMessages = [result.confirmation, result.invitation]
-        .filter((email) => email.status === 'skipped')
-        .map((email) => email.reason)
-
-      if (skippedMessages.length > 0) {
-        setSubmissionNote(skippedMessages.join(' '))
+      try {
+        localStorage.setItem(RSVP_STORAGE_KEY, JSON.stringify(payload))
+      } catch {
+        // The database is authoritative; local storage is only a UI hint.
       }
-    } catch {
-      setSubmissionNote(
-        'Your details were saved, but your confirmation and invitation emails could not be sent right now.',
-      )
-    }
 
-    setStatus('submitted')
+      if (result.notification.status === 'failed') {
+        setSubmissionNote(
+          'Your details were saved, but one or more emails could not be sent right now.',
+        )
+      } else {
+        const skippedMessages = [
+          result.notification.deliveries.guest,
+          result.notification.deliveries.owner,
+          result.notification.deliveries.invitation,
+        ]
+          .filter((email) => email.status === 'skipped')
+          .map((email) => email.reason)
+        if (skippedMessages.length > 0) {
+          setSubmissionNote(skippedMessages.join(' '))
+        }
+      }
+      setStatus('submitted')
+    } catch (error) {
+      setSubmissionNote(
+        error instanceof Error
+          ? error.message
+          : 'Your RSVP could not be saved. Please try again.',
+      )
+      setStatus('editing')
+    }
   }
 
   const submitDisabled = status !== 'editing'

@@ -98,7 +98,9 @@ function validatePreviewInput(data: unknown): { enabled: boolean } {
 
 export const setWeddingDayPreview = createServerFn({ method: 'POST' })
   .validator(validatePreviewInput)
-  .handler(({ data }): { enabled: boolean } => {
+  .handler(async ({ data }): Promise<{ enabled: boolean }> => {
+    const { requireAdmin } = await import('./supabase/admin-auth.server')
+    await requireAdmin()
     if (data.enabled) {
       setCookie(WEDDING_DAY_PREVIEW_COOKIE, 'true', {
         httpOnly: true,
