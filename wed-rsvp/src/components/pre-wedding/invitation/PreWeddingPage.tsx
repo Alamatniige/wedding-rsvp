@@ -58,30 +58,22 @@ export default function PreWeddingPage({
 
       <div className="pre-wedding-page__content">
         <section id="hero" ref={heroRef} className="hero-landing">
-          <p className="hero-landing__meet hero-landing__anim">
-            {heroLanding.meetUsPrefix}
-          </p>
-          <h1 className="hero-landing__venue hero-landing__anim">
-            {heroLanding.venue}
-          </h1>
-          <p className="hero-landing__date hero-landing__anim">
-            {heroLanding.date}
-          </p>
+          <div className="hero-landing__text-band hero-landing__text-band--intro hero-landing__anim">
+            <p className="hero-landing__meet">{heroLanding.meetUsPrefix}</p>
+            <h1 className="hero-landing__venue">{heroLanding.venue}</h1>
+            <p className="hero-landing__date">{heroLanding.date}</p>
+          </div>
 
           <InvitationCollage animate={gateOpen} revealDelay={revealDelay} />
 
-          <p className="hero-landing__hope hero-landing__anim">
-            {heroLanding.hopeMessage}
-          </p>
-
-          <div className="hero-landing__timer hero-landing__anim">
-            <CountdownTimer />
+          <div className="hero-landing__text-band hero-landing__text-band--countdown hero-landing__anim">
+            <p className="hero-landing__hope">{heroLanding.hopeMessage}</p>
+            <div className="hero-landing__timer">
+              <CountdownTimer />
+            </div>
+            <p className="hero-landing__description">{heroLanding.description}</p>
           </div>
 
-          <p className="hero-landing__description hero-landing__anim">
-            {heroLanding.description}
-          </p>
-          
           <Button asChild variant="outline" size="lg" className="hero-landing__anim">
             <Link to="/rsvp">{heroLanding.ctaLabel}</Link>
           </Button>

@@ -50,7 +50,16 @@ button {
 
 /* === Photobooth gate === */
 .photobooth-gate {
-  color: var(--color-capiz);
+  color: var(--gate-text);
+}
+
+/* Bright teal fill + vivid gold outline + soft halo for mural contrast */
+.photobooth-gate__greeting,
+.photobooth-gate__names,
+.photobooth-gate__save-label,
+.photobooth-gate__date {
+  -webkit-text-stroke: var(--gate-text-outline-width) var(--gate-text-outline);
+  paint-order: stroke fill;
 }
 
 .photobooth-gate__greeting {
@@ -61,7 +70,6 @@ button {
   line-height: 1.3;
   text-align: center;
   color: var(--gate-text);
-  text-shadow: var(--gate-text-shadow);
 }
 
 .photobooth-gate__names {
@@ -71,7 +79,7 @@ button {
   line-height: 1;
   text-align: center;
   color: var(--gate-text);
-  text-shadow: var(--gate-text-shadow);
+  -webkit-text-stroke-width: var(--gate-text-outline-width-lg);
 }
 
 .photobooth-gate__pull-prompt {
@@ -94,7 +102,7 @@ button {
   font-weight: 300;
   line-height: 1.1;
   color: var(--gate-text);
-  text-shadow: var(--gate-text-shadow);
+  -webkit-text-stroke-width: var(--gate-text-outline-width-lg);
 }
 
 .photobooth-gate__date {
@@ -105,7 +113,6 @@ button {
   letter-spacing: 0.04em;
   text-transform: none;
   color: var(--gate-text);
-  text-shadow: var(--gate-text-shadow);
 }
 
 @media (max-width: 400px) {
@@ -572,6 +579,7 @@ button {
   font-size: clamp(2rem, 6vw, 2.75rem);
   color: var(--hero-text);
   line-height: 1.2;
+  text-shadow: var(--gate-text-shadow);
 }
 
 .hero-landing__hope,

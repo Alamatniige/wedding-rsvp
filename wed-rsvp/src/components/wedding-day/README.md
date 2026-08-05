@@ -4,6 +4,13 @@ Photobooth flow: Supabase-backed email lookup / same-day signup → camera captu
 
 After reveal, guests can browse per-guest thumbnail strips, open a full-size lightbox, and download photos.
 
+## Folder layout
+
+| Path | Purpose |
+| ---- | ------- |
+| Root (`*.tsx`, `storage.ts`, …) | Guest photobooth flow |
+| [`admin/`](./admin/) | Coordinator UI (RSVP CRUD, gallery reveal, wedding-day preview) |
+
 ## How guests reach it
 
 QR codes should point at **`/`**. [`getWeddingMode()`](../../lib/wedding-mode.ts) decides the experience:
@@ -17,7 +24,7 @@ In local dev, force mode with `WEDDING_MODE=wedding-day` or `pre-wedding` in `.e
 
 - `/` — mode-gated entry (QR target)
 - `/wedding-day` — redirects to `/` (legacy alias)
-- `/admin` — Supabase Auth-protected RSVP CRUD and coordinator controls
+- `/admin` — Supabase Auth-protected RSVP CRUD and coordinator controls ([`admin/AdminReveal.tsx`](./admin/AdminReveal.tsx))
 
 ## Persistence
 
