@@ -170,7 +170,7 @@ function renderPolaroid(
   }
 
   context.fillStyle = '#c0866a'
-  context.font = '400 42px "Carolyna Pro Black", "Segoe Script", cursive'
+  context.font = '400 42px "Loren Blake Script", "Segoe Script", cursive'
   context.fillText('Jianne & Joe · Wedding Day', FRAME, 1340)
 
   return canvas

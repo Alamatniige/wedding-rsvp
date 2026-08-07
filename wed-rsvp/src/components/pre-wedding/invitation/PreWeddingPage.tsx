@@ -5,6 +5,9 @@ import gsap from 'gsap'
 import { heroLanding, preWeddingParallax } from '../../../data/weddingData'
 import { useGSAP } from '../../../hooks/useGSAP'
 import { Button } from '../../ui/button'
+import MixedDisplayText, {
+  wordInitialScriptIndices,
+} from '../../typography/MixedDisplayText'
 import CountdownTimer from './CountdownTimer'
 import InvitationCollage from './elements/InvitationCollage'
 
@@ -60,7 +63,19 @@ export default function PreWeddingPage({
         <section id="hero" ref={heroRef} className="hero-landing">
           <div className="hero-landing__text-band hero-landing__text-band--intro hero-landing__anim">
             <p className="hero-landing__meet">{heroLanding.meetUsPrefix}</p>
-            <h1 className="hero-landing__venue">{heroLanding.venue}</h1>
+            <h1
+              className="hero-landing__venue"
+              aria-label={heroLanding.venue}
+            >
+              {heroLanding.venueLines.map((line) => (
+                <span key={line} className="hero-landing__venue-line" aria-hidden="true">
+                  <MixedDisplayText
+                    text={line}
+                    scriptIndices={wordInitialScriptIndices(line)}
+                  />
+                </span>
+              ))}
+            </h1>
             <p className="hero-landing__date">{heroLanding.date}</p>
           </div>
 

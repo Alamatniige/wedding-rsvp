@@ -3,12 +3,19 @@ import gsap from 'gsap'
 import { AnimatePresence, motion } from 'framer-motion'
 import { couple, entranceGate } from '../../data/weddingData'
 import { useGSAP } from '../../hooks/useGSAP'
+import MixedDisplayName from '../typography/MixedDisplayName'
+import MixedDisplayText, {
+  wordInitialScriptIndices,
+} from '../typography/MixedDisplayText'
 import { Button } from '../ui/button'
 
 const STORAGE_KEY = 'wedding:photobooth-opened'
 const PULL_THRESHOLD = 0.72
 const PEEK_RATIO = 0.12
 const PULSE_OFFSET = 15
+
+/** Client review: 1 Soft Blue | 2 Capiz | 3 Fern — Capiz avoids soft-blue flash on exit */
+const GATE_NAME_COLOR_OPTION = 2 as 1 | 2 | 3
 
 export type GateRevealOptions = {
   /** True only when the user clicks "Open the Invitation" — wait for gate fade. */
@@ -382,12 +389,13 @@ export default function PhotoboothGate({ onComplete }: PhotoboothGateProps) {
         <motion.div
           key="photobooth-gate"
           className="photobooth-gate"
-          exit={{ opacity: 0, scale: 1.08 }}
-          transition={{ duration: 0.7, ease: 'easeInOut' }}
+          data-name-color={GATE_NAME_COLOR_OPTION}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.55, ease: 'easeInOut' }}
         >
           <img
             className="photobooth-gate__palm-backdrop"
-            src="/images/entrance/wed-bg.jpg"
+            src="/images/entrance/teal-bg.jpg"
             alt=""
             aria-hidden="true"
             draggable={false}
@@ -400,8 +408,22 @@ export default function PhotoboothGate({ onComplete }: PhotoboothGateProps) {
               {entranceGate.greeting}
             </p>
 
-            <h1 ref={namesRef} className="photobooth-gate__names">
-              {couple.name1} &amp; {couple.name2}
+            <h1
+              ref={namesRef}
+              className="photobooth-gate__names"
+              aria-label={`${couple.name1} and ${couple.name2}`}
+            >
+              <span aria-hidden="true">
+                <MixedDisplayName
+                  name={couple.name1}
+                  scriptIndices={couple.name1ScriptIndices}
+                />
+                <span className="mixed-name__amp">&amp;</span>
+                <MixedDisplayName
+                  name={couple.name2}
+                  scriptIndices={couple.name2ScriptIndices}
+                />
+              </span>
             </h1>
 
             <div className="photobooth-gate__machine-scene">
@@ -470,7 +492,12 @@ export default function PhotoboothGate({ onComplete }: PhotoboothGateProps) {
 
             <div className="photobooth-gate__save-block">
               <p ref={saveLabelRef} className="photobooth-gate__save-label">
-                {entranceGate.saveTheDateLabel}
+                <MixedDisplayText
+                  text={entranceGate.saveTheDateLabel}
+                  scriptIndices={wordInitialScriptIndices(
+                    entranceGate.saveTheDateLabel,
+                  )}
+                />
               </p>
               <p ref={dateRef} className="photobooth-gate__date">
                 {couple.weddingDateDisplay}

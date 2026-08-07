@@ -11,46 +11,76 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: 'Loren Blake Script';
+  src: url('/font-style/LorenBlakeScriptRegular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Loren Blake Serif';
+  src: url('/font-style/LorenBlakeSerif.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Loren Blake Hybrid';
+  src: url('/font-style/LorenBlakeHybrid.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* === Design Tokens === */
 :root {
-  /* Brand palette — vintage botanical (wed-bg.jpg) + warm gold mood board */
-  --butterscotch: #a88862;
-  --venetian-gold: #d3c79f;
-  --ice-yellow: #ebe2cf;
+  /* Brand palette V3 — orchid elegant: Soft Blue / Cobalt / Fern */
+  --color-soft-blue: #8cb1cc;
+  --color-cobalt: #344879;
+  --color-fern: #7f8d54;
 
-  --bg-cream: color-mix(in srgb, var(--ice-yellow) 55%, #ede9df);
-  --text-espresso: #262b30;
-  --accent-terracotta: #c0866a;
-  --leaf-green: #3d464b; /* slate foliage; name kept for compatibility */
-  --twine-tan: color-mix(in srgb, var(--venetian-gold) 55%, #918578);
-  --capiz-white: color-mix(in srgb, var(--ice-yellow) 70%, transparent);
+  /* Legacy token names remapped to orchid triad (compat) */
+  --color-teal: var(--color-soft-blue);
+  --butterscotch: var(--color-soft-blue);
+  --venetian-gold: color-mix(in srgb, var(--color-soft-blue) 55%, #e8eef2);
+  --ice-yellow: #eef1f0;
 
-  /* Neutrals & warm tints */
-  --color-espresso-soft: #5a6166;
-  --color-terracotta-light: #d4a890;
+  --bg-cream: #eef1f0;
+  --text-espresso: #2a3348;
+  --accent-terracotta: var(--color-fern);
+  --leaf-green: var(--color-fern);
+  --twine-tan: color-mix(in srgb, var(--color-soft-blue) 40%, #7a8a8f);
+  --capiz-white: color-mix(in srgb, #f4f7f9 70%, transparent);
+
+  /* Neutrals & cool tints */
+  --color-espresso-soft: #5a6b7a;
+  --color-terracotta-light: color-mix(in srgb, var(--color-fern) 70%, #c5d0a8);
   --color-ivory: var(--bg-cream);
   --color-cream: var(--bg-cream);
   --color-blush: color-mix(
     in srgb,
-    var(--bg-cream) 78%,
-    var(--accent-terracotta)
+    var(--bg-cream) 82%,
+    var(--color-soft-blue)
   );
   --color-champagne: color-mix(
     in srgb,
-    var(--venetian-gold) 40%,
+    var(--color-soft-blue) 35%,
     var(--ice-yellow)
   );
   --color-leaf: var(--leaf-green);
   --color-twine: var(--twine-tan);
   --color-white: #ffffff;
-  --color-overlay: rgba(38, 43, 48, 0.45);
+  --color-overlay: rgba(52, 72, 121, 0.45);
 
-  --color-palm-deep: #2a3236;
-  --color-sunset-coral: #c0866a;
-  --color-sunset-gold: color-mix(in srgb, var(--butterscotch) 55%, #c9a27a);
-  --color-capiz: color-mix(in srgb, var(--ice-yellow) 70%, #f5f2ea);
+  --color-palm-deep: var(--color-cobalt);
+  --color-sunset-coral: var(--color-fern);
+  --color-sunset-gold: color-mix(in srgb, var(--color-soft-blue) 70%, #c5d6e4);
+  --color-capiz: #f4f7f9;
 
-  /* Semantic aliases — components inherit mural palette via these */
+  /* Semantic aliases — components inherit orchid palette via these */
   --color-navy: var(--text-espresso);
   --color-navy-soft: var(--color-espresso-soft);
   --color-gold: var(--accent-terracotta);
@@ -60,42 +90,44 @@
   --color-text-soft: var(--color-espresso-soft);
   --color-text-inverse: var(--color-capiz);
   --color-bg: var(--bg-cream);
-  --color-surface: color-mix(in srgb, var(--ice-yellow) 50%, #f5f2ea);
-  --color-line: color-mix(in srgb, var(--venetian-gold) 40%, transparent);
+  --color-surface: color-mix(in srgb, var(--ice-yellow) 40%, #f4f7f9);
+  --color-line: color-mix(in srgb, var(--color-soft-blue) 40%, transparent);
   --color-accent: var(--accent-terracotta);
 
-  /* Soft parchment → terracotta → slate (pre-wedding parallax) */
-  --gradient-sky-start: color-mix(in srgb, var(--venetian-gold) 60%, #d4cbb8);
-  --gradient-sky-mid: #c0866a;
-  --gradient-sky-end: #3d464b;
+  /* Soft Blue → Soft Blue/Fern → Cobalt (pre-wedding parallax) */
+  --gradient-sky-start: color-mix(in srgb, var(--color-soft-blue) 50%, #e8eef2);
+  --gradient-sky-mid: color-mix(in srgb, var(--color-soft-blue) 55%, var(--color-fern));
+  --gradient-sky-end: var(--color-cobalt);
   --gradient-sky-progress: 0;
-  --palm-silhouette: #262b30;
+  --palm-silhouette: var(--text-espresso);
   --capiz-panel-bg: color-mix(in srgb, var(--color-capiz) 58%, transparent);
   --capiz-panel-border: color-mix(
     in srgb,
-    var(--venetian-gold) 40%,
+    var(--color-soft-blue) 40%,
     transparent
   );
-  --capiz-panel-shadow: 0 12px 40px rgba(38, 43, 48, 0.18);
+  --capiz-panel-shadow: 0 12px 40px rgba(52, 72, 121, 0.18);
 
-  /* Warm glass — Butterscotch deepened with palm so fills stay muted, not bright */
+  /* Cool glass — Cobalt deepened with Soft Blue */
   --glass-pigment: color-mix(
     in srgb,
-    var(--butterscotch) 45%,
-    var(--color-palm-deep)
+    var(--color-soft-blue) 40%,
+    var(--color-cobalt)
   );
   --glass-bg: color-mix(in srgb, var(--glass-pigment) 62%, transparent);
   --glass-bg-strong: color-mix(in srgb, var(--glass-pigment) 74%, transparent);
   --glass-bg-soft: color-mix(in srgb, var(--glass-pigment) 48%, transparent);
-  --glass-border: color-mix(in srgb, var(--venetian-gold) 32%, transparent);
+  --glass-border: color-mix(in srgb, var(--color-soft-blue) 32%, transparent);
   --glass-border-strong: color-mix(
     in srgb,
-    var(--venetian-gold) 45%,
+    var(--color-soft-blue) 45%,
     transparent
   );
 
-  /* Typography — cursive: Carolyna · print: Cormorant Garamond */
-  --font-names: 'Carolyna Pro Black', 'Segoe Script', cursive;
+  /* Typography — display: Loren Blake · print: Cormorant Garamond */
+  --font-names: 'Loren Blake Script', 'Segoe Script', cursive;
+  --font-date: 'Loren Blake Serif', Georgia, serif;
+  --font-venue: 'Loren Blake Serif', Georgia, serif;
   --font-header: 'Cormorant Garamond', Georgia, serif;
   --font-body: 'Cormorant Garamond', Georgia, serif;
 
@@ -105,17 +137,20 @@
   --font-sans: var(--font-body);
   --font-handwriting: var(--font-names);
   --font-script: var(--font-names);
+  --font-hybrid: 'Loren Blake Hybrid', Georgia, serif;
 
-  /* Gate text — bright teal fill + vivid gold outline */
-  --gate-text: #2ec4b6;
-  --gate-text-soft: color-mix(in srgb, var(--gate-text) 78%, transparent);
-  --gate-text-outline: #f5f1bc;
-  --gate-text-outline-width: 3.5px;
-  --gate-text-outline-width-lg: 5px;
+  /* Gate names — fill only, no stroke (switched via data-name-color) */
+  --gate-name-outline-width: 0;
+  --gate-name-outline-width-lg: 0;
+  --gate-name-fill: var(--color-soft-blue);
+  --gate-name-outline: transparent;
+  --gate-text-shadow:
+    0 1px 2px rgba(52, 72, 121, 0.35), 0 4px 18px rgba(52, 72, 121, 0.25);
 
   /* Hero styling + shared footer */
-  --page-bg-image: url('/images/entrance/palm-leaf-bg-1.avif');
-  --page-bg-overlay: rgba(0, 0, 0, 0.28);
+  --page-bg-image: url('/images/entrance/teal-bg.jpg');
+  /* Heavy black wash — teal satin stays visible but calmer / more elegant */
+  --page-bg-overlay: rgba(8, 12, 20, 0.58);
   --page-bg-overlay-start: color-mix(
     in srgb,
     var(--gradient-sky-start) 45%,
@@ -167,9 +202,9 @@
   --radius-xl: 2rem;
   --radius-full: 9999px;
 
-  --shadow-sm: 0 2px 8px rgba(38, 43, 48, 0.06);
-  --shadow-md: 0 8px 24px rgba(38, 43, 48, 0.1);
-  --shadow-lg: 0 16px 48px rgba(38, 43, 48, 0.14);
+  --shadow-sm: 0 2px 8px rgba(52, 72, 121, 0.06);
+  --shadow-md: 0 8px 24px rgba(52, 72, 121, 0.1);
+  --shadow-lg: 0 16px 48px rgba(52, 72, 121, 0.14);
 
   --z-gate: 100;
   --z-modal: 60;
@@ -253,6 +288,22 @@ p {
   background-color: var(--color-palm-deep);
 }
 
+/* Client review — fill-only name colors (1 Soft Blue | 2 Capiz | 3 Fern) */
+.photobooth-gate[data-name-color='1'] {
+  --gate-name-fill: var(--color-soft-blue);
+  --gate-name-outline: transparent;
+}
+
+.photobooth-gate[data-name-color='2'] {
+  --gate-name-fill: var(--color-capiz);
+  --gate-name-outline: transparent;
+}
+
+.photobooth-gate[data-name-color='3'] {
+  --gate-name-fill: var(--color-fern);
+  --gate-name-outline: transparent;
+}
+
 .photobooth-gate__palm {
   pointer-events: none;
   position: fixed;
@@ -280,12 +331,13 @@ p {
   position: fixed;
   inset: 0;
   z-index: 0;
+  /* Dark elegant wash — fabric sheen remains, brightness pulled down */
   background: linear-gradient(
     to bottom,
-    rgba(0, 0, 0, 0.42) 0%,
-    rgba(0, 0, 0, 0.28) 35%,
-    rgba(0, 0, 0, 0.34) 70%,
-    rgba(0, 0, 0, 0.5) 100%
+    rgba(0, 0, 0, 0.58) 0%,
+    rgba(0, 0, 0, 0.42) 35%,
+    rgba(8, 12, 20, 0.5) 70%,
+    rgba(0, 0, 0, 0.68) 100%
   );
 }
 
@@ -349,11 +401,11 @@ p {
 }
 
 .photobooth-gate__greeting {
-  margin: 0 0 var(--spacing-sm);
+  margin: 0 0 var(--spacing-md);
 }
 
 .photobooth-gate__names {
-  margin: 0;
+  margin: 0 0 var(--spacing-lg);
 }
 
 .photobooth-gate__machine-scene {
@@ -362,7 +414,7 @@ p {
   flex-direction: column;
   align-items: center;
   width: 100%;
-  margin-bottom: var(--spacing-md);
+  margin-bottom: var(--spacing-xl);
   overflow: visible;
 }
 
@@ -486,8 +538,8 @@ p {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.15rem;
-  margin-top: var(--spacing-sm);
+  gap: var(--spacing-sm);
+  margin-top: 0;
 }
 
 .photobooth-gate__save-label {
@@ -499,12 +551,20 @@ p {
 }
 
 .photobooth-gate__exit-wrap {
-  margin-top: var(--spacing-lg);
+  margin-top: var(--spacing-xl);
   padding-top: var(--spacing-sm);
   padding-bottom: var(--spacing-xl);
   width: 100%;
   display: flex;
   justify-content: center;
+}
+
+/* Darker glass CTA — avoids soft-blue wash flash on open */
+.photobooth-gate__exit-wrap [data-slot='button'] {
+  --glass-bg: color-mix(in srgb, var(--color-cobalt) 55%, transparent);
+  --glass-border: color-mix(in srgb, var(--color-capiz) 28%, transparent);
+  background-color: var(--glass-bg);
+  border-color: var(--glass-border);
 }
 
 @media (min-width: 768px) {
@@ -1093,7 +1153,7 @@ p {
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  background-color: var(--gradient-sky-mid);
+  background-color: var(--color-palm-deep);
   background-image:
     linear-gradient(var(--page-bg-overlay), var(--page-bg-overlay)),
     var(--page-bg-image);
@@ -1622,7 +1682,7 @@ p {
   content: '';
   position: absolute;
   inset: 0.4rem;
-  border: 1px solid color-mix(in srgb, var(--butterscotch) 55%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-fern) 55%, transparent);
   pointer-events: none;
 }
 
@@ -1636,15 +1696,15 @@ p {
 
 .invitation-collage__save-date-title {
   margin: 0.55rem 0 0;
-  padding-inline: 0.15rem;
-  white-space: nowrap;
+  padding-inline: 0.35rem;
+  padding-block: 0.12rem;
 }
 
 .invitation-collage__save-date-names {
   align-self: flex-end;
   margin: 0.55rem 0.2rem 0;
   padding: 0.22rem 0.9rem;
-  border: 1px solid color-mix(in srgb, var(--venetian-gold) 65%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-fern) 55%, transparent);
   border-radius: 999px;
 }
 
@@ -1677,7 +1737,7 @@ p {
   content: '';
   position: absolute;
   inset: 0.35rem;
-  border: 1px solid rgba(30, 20, 15, 0.4);
+  border: 1px solid color-mix(in srgb, var(--color-fern) 50%, transparent);
   pointer-events: none;
 }
 
@@ -1812,22 +1872,22 @@ p {
 }
 
 .rsvp-form__back {
-  margin: 0 0 var(--spacing-sm);
+  margin: 0 0 var(--spacing-md);
   transition: color 0.2s ease;
 }
 
 .rsvp-form__title {
-  margin: 0 0 var(--spacing-sm);
+  margin: 0 0 var(--spacing-md);
 }
 
-.rsvp-form__description,
-.rsvp-form__helper {
-  margin: 0 0 var(--spacing-lg);
+.rsvp-form__description {
+  margin: 0 0 var(--spacing-md);
   max-width: 28rem;
 }
 
 .rsvp-form__helper {
-  margin-bottom: var(--spacing-xl);
+  margin: 0 0 var(--spacing-2xl);
+  max-width: 28rem;
 }
 
 .rsvp-form__form {
@@ -1864,9 +1924,9 @@ p {
 .rsvp-form__textarea {
   width: 100%;
   padding: var(--spacing-md);
-  border: 1px solid color-mix(in srgb, var(--color-champagne) 40%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-fern) 35%, transparent);
   border-radius: 0;
-  background: color-mix(in srgb, var(--glass-pigment) 42%, transparent);
+  background: color-mix(in srgb, var(--color-cobalt) 42%, transparent);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
 }
@@ -1879,7 +1939,7 @@ p {
 .rsvp-form__input:focus,
 .rsvp-form__textarea:focus {
   outline: none;
-  border-color: color-mix(in srgb, var(--color-champagne) 45%, transparent);
+  border-color: color-mix(in srgb, var(--color-fern) 65%, transparent);
 }
 
 .rsvp-form__input:disabled,
@@ -1899,15 +1959,15 @@ p {
 }
 
 .rsvp-form__nav [data-slot='button'] {
-  border-color: color-mix(in srgb, var(--color-champagne) 22%, transparent);
+  border-color: color-mix(in srgb, var(--color-fern) 40%, transparent);
   color: var(--color-capiz);
-  background: color-mix(in srgb, var(--glass-pigment) 32%, transparent);
+  background: color-mix(in srgb, var(--color-cobalt) 48%, transparent);
 }
 
 .rsvp-form__nav [data-slot='button']:hover:not(:disabled) {
-  border-color: color-mix(in srgb, var(--color-champagne) 45%, transparent);
+  border-color: var(--color-fern);
   color: var(--color-white);
-  background: color-mix(in srgb, var(--glass-pigment) 40%, transparent);
+  background: color-mix(in srgb, var(--color-cobalt) 58%, transparent);
 }
 
 /* === Shared Footer (hero / rsvp variants) === */
@@ -2045,12 +2105,12 @@ p {
   background-image:
     linear-gradient(
       to bottom,
-      rgba(0, 0, 0, 0.48) 0%,
-      rgba(0, 0, 0, 0.34) 40%,
-      rgba(0, 0, 0, 0.42) 70%,
-      rgba(0, 0, 0, 0.58) 100%
+      rgba(0, 0, 0, 0.58) 0%,
+      rgba(0, 0, 0, 0.42) 40%,
+      rgba(8, 12, 20, 0.5) 70%,
+      rgba(0, 0, 0, 0.68) 100%
     ),
-    url('/images/entrance/wed-bg.jpg');
+    url('/images/entrance/teal-bg.jpg');
   background-size: cover;
   background-position: center top;
   background-repeat: no-repeat;

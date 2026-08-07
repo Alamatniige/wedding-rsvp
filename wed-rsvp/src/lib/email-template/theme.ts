@@ -3,16 +3,16 @@ import { fontStacks } from './fonts'
 
 export const emailTheme = {
   colors: {
-    background: '#ede9df',
-    surface: '#f5f2ea',
-    card: '#fbf7f0',
-    text: '#262b30',
-    textSoft: '#5a6166',
-    accent: '#c0866a',
-    accentSoft: '#d4a890',
-    deep: '#3d464b',
-    gold: '#c9a27a',
-    line: '#d4cbb8',
+    background: '#eef1f0',
+    surface: '#f4f7f9',
+    card: '#f7f9fa',
+    text: '#2a3348',
+    textSoft: '#5a6b7a',
+    accent: '#7f8d54',
+    accentSoft: '#a3b07a',
+    deep: '#344879',
+    gold: '#8cb1cc',
+    line: '#c5d6e4',
     white: '#ffffff',
   },
   fonts: {
@@ -22,7 +22,7 @@ export const emailTheme = {
     body: fontStacks.body,
   },
   shadows: {
-    card: '0 12px 32px rgba(38, 43, 48, 0.12)',
+    card: '0 12px 32px rgba(52, 72, 121, 0.12)',
   },
   radius: {
     card: '24px',

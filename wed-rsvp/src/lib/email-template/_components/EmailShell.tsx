@@ -81,7 +81,7 @@ export function EmailShell({
           fontStyle="normal"
         />
         <Font
-          fontFamily="Carolyna Pro Black"
+          fontFamily="Loren Blake Script"
           fallbackFontFamily="cursive"
           fontWeight={400}
           fontStyle="normal"

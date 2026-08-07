@@ -1,6 +1,9 @@
 export const couple = {
   name1: 'Jianne',
   name2: 'Joe',
+  /** Script flourish letters (0-based) for Loren Blake mixed formatting */
+  name1ScriptIndices: [0], // J in JIANNE
+  name2ScriptIndices: [0], // J in JOE
   monogram: 'J&J',
   weddingDateISO: '2027-04-27T16:00:00',
   weddingDateDisplay: '27. 04. 2027',
@@ -10,14 +13,15 @@ export const couple = {
 }
 
 export const hero = {
-  backgroundImageUrl:
-    '/images/entrance/wed-bg.jpg',
+  backgroundImageUrl: '/images/entrance/teal-bg.jpg',
   tagline: 'Together with their families',
 }
 
 /** Hero landing route (post-welcome-gate). */
 export const heroLanding = {
   meetUsPrefix: 'Meet us at',
+  /** Two-line venue for mobile-friendly mixed display */
+  venueLines: ["Villa D'este", 'Tagaytay, Philippines'] as const,
   venue: couple.location,
   hopeMessage: 'We hope you can join us in...',
   date: 'Tuesday, 27th April, 2027',
@@ -332,7 +336,7 @@ export const contactBlock = {
 
 export const preWeddingParallax = {
   /** Main page background for Hero + RSVP routes */
-  pageBackgroundSrc: '/images/entrance/wed-bg.jpg',
+  pageBackgroundSrc: '/images/entrance/teal-bg.jpg',
   palmBackLeftSrc: '/images/entrance/palm-tree-1.png',
   palmBackRightSrc: '/images/entrance/palm-tree-2.png',
   palmMidSrc: '/images/entrance/twin-palm-tree.png',

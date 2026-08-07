@@ -3,6 +3,9 @@ import type { FormEvent } from 'react'
 import { Link } from '@tanstack/react-router'
 import { rsvpForm } from '../../../data/weddingData'
 import { createRSVP, findRSVPByEmail } from '../../../lib/rsvp/server'
+import MixedDisplayText, {
+  wordInitialScriptIndices,
+} from '../../typography/MixedDisplayText'
 import { Button } from '../../ui/button'
 
 type FormState = {
@@ -189,7 +192,12 @@ export default function RSVPForm() {
       <Link to="/" className="rsvp-form__back">
         {rsvpForm.backLabel}
       </Link>
-      <h2 className="rsvp-form__title">{rsvpForm.title}</h2>
+      <h2 className="rsvp-form__title">
+        <MixedDisplayText
+          text={rsvpForm.title}
+          scriptIndices={wordInitialScriptIndices(rsvpForm.title)}
+        />
+      </h2>
       <p className="rsvp-form__description">{rsvpForm.description}</p>
       <p className="rsvp-form__helper">
         {rsvpForm.helperPrefix}
