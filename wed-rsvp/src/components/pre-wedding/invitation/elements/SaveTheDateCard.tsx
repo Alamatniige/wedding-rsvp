@@ -1,41 +1,23 @@
-import { couple, invitationCollage } from '../../../../data/weddingData'
-import MixedDisplayName from '../../../typography/MixedDisplayName'
-import MixedDisplayText, {
-  wordInitialScriptIndices,
-} from '../../../typography/MixedDisplayText'
-
 type SaveTheDateCardProps = {
   className?: string
 }
 
+/** Botanical illustration on a textured paper card with burgundy double border. */
 export default function SaveTheDateCard({ className = '' }: SaveTheDateCardProps) {
-  const { inviteLine, title } = invitationCollage.saveTheDate
-
   return (
     <article className={`invitation-collage__save-date ${className}`.trim()}>
-      <p className="invitation-collage__save-date-invite">{inviteLine}</p>
-      <h2 className="invitation-collage__save-date-title">
-        <MixedDisplayText
-          text={title}
-          scriptIndices={wordInitialScriptIndices(title)}
+      <div className="invitation-collage__save-date-frame">
+        <img
+          className="invitation-collage__save-date-image"
+          src="/images/entrance/wed-bg.jpg"
+          alt="Tropical botanical illustration"
+          width={800}
+          height={504}
+          loading="lazy"
+          decoding="async"
+          draggable={false}
         />
-      </h2>
-      <p
-        className="invitation-collage__save-date-names"
-        aria-label={`${couple.name1} and ${couple.name2}`}
-      >
-        <span aria-hidden="true">
-          <MixedDisplayName
-            name={couple.name1}
-            scriptIndices={couple.name1ScriptIndices}
-          />
-          <span className="mixed-name__amp">&amp;</span>
-          <MixedDisplayName
-            name={couple.name2}
-            scriptIndices={couple.name2ScriptIndices}
-          />
-        </span>
-      </p>
+      </div>
     </article>
   )
 }

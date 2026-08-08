@@ -52,7 +52,7 @@ export const invitationCollage = {
     src: '/images/couple/couple-1.jpg',
     alt: `${couple.name1} and ${couple.name2}`,
   },
-  palmLeavesSrc: '/images/entrance/palm-tree-leaves.png',
+  palmLeavesSrc: '/images/entrance/alfie.jpg',
 }
 
 export type StoryCard = {
@@ -307,8 +307,6 @@ export const entranceGate = {
   // Couple's names written in Baybayin (old Filipino script): "Jianne - Joe"
   saveTheDateLabel: 'Save the Date',
   photoboothMachineSrc: '/images/entrance/photobooth-machine.png',
-  palmTreeLeftSrc: '/images/entrance/palm-tree-slanted.png',
-  palmTreeRightSrc: '/images/entrance/palm-tree-slanted.png',
   couplePhotoSrcs: [
     '/images/couple/couple-1.jpg',
     '/images/couple/couple-2.jpg',

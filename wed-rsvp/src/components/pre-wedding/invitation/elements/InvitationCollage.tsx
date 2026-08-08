@@ -4,7 +4,6 @@ import { useGSAP } from '../../../../hooks/useGSAP'
 import SaveTheDateCard from './SaveTheDateCard'
 import CelebrationCard from './CelebrationCard'
 import FilmStrip from './FilmStrip'
-import Polaroid from './Polaroid'
 import PalmLeaves from './PalmLeaves'
 
 type InvitationCollageProps = {
@@ -25,12 +24,11 @@ export default function InvitationCollage({
     if (!root) return
 
     const film = root.querySelector<HTMLElement>('[data-collage-piece="film"]')
-    const polaroid = root.querySelector<HTMLElement>('[data-collage-piece="polaroid"]')
     const saveDate = root.querySelector<HTMLElement>('[data-collage-piece="save-date"]')
     const postcard = root.querySelector<HTMLElement>('[data-collage-piece="postcard"]')
     const leaves = root.querySelector<HTMLElement>('[data-collage-piece="leaves"]')
 
-    const pieces = [film, polaroid, saveDate, postcard, leaves].filter(
+    const pieces = [postcard, saveDate, film, leaves].filter(
       (el): el is HTMLElement => Boolean(el),
     )
     if (pieces.length === 0) return
@@ -58,11 +56,10 @@ export default function InvitationCollage({
     }
 
     // Fly-by from each side — delayed only after Open Invitation, not on reload skip.
-    gsap.set(film, { opacity: 0, xPercent: -95, y: 56 })
-    gsap.set(polaroid, { opacity: 0, xPercent: 105, y: -40 })
-    gsap.set(saveDate, { opacity: 0, yPercent: -85, x: 28 })
     gsap.set(postcard, { opacity: 0, yPercent: 95, x: -16 })
-    gsap.set(leaves, { opacity: 0, xPercent: 85, yPercent: 70 })
+    gsap.set(saveDate, { opacity: 0, yPercent: -85, x: 12 })
+    gsap.set(film, { opacity: 0, xPercent: -95, y: 40 })
+    gsap.set(leaves, { opacity: 0, xPercent: 105, y: -40 })
 
     const settle = {
       opacity: 1,
@@ -74,13 +71,13 @@ export default function InvitationCollage({
       ease: 'power3.out' as const,
     }
 
+    // Back-to-front: postcard → villa → film → stamp
     gsap
       .timeline({ delay: revealDelay, defaults: { overwrite: 'auto' } })
-      .to(saveDate, settle, 0)
-      .to(postcard, settle, 0.14)
-      .to(film, settle, 0.22)
-      .to(polaroid, settle, 0.3)
-      .to(leaves, settle, 0.4)
+      .to(postcard, settle, 0)
+      .to(saveDate, settle, 0.1)
+      .to(film, settle, 0.2)
+      .to(leaves, settle, 0.3)
   }, [animate, revealDelay])
 
   return (
@@ -103,12 +100,6 @@ export default function InvitationCollage({
           className="invitation-collage__piece invitation-collage__piece--film"
         >
           <FilmStrip />
-        </div>
-        <div
-          data-collage-piece="polaroid"
-          className="invitation-collage__piece invitation-collage__piece--polaroid"
-        >
-          <Polaroid />
         </div>
         <div
           data-collage-piece="leaves"

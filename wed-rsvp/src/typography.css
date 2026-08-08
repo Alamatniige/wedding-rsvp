@@ -648,10 +648,6 @@ button {
   text-align: left;
 }
 
-.invitation-collage__save-date {
-  color: var(--color-white);
-}
-
 .invitation-collage__save-date-invite {
   font-family: var(--font-body);
   font-size: clamp(0.42rem, 1.15vw, 0.58rem);
@@ -707,7 +703,7 @@ button {
   font-weight: 400;
   font-size: clamp(1.35rem, 3.6vw, 1.9rem);
   line-height: 1.15;
-  color: var(--color-fern);
+  color: #6e2c3a;
   text-align: center;
 }
 
@@ -717,7 +713,7 @@ button {
   letter-spacing: 0.1em;
   text-transform: uppercase;
   text-align: center;
-  color: var(--color-fern);
+  color: #6e2c3a;
 }
 
 @media (max-width: 639px) {

@@ -5,13 +5,14 @@ type CelebrationCardProps = {
 }
 
 export default function CelebrationCard({ className = '' }: CelebrationCardProps) {
-  const { details, note, footer } = invitationCollage.celebration
+  const { note, footer } = invitationCollage.celebration
 
   return (
     <article className={`invitation-collage__postcard ${className}`.trim()}>
-      <p className="invitation-collage__postcard-details">{details}</p>
-      <p className="invitation-collage__postcard-note">{note}</p>
-      <p className="invitation-collage__postcard-footer">{footer}</p>
+      <div className="invitation-collage__postcard-frame">
+        <p className="invitation-collage__postcard-note">{note}</p>
+        <p className="invitation-collage__postcard-footer">{footer}</p>
+      </div>
     </article>
   )
 }

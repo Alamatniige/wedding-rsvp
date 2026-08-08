@@ -459,7 +459,6 @@ p {
   border-radius: 2px;
   background: var(--bg-cream);
   box-shadow: inset 0 0 0 1px rgba(42, 50, 54, 0.12);
-  filter: grayscale(1) contrast(1.05);
   transform-origin: top center;
   /* Hidden by default so the strip never paints in the revealed position before
      GSAP measures + fades it in (avoids a flash of the full strip on load). */
@@ -1604,8 +1603,8 @@ p {
 .invitation-collage__stage {
   position: relative;
   width: 100%;
-  aspect-ratio: 1.15 / 1;
-  max-height: min(32rem, 72vw);
+  aspect-ratio: 1 / 1.12;
+  max-height: min(36rem, 82vw);
   margin-inline: auto;
 }
 
@@ -1613,131 +1612,107 @@ p {
   position: absolute;
 }
 
-/* Bottom card — behind top card */
+/* Invitation card — bottom-most, peeks under villa */
 .invitation-collage__piece--postcard {
-  top: 44%;
-  left: 24%;
-  width: 56%;
-  z-index: 4;
-}
-
-/* Top card (Save the Date) — behind postcard; overlap at bottom-left */
-.invitation-collage__piece--save-date {
-  top: 0%;
-  left: 18%;
-  width: 56%;
-  z-index: 1;
-}
-
-/* Film — under top card, over bottom; clips bottom-left of top + mid-left of bottom */
-.invitation-collage__piece--film {
-  top: 10%;
-  left: 6%;
-  width: 12%;
+  top: 42%;
+  left: 28%;
+  width: 60%;
   z-index: 2;
 }
 
-/* Polaroid — bottom-left overlaps top card */
-.invitation-collage__piece--polaroid {
-  top: 2%;
-  right: 4%;
-  width: 22%;
-  z-index: 3;
+/* Villa — centered landscape block above invitation */
+.invitation-collage__piece--save-date {
+  top: 5%;
+  left: 20%;
+  width: 60%;
+  z-index: 1;
 }
 
-/* Palm leaves — in front of cards */
+/* Film — left strip, behind invitation card */
+.invitation-collage__piece--film {
+  top: 14%;
+  left: 7%;
+  width: 15%;
+  z-index: 1;
+}
+
+/* Alfie stamp — top-right, beside villa corner */
 .invitation-collage__piece--leaves {
-  bottom: -8%;
-  right: 4%;
-  width: 42%;
+  top: 2%;
+  bottom: auto;
+  right: 10%;
+  width: 17%;
   z-index: 5;
 }
 
-.invitation-collage__save-date,
-.invitation-collage__postcard {
+.invitation-collage__save-date {
+  display: block;
+  width: 100%;
+  padding: clamp(0.35rem, 1.1vw, 0.5rem);
+  aspect-ratio: 5 / 3.15;
   background-color: #f7f3eb;
   background-image: url('/images/card-texture/paper-texture.avif');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  border: 1px solid rgba(30, 20, 15, 0.35);
-  box-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.6) inset,
-    0 12px 32px rgba(20, 10, 8, 0.28);
+  box-shadow: 0 8px 16px rgba(20, 10, 8, 0.35);
+  pointer-events: none;
+  user-select: none;
+  transform: rotate(5deg);
 }
 
-.invitation-collage__save-date {
+.invitation-collage__save-date-frame {
   position: relative;
-  padding: clamp(1.1rem, 3vw, 1.75rem) clamp(1rem, 2.6vw, 1.5rem);
-  aspect-ratio: 5 / 3.5;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  /* Counter-clockwise */
-  transform: rotate(-9deg);
+  height: 100%;
+  border: clamp(0.18rem, 0.55vw, 0.28rem) solid #6e2c3a;
+  padding: clamp(0.28rem, 0.9vw, 0.42rem);
 }
 
-.invitation-collage__save-date::after {
+.invitation-collage__save-date-frame::after {
   content: '';
   position: absolute;
-  inset: 0.4rem;
-  border: 1px solid color-mix(in srgb, var(--color-fern) 55%, transparent);
+  inset: clamp(0.12rem, 0.4vw, 0.2rem);
+  border: 1px solid #1a1410;
   pointer-events: none;
 }
 
-.invitation-collage__save-date-invite {
-  position: absolute;
-  top: 0.65rem;
-  right: 0.9rem;
-  max-width: 42%;
-  margin: 0;
-}
-
-.invitation-collage__save-date-title {
-  margin: 0.55rem 0 0;
-  padding-inline: 0.35rem;
-  padding-block: 0.12rem;
-}
-
-.invitation-collage__save-date-names {
-  align-self: flex-end;
-  margin: 0.55rem 0.2rem 0;
-  padding: 0.22rem 0.9rem;
-  border: 1px solid color-mix(in srgb, var(--color-fern) 55%, transparent);
-  border-radius: 999px;
+.invitation-collage__save-date-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
 }
 
 .invitation-collage__postcard {
   position: relative;
-  padding: clamp(1rem, 2.5vw, 1.4rem) clamp(0.9rem, 2.3vw, 1.25rem);
+  padding: clamp(0.35rem, 1.1vw, 0.5rem);
   aspect-ratio: 5 / 3.15;
+  transform: rotate(-5deg);
+  background-color: #f7f3eb;
+  background-image: url('/images/card-texture/paper-texture.avif');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  box-shadow: 0 12px 32px rgba(20, 10, 8, 0.28);
+}
+
+.invitation-collage__postcard-frame {
+  position: relative;
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   gap: 0.4rem;
-  /* Clockwise */
-  transform: rotate(8deg);
-  background-image:
-    repeating-linear-gradient(
-      transparent,
-      transparent 1.55rem,
-      rgba(40, 30, 25, 0.1) 1.55rem,
-      rgba(40, 30, 25, 0.1) calc(1.55rem + 1px)
-    ),
-    url('/images/card-texture/paper-texture.avif');
-  background-size: auto, cover;
-  background-position:
-    0 2.6rem,
-    center;
-  background-repeat: repeat, no-repeat;
+  border: clamp(0.18rem, 0.55vw, 0.28rem) solid #6e2c3a;
+  padding: clamp(0.75rem, 2vw, 1.1rem) clamp(0.65rem, 1.8vw, 0.95rem);
 }
 
-.invitation-collage__postcard::after {
+.invitation-collage__postcard-frame::after {
   content: '';
   position: absolute;
-  inset: 0.35rem;
-  border: 1px solid color-mix(in srgb, var(--color-fern) 50%, transparent);
+  inset: clamp(0.12rem, 0.4vw, 0.2rem);
+  border: 1px solid #1a1410;
   pointer-events: none;
 }
 
@@ -1759,7 +1734,7 @@ p {
   padding: 0.32rem 0.26rem;
   box-shadow: 0 10px 26px rgba(20, 10, 8, 0.3);
   border: 1px solid rgba(30, 20, 15, 0.2);
-  transform: rotate(-16deg);
+  transform: rotate(-12deg);
 }
 
 .invitation-collage__film-photos {
@@ -1773,24 +1748,6 @@ p {
   width: 100%;
   aspect-ratio: 1;
   object-fit: cover;
-  filter: grayscale(1) contrast(1.05);
-}
-
-.invitation-collage__polaroid {
-  margin: 0;
-  background: #f7f3eb;
-  padding: 0.45rem 0.45rem 1.25rem;
-  box-shadow: 0 12px 30px rgba(20, 10, 8, 0.3);
-  border: 1px solid rgba(30, 20, 15, 0.18);
-  transform: rotate(18deg);
-}
-
-.invitation-collage__polaroid-image {
-  display: block;
-  width: 100%;
-  aspect-ratio: 1;
-  object-fit: cover;
-  filter: grayscale(1) contrast(1.05);
 }
 
 .invitation-collage__palm-leaves {
@@ -1798,47 +1755,40 @@ p {
   width: 100%;
   height: auto;
   object-fit: contain;
-  mix-blend-mode: screen;
   filter: drop-shadow(0 8px 16px rgba(20, 10, 8, 0.35));
   pointer-events: none;
   user-select: none;
-  transform: rotate(8deg);
+  transform: rotate(12deg);
 }
 
 @media (max-width: 639px) {
   .invitation-collage__stage {
-    aspect-ratio: 1 / 1;
+    aspect-ratio: 1 / 1.15;
     max-height: none;
   }
 
-  .invitation-collage__piece--save-date {
-    left: 16%;
-    width: 60%;
+  .invitation-collage__piece--postcard {
+    top: 40%;
+    left: 24%;
+    width: 64%;
   }
 
-  .invitation-collage__piece--postcard {
-    left: 20%;
-    width: 62%;
+  .invitation-collage__piece--save-date {
+    top: 3%;
+    left: 16%;
+    width: 64%;
   }
 
   .invitation-collage__piece--film {
-    left: 4%;
-    width: 13%;
-  }
-
-  .invitation-collage__piece--polaroid {
-    width: 24%;
+    top: 12%;
+    left: 5%;
+    width: 16%;
   }
 
   .invitation-collage__piece--leaves {
-    width: 46%;
-    right: 2%;
-  }
-
-  .invitation-collage__save-date-invite {
-    top: 0.5rem;
-    right: 0.65rem;
-    max-width: 44%;
+    top: 0%;
+    right: 8%;
+    width: 18%;
   }
 }
 

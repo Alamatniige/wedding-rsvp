@@ -1,17 +1,15 @@
-import { invitationCollage } from '../../../../data/weddingData'
-
 type PalmLeavesProps = {
   className?: string
 }
 
-/** Edited slanted-V palm asset for the collage corner. */
+/** Alfie postage stamp — replaces the collage corner palm leaves. */
 export default function PalmLeaves({ className = '' }: PalmLeavesProps) {
   return (
     <img
       className={`invitation-collage__palm-leaves ${className}`.trim()}
-      src={invitationCollage.palmLeavesSrc}
+      src="/images/entrance/alfie.png"
       alt=""
-      width={400}
+      width={300}
       height={400}
       loading="lazy"
       decoding="async"
