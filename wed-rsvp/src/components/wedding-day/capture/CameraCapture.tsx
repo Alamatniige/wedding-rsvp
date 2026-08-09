@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import type { TouchEvent, TouchList } from 'react'
 import { Flashlight, FlashlightOff, Images, SwitchCamera } from 'lucide-react'
-import { Button } from '../ui/button'
-import { appendPhoto, MAX_PHOTOS_PER_GUEST, readPhotos } from './storage'
-import type { WeddingDayPhoto, WeddingDaySession } from './storage'
+import { Button } from '../../ui/button'
+import { couple } from '../../../data/weddingData'
+import { appendPhoto, MAX_PHOTOS_PER_GUEST, readPhotos } from '../storage'
+import type { WeddingDayPhoto, WeddingDaySession } from '../storage'
 
 type FacingMode = 'user' | 'environment'
 
@@ -31,6 +32,7 @@ export default function CameraCapture({
 }: CameraCaptureProps) {
   const videoRef = useRef<HTMLVideoElement>(null)
   const streamRef = useRef<MediaStream | null>(null)
+  const cameraStartIdRef = useRef(0)
   const pinchStartDist = useRef<number | null>(null)
   const pinchStartZoom = useRef(1)
 
@@ -86,6 +88,7 @@ export default function CameraCapture({
 
   const startCamera = useCallback(
     async (mode: FacingMode) => {
+      const startId = ++cameraStartIdRef.current
       setStarting(true)
       setError(null)
       setTorchOn(false)
@@ -111,6 +114,13 @@ export default function CameraCapture({
             },
           })
         }
+
+        // A newer start (or unmount cleanup) won the race — drop this stream.
+        if (startId !== cameraStartIdRef.current) {
+          stream.getTracks().forEach((track) => track.stop())
+          return
+        }
+
         streamRef.current = stream
         const track = stream.getVideoTracks()[0]
         probeTorch(track)
@@ -119,13 +129,19 @@ export default function CameraCapture({
           video.srcObject = stream
           await video.play()
         }
+
+        if (startId !== cameraStartIdRef.current) return
+        setError(null)
       } catch {
+        if (startId !== cameraStartIdRef.current) return
         setError(
           'Camera access was denied or is unavailable. Check permissions and try again.',
         )
         setTorchSupported(false)
       } finally {
-        setStarting(false)
+        if (startId === cameraStartIdRef.current) {
+          setStarting(false)
+        }
       }
     },
     [probeTorch, stopStream],
@@ -134,6 +150,7 @@ export default function CameraCapture({
   useEffect(() => {
     void startCamera(facing)
     return () => {
+      cameraStartIdRef.current += 1
       stopStream()
     }
   }, [facing, startCamera, stopStream])
@@ -359,7 +376,8 @@ export default function CameraCapture({
               ) : null}
             </div>
             <p className="wd-camera__film-caption">
-              Jianne &amp; Joe <span>Wedding day</span>
+              {couple.name1} &amp; {couple.name2}{' '}
+              <span>{couple.weddingDateDisplay}</span>
             </p>
           </div>
 

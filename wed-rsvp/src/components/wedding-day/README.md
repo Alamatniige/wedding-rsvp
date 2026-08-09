@@ -8,8 +8,12 @@ After reveal, guests can browse per-guest thumbnail strips, open a full-size lig
 
 | Path | Purpose |
 | ---- | ------- |
-| Root (`*.tsx`, `storage.ts`, …) | Guest photobooth flow |
+| [`WeddingDayFlow.tsx`](./WeddingDayFlow.tsx) | Flow orchestrator (lookup → camera → post → gallery) |
+| [`landing/`](./landing/) | Welcome / email lookup & same-day signup |
+| [`capture/`](./capture/) | Camera capture and post-capture waiting UI |
+| [`gallery/`](./gallery/) | Guest strips, lightbox, full gallery browse |
 | [`admin/`](./admin/) | Coordinator UI (RSVP CRUD, gallery reveal, wedding-day preview) |
+| [`storage.ts`](./storage.ts), [`guestNames.ts`](./guestNames.ts) | Shared localStorage + display-name helpers |
 
 ## How guests reach it
 

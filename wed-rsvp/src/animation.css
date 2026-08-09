@@ -5,8 +5,7 @@
 
 /* === Photobooth gate === */
 .photobooth-gate__greeting,
-.photobooth-gate__names,
-.photobooth-gate__pull-prompt {
+.photobooth-gate__names {
   opacity: 0;
   will-change: transform, opacity;
 }
@@ -55,11 +54,6 @@
 .invitation-collage__piece {
   opacity: 0;
   will-change: transform, opacity;
-}
-
-/* === Site footer === */
-.site-footer__bg-image {
-  will-change: transform;
 }
 
 /* === Wedding day (wd-*) === */

@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import CameraCapture from './CameraCapture'
-import EmailLookup from './EmailLookup'
-import Gallery from './Gallery'
-import PostCapture from './PostCapture'
+import CameraCapture from './capture/CameraCapture'
+import PostCapture from './capture/PostCapture'
+import Gallery from './gallery/Gallery'
+import EmailLookup from './landing/EmailLookup'
 import { readPhotos, readRevealed, readSession } from './storage'
 import type { WeddingDaySession } from './storage'
 
@@ -107,6 +107,7 @@ export default function WeddingDayFlow() {
                 photos={readPhotos(session.guestId)}
                 revealed={revealed}
                 sessionGuestId={session.guestId}
+                guestDisplayName={session.displayName || 'Guest'}
                 onBackToCamera={() => setStep('camera')}
                 onViewGallery={openGallery}
               />
@@ -128,6 +129,7 @@ export default function WeddingDayFlow() {
                   photos={session ? readPhotos(session.guestId) : []}
                   revealed={false}
                   sessionGuestId={session?.guestId}
+                  guestDisplayName={session?.displayName || 'Guest'}
                   onBackToCamera={() => setStep('camera')}
                   onViewGallery={openGallery}
                 />

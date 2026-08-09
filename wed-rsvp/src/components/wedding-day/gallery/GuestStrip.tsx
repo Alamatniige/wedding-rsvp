@@ -1,9 +1,9 @@
-import { getGuestDisplayName } from './guestNames'
-import type { GalleryGuestSummary } from './storage'
+import { getGuestDisplayName } from '../guestNames'
+import type { GalleryGuestSummary, WeddingDaySession } from '../storage'
 
 type GuestStripProps = {
   guests: GalleryGuestSummary[]
-  sessionGuestId?: string | null
+  session?: Pick<WeddingDaySession, 'guestId' | 'displayName'> | null
   activeGuestId: string | null
   onSelectGuest: (guestId: string | null) => void
   /** When true, selecting always navigates (e.g. from PostCapture into Gallery). */
@@ -12,7 +12,7 @@ type GuestStripProps = {
 
 export default function GuestStrip({
   guests,
-  sessionGuestId,
+  session = null,
   activeGuestId,
   onSelectGuest,
   navigateOnly = false,
@@ -31,7 +31,7 @@ export default function GuestStrip({
       </button>
       <ul className="wd-guest-strip__list">
         {guests.map((guest) => {
-          const label = getGuestDisplayName(guest.guestId, sessionGuestId)
+          const label = getGuestDisplayName(guest.guestId, session)
           const isActive = activeGuestId === guest.guestId
           return (
             <li key={guest.guestId}>

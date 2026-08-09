@@ -13,6 +13,8 @@ export const MAX_PHOTOS_PER_GUEST = 10
 export type WeddingDaySession = {
   guestId: string
   email: string
+  /** First name (or full name) for polaroid captions and gallery labels. */
+  displayName: string
 }
 
 export type WeddingDayPhoto = {
@@ -39,7 +41,11 @@ export function readSession(): WeddingDaySession | null {
       typeof parsed.guestId === 'string' &&
       typeof parsed.email === 'string'
     ) {
-      return { guestId: parsed.guestId, email: parsed.email }
+      const displayName =
+        typeof parsed.displayName === 'string' && parsed.displayName.trim()
+          ? parsed.displayName.trim()
+          : ''
+      return { guestId: parsed.guestId, email: parsed.email, displayName }
     }
   } catch {
     // private mode / unavailable storage

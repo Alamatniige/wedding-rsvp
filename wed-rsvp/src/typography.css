@@ -1,30 +1,3 @@
-/* === Shared utilities === */
-.display-name {
-  font-family: var(--font-display);
-  font-weight: 300;
-  letter-spacing: 0.04em;
-}
-
-.display-name--italic {
-  font-style: italic;
-}
-
-.section-label {
-  font-family: var(--font-subheading);
-  font-variant: small-caps;
-  letter-spacing: 0.12em;
-  font-weight: 500;
-  color: var(--color-accent);
-}
-
-.section-title {
-  font-family: var(--font-display);
-  font-weight: 300;
-  font-size: clamp(2rem, 5vw, 3rem);
-  letter-spacing: 0.03em;
-  color: var(--color-text);
-}
-
 /* === Base / global type === */
 body {
   font-family: var(--font-sans);
@@ -95,16 +68,6 @@ button {
   vertical-align: 0.02em;
 }
 
-.photobooth-gate__pull-prompt {
-  font-family: var(--font-sans);
-  font-size: 0.65rem;
-  font-weight: 500;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  text-align: center;
-  color: var(--color-sunset-gold);
-}
-
 .photobooth-gate__save-block {
   text-align: center;
 }
@@ -127,52 +90,6 @@ button {
   text-transform: none;
   color: var(--hero-text-soft);
   text-shadow: var(--gate-text-shadow);
-}
-
-@media (max-width: 400px) {
-  .photobooth-gate__pull-prompt {
-    letter-spacing: 0.16em;
-    font-size: 0.62rem;
-  }
-}
-
-/* === Hero section === */
-.hero-section__content {
-  text-align: center;
-  color: var(--color-text-inverse);
-}
-
-.hero-section__tagline {
-  font-family: var(--font-subheading);
-  font-variant: small-caps;
-  font-size: 0.85rem;
-  letter-spacing: 0.2em;
-}
-
-.hero-section__names {
-  font-family: var(--font-names);
-  font-weight: 400;
-  font-size: clamp(3.25rem, 11vw, 6.5rem);
-  line-height: 1.15;
-  letter-spacing: 0.01em;
-}
-
-.hero-section__ampersand {
-  font-style: italic;
-  font-size: 0.6em;
-}
-
-.hero-section__date {
-  font-family: var(--font-subheading);
-  font-variant: uppercase;
-  font-size: clamp(0.9rem, 2.5vw, 1.1rem);
-  letter-spacing: 0.15em;
-}
-
-.hero-section__location {
-  font-family: var(--font-sans);
-  font-weight: 400;
-  font-size: 1rem;
 }
 
 /* === Countdown timer === */
@@ -205,368 +122,9 @@ button {
   }
 }
 
-/* === Our story === */
-.our-story__quote {
-  font-family: var(--font-display);
-  font-weight: 300;
-  font-style: italic;
-  font-size: clamp(1.1rem, 2.5vw, 1.4rem);
-  line-height: 1.8;
-  text-align: center;
-  color: var(--color-text-soft);
-}
-
-.our-story__card {
-  text-align: left;
-}
-
-.our-story__card-caption {
-  font-family: var(--font-subheading);
-  font-size: clamp(0.75rem, 2vw, 0.875rem);
-  font-weight: 500;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  text-align: center;
-  color: var(--color-text);
-}
-
-.our-story__card-description {
-  font-family: var(--font-display);
-  font-weight: 300;
-  font-style: italic;
-  font-size: clamp(0.95rem, 2.2vw, 1.1rem);
-  line-height: 1.75;
-  text-align: center;
-  color: var(--color-text-soft);
-}
-
-/* === Itinerary === */
-.itinerary__header {
-  text-align: left;
-}
-
-.itinerary__title {
-  font-family: var(--font-display);
-  font-weight: 400;
-  font-size: 1.25rem;
-}
-
-.itinerary__time {
-  font-family: var(--font-subheading);
-  font-variant: small-caps;
-  font-size: 0.8rem;
-  letter-spacing: 0.1em;
-  color: var(--color-accent);
-}
-
-.itinerary__chevron {
-  font-size: 0.75rem;
-  color: var(--color-text-soft);
-}
-
-.itinerary__detail-row {
-  font-size: 0.9rem;
-  color: var(--color-text-soft);
-}
-
-.itinerary__detail-label {
-  font-family: var(--font-subheading);
-  font-variant: small-caps;
-  font-size: 0.75rem;
-  letter-spacing: 0.08em;
-  color: var(--color-accent);
-}
-
-/* === Travel === */
-.travel__map-btn {
-  font-size: 0.85rem;
-  font-weight: 500;
-  color: var(--color-text);
-}
-
-.travel__map-btn:hover {
-  color: var(--color-text);
-}
-
-.travel__hotel-name {
-  font-family: var(--font-display);
-  font-weight: 400;
-  font-size: 1.3rem;
-}
-
-.travel__hotel-code {
-  font-family: var(--font-subheading);
-  font-variant: small-caps;
-  font-size: 0.8rem;
-  letter-spacing: 0.1em;
-  color: var(--color-accent);
-}
-
-.travel__hotel-distance {
-  font-size: 0.85rem;
-  color: var(--color-text-soft);
-}
-
-.travel__hotel-desc {
-  font-size: 0.9rem;
-  color: var(--color-text-soft);
-  line-height: 1.5;
-}
-
-/* === RSVP (legacy) === */
-.rsvp__step-title {
-  font-family: var(--font-display);
-  font-weight: 300;
-  font-size: 1.5rem;
-  text-align: center;
-}
-
-.rsvp__toggle-btn {
-  font-size: 0.9rem;
-  font-weight: 500;
-  text-align: center;
-  color: var(--color-text-soft);
-}
-
-.rsvp__toggle-btn--active {
-  color: var(--color-ivory);
-}
-
-.rsvp__label {
-  font-family: var(--font-subheading);
-  font-variant: small-caps;
-  font-size: 0.75rem;
-  letter-spacing: 0.1em;
-  color: var(--color-accent);
-}
-
-.rsvp__input,
-.rsvp__select {
-  font-family: var(--font-sans);
-  font-size: 1rem;
-  color: var(--color-text);
-}
-
-.rsvp__btn {
-  font-size: 0.9rem;
-  font-weight: 500;
-}
-
-.rsvp__btn--primary {
-  color: var(--color-ivory);
-}
-
-.rsvp__btn--secondary {
-  color: var(--color-text-soft);
-}
-
-.rsvp__saved {
-  text-align: center;
-}
-
-.rsvp__saved-title {
-  font-family: var(--font-display);
-  font-weight: 400;
-  font-size: 1.5rem;
-  color: var(--color-text);
-}
-
-.rsvp__saved-copy {
-  font-family: var(--font-body);
-  font-size: 0.95rem;
-  color: var(--color-text-soft);
-  line-height: 1.6;
-}
-
 /* === Pre-wedding page === */
 .pre-wedding-page {
   color: var(--color-text);
-}
-
-/* === Countdown header === */
-.countdown-header__panel {
-  text-align: center;
-}
-
-.countdown-header__meet {
-  font-family: var(--font-body);
-  font-size: 0.8rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--color-text-soft);
-  line-height: 1.5;
-}
-
-.countdown-header__venue {
-  color: var(--color-text);
-  font-weight: 500;
-}
-
-.countdown-header__date {
-  font-family: var(--font-subheading);
-  font-size: clamp(1.75rem, 6vw, 2.5rem);
-  color: var(--color-text);
-}
-
-.countdown-header__timer {
-  color: var(--color-text);
-}
-
-/* === Save the date === */
-.save-the-date__card {
-  text-align: center;
-}
-
-.save-the-date__card-title {
-  font-family: var(--font-subheading);
-  font-size: clamp(2rem, 8vw, 2.75rem);
-  color: var(--color-sunset-coral);
-}
-
-.save-the-date__card-date {
-  font-family: var(--font-display);
-  font-size: 1.25rem;
-  color: var(--color-text);
-}
-
-.save-the-date__card-venue {
-  font-family: var(--font-body);
-  font-size: 0.9rem;
-  color: var(--color-text-soft);
-  line-height: 1.5;
-}
-
-.save-the-date__note {
-  font-family: var(--font-handwriting);
-  font-size: 1.35rem;
-  line-height: 1.5;
-  text-align: center;
-  color: var(--color-text);
-}
-
-/* === Couple names === */
-.couple-names__content {
-  text-align: center;
-}
-
-.couple-names__names {
-  font-family: var(--font-subheading);
-  font-size: clamp(3rem, 14vw, 5rem);
-  line-height: 1.05;
-  color: var(--color-capiz);
-  text-shadow: var(--gate-text-shadow);
-}
-
-.couple-names__ampersand {
-  font-size: 0.55em;
-  color: var(--color-sunset-gold);
-}
-
-.couple-names__cta {
-  font-family: var(--font-body);
-  font-size: 0.85rem;
-  font-weight: 500;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--color-capiz);
-}
-
-.couple-names__cta:hover {
-  color: var(--color-palm-deep);
-}
-
-/* === Contact block === */
-.contact-block__panel {
-  text-align: center;
-}
-
-.contact-block__heading {
-  font-family: var(--font-display);
-  font-weight: 400;
-  font-size: clamp(1.5rem, 5vw, 1.85rem);
-  color: var(--color-text);
-}
-
-.contact-block__body {
-  font-family: var(--font-body);
-  font-size: 0.95rem;
-  line-height: 1.7;
-  color: var(--color-text-soft);
-}
-
-.contact-block__back {
-  font-family: var(--font-body);
-  font-size: 0.85rem;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--color-text);
-}
-
-.contact-block__back:hover {
-  color: var(--color-sunset-coral);
-}
-
-/* === Address form === */
-.address-form .section-label,
-.address-form .section-title {
-  text-align: center;
-}
-
-.address-form__helper {
-  font-family: var(--font-body);
-  font-size: 0.95rem;
-  line-height: 1.6;
-  text-align: center;
-  color: var(--color-text-soft);
-}
-
-.address-form__label {
-  font-family: var(--font-body);
-  font-size: 0.7rem;
-  font-weight: 500;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--color-sunset-coral);
-}
-
-.address-form__input,
-.address-form__textarea {
-  font-family: var(--font-body);
-  font-size: 1rem;
-  color: var(--color-text);
-}
-
-.address-form__error {
-  font-family: var(--font-body);
-  font-size: 0.8rem;
-  color: var(--color-sunset-coral);
-}
-
-.address-form__btn {
-  font-family: var(--font-body);
-  font-size: 0.9rem;
-  font-weight: 500;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--color-capiz);
-}
-
-.address-form__saved {
-  text-align: center;
-}
-
-.address-form__saved-title {
-  font-family: var(--font-display);
-  font-weight: 400;
-  font-size: 1.5rem;
-  color: var(--color-text);
-}
-
-.address-form__saved-copy {
-  font-family: var(--font-body);
-  font-size: 0.95rem;
-  color: var(--color-text-soft);
-  line-height: 1.6;
 }
 
 /* === Hero landing === */
@@ -648,56 +206,6 @@ button {
   text-align: left;
 }
 
-.invitation-collage__save-date-invite {
-  font-family: var(--font-body);
-  font-size: clamp(0.42rem, 1.15vw, 0.58rem);
-  font-weight: 500;
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
-  line-height: 1.3;
-  text-align: right;
-  color: var(--color-fern);
-}
-
-.invitation-collage__save-date-title {
-  font-weight: 400;
-  font-size: clamp(1.05rem, 3.4vw, 1.55rem);
-  line-height: 1.25;
-  letter-spacing: 0.01em;
-  text-align: center;
-  color: var(--color-fern);
-  overflow: visible;
-}
-
-.invitation-collage__save-date-title .mixed-name__script {
-  font-size: 1.12em;
-  vertical-align: -0.04em;
-}
-
-.invitation-collage__save-date-names {
-  font-size: clamp(0.78rem, 2.1vw, 1.05rem);
-  color: var(--color-fern);
-  line-height: 1.35;
-  text-align: center;
-  overflow: visible;
-}
-
-.invitation-collage__save-date-names .mixed-name__script {
-  font-size: 1.12em;
-  vertical-align: -0.04em;
-}
-
-.invitation-collage__postcard-details {
-  font-family: var(--font-body);
-  font-size: clamp(0.58rem, 1.45vw, 0.8rem);
-  font-weight: 500;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  line-height: 1.4;
-  text-align: center;
-  color: var(--color-fern);
-}
-
 .invitation-collage__postcard-note {
   font-family: var(--font-script);
   font-weight: 400;
@@ -714,22 +222,6 @@ button {
   text-transform: uppercase;
   text-align: center;
   color: #6e2c3a;
-}
-
-@media (max-width: 639px) {
-  .invitation-collage__save-date-invite {
-    font-size: clamp(0.34rem, 1.9vw, 0.45rem);
-    letter-spacing: 0.05em;
-    line-height: 1.25;
-  }
-
-  .invitation-collage__save-date-title {
-    font-size: clamp(0.88rem, 4.6vw, 1.2rem);
-  }
-
-  .invitation-collage__save-date-names {
-    font-size: clamp(0.68rem, 3.4vw, 0.88rem);
-  }
 }
 
 /* === RSVP form === */
@@ -828,72 +320,6 @@ button {
   color: var(--color-fern);
 }
 
-/* === Site footer === */
-.site-footer {
-  text-align: center;
-  color: var(--footer-text);
-}
-
-.site-footer__initials {
-  font-family: var(--font-accent);
-  font-size: clamp(2.25rem, 8vw, 4rem);
-  line-height: 1;
-  color: var(--footer-text);
-  white-space: nowrap;
-}
-
-.site-footer__message {
-  font-family: var(--font-body);
-  font-size: 1rem;
-  font-weight: 500;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  line-height: 1.6;
-  color: var(--footer-text);
-}
-
-/* === Thank you / placeholder === */
-.thank-you__panel {
-  text-align: center;
-}
-
-.thank-you__monogram {
-  font-family: var(--font-display);
-  font-size: 1.35rem;
-  font-weight: 500;
-  letter-spacing: 0.04em;
-  color: var(--color-capiz);
-}
-
-.thank-you__label {
-  font-family: var(--font-body);
-  font-size: 0.75rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--color-text-soft);
-}
-
-.thank-you__title {
-  font-family: var(--font-subheading);
-  font-weight: 400;
-  font-size: clamp(2.25rem, 8vw, 3rem);
-  color: var(--color-text);
-}
-
-.thank-you__message {
-  font-family: var(--font-body);
-  font-size: 1rem;
-  line-height: 1.7;
-  color: var(--color-text-soft);
-}
-
-.wedding-day-placeholder__copy {
-  font-family: var(--font-body);
-  font-size: 0.95rem;
-  color: var(--color-text-soft);
-  text-align: center;
-}
-
 /* === Wedding day (wd-*) === */
 .wd-page {
   color: var(--hero-text);
@@ -903,28 +329,39 @@ button {
   text-align: center;
 }
 
-.wd-welcome__title {
-  font-family: var(--font-subheading);
-  font-weight: 400;
-  font-size: clamp(3rem, 12vw, 4.5rem);
-  color: var(--hero-text);
-  line-height: 1.05;
-  text-shadow: var(--gate-text-shadow);
+.wd-welcome__date {
+  font-family: var(--font-date);
+  letter-spacing: 0.22em;
+  margin-bottom: var(--spacing-lg);
 }
 
 .wd-welcome__names {
-  font-family: var(--font-header);
-  font-size: clamp(1.15rem, 3.5vw, 1.5rem);
+  margin: 0 0 var(--spacing-md);
+  font-size: clamp(2.75rem, 9.5vw, 3.85rem);
   font-weight: 400;
-  letter-spacing: 0.04em;
-  color: var(--color-sunset-gold);
+  line-height: 0.95;
+  letter-spacing: 0.02em;
+  color: var(--gate-name-fill);
+  text-shadow: var(--gate-text-shadow);
+}
+
+.wd-welcome__title {
+  font-family: var(--font-subheading);
+  font-weight: 400;
+  font-size: clamp(1.75rem, 6vw, 2.5rem);
+  color: var(--hero-text);
+  line-height: 1.1;
+  text-shadow: var(--gate-text-shadow);
 }
 
 .wd-welcome__copy {
   font-family: var(--font-body);
-  font-size: 0.95rem;
+  font-size: clamp(0.95rem, 2.4vw, 1.05rem);
+  font-weight: 400;
   line-height: 1.65;
+  letter-spacing: 0.01em;
   color: var(--hero-text-soft);
+  margin-inline: auto;
 }
 
 .wd-welcome__scroll {
@@ -1064,7 +501,7 @@ button {
   font-family: var(--font-header);
   font-size: clamp(0.85rem, 3vw, 1.05rem);
   font-style: italic;
-  color: var(--color-palm-deep);
+  color: var(--color-burgundy);
 }
 
 .wd-camera__film-caption span {
@@ -1074,7 +511,7 @@ button {
   font-weight: 500;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--color-espresso-soft);
+  color: var(--color-burgundy);
 }
 
 .wd-camera__flip,
@@ -1120,33 +557,57 @@ button {
 }
 
 .wd-post__preview-caption {
-  font-family: var(--font-body);
-  font-size: clamp(0.5rem, 1.7vw, 0.68rem);
-  font-weight: 500;
-  color: var(--color-palm-deep);
+  font-family: var(--font-names);
+  font-size: clamp(0.55rem, 1.9vw, 0.75rem);
+  font-weight: 400;
+  color: var(--color-burgundy);
   white-space: nowrap;
 }
 
 .wd-post__preview-time {
-  color: var(--color-espresso-soft);
+  font-family: var(--font-body);
+  color: var(--color-burgundy);
   font-weight: 400;
 }
 
 .wd-gallery__polaroid-caption {
-  font-family: var(--font-body);
-  font-size: clamp(0.5rem, 1.7vw, 0.68rem);
-  color: var(--color-palm-deep);
+  font-family: var(--font-names);
+  font-size: clamp(0.55rem, 1.9vw, 0.75rem);
+  color: var(--color-burgundy);
   white-space: nowrap;
 }
 
 .wd-gallery__caption {
   text-overflow: ellipsis;
-  font-weight: 600;
+  font-weight: 400;
 }
 
 .wd-gallery__time {
-  color: var(--color-espresso-soft);
+  font-family: var(--font-body);
+  color: var(--color-burgundy);
   font-weight: 400;
+}
+
+.wd-gallery__film-caption {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.25rem;
+  margin-top: 0.15rem;
+  font-family: var(--font-names);
+  font-size: clamp(0.48rem, 1.6vw, 0.62rem);
+  font-weight: 400;
+  color: var(--color-burgundy);
+  white-space: nowrap;
+}
+
+.wd-gallery__film-caption span {
+  font-family: var(--font-body);
+  font-size: 0.85em;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-burgundy);
 }
 
 .wd-gallery__title {
@@ -1224,16 +685,34 @@ button {
 }
 
 .wd-lightbox__guest {
-  font-family: var(--font-body);
-  font-size: clamp(0.9rem, 3vw, 1.05rem);
-  font-weight: 600;
-  color: var(--color-palm-deep);
+  font-family: var(--font-names);
+  font-size: clamp(1.05rem, 3.6vw, 1.35rem);
+  font-weight: 400;
+  color: var(--color-burgundy);
 }
 
 .wd-lightbox__time {
   font-family: var(--font-body);
   font-size: 0.75rem;
-  color: var(--color-espresso-soft);
+  color: var(--color-burgundy);
+}
+
+.wd-lightbox__film-caption {
+  font-family: var(--font-names);
+  font-size: clamp(0.95rem, 3.2vw, 1.15rem);
+  font-weight: 400;
+  color: var(--color-burgundy);
+  margin: 0.35rem 0 0;
+}
+
+.wd-lightbox__film-caption span {
+  font-family: var(--font-body);
+  font-size: clamp(0.56rem, 2vw, 0.68rem);
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-burgundy);
+  margin-left: 0.5rem;
 }
 
 .wd-lightbox__close {
@@ -1244,27 +723,4 @@ button {
   font-family: var(--font-body);
   font-size: 0.9rem;
   color: var(--hero-text);
-}
-
-/* === Registry === */
-.registry__card-name {
-  font-family: var(--font-display);
-  font-weight: 400;
-  font-size: 1.3rem;
-}
-
-.registry__card-desc {
-  font-size: 0.9rem;
-  color: var(--color-text-soft);
-}
-
-.registry__card-link {
-  font-family: var(--font-subheading);
-  font-variant: small-caps;
-  font-size: 0.8rem;
-  letter-spacing: 0.1em;
-}
-
-.registry__wishing-well {
-  text-align: center;
 }

@@ -3,13 +3,14 @@ import { motion } from 'framer-motion'
 import { ChevronLeft } from 'lucide-react'
 import GuestStrip from './GuestStrip'
 import PhotoLightbox from './PhotoLightbox'
-import { getGuestDisplayName } from './guestNames'
+import { couple } from '../../../data/weddingData'
+import { getGuestDisplayName } from '../guestNames'
 import {
   formatCaptureTime,
   readAllGalleryPhotos,
   readGalleryGuests,
-} from './storage'
-import type { GalleryPhotoEntry, WeddingDaySession } from './storage'
+} from '../storage'
+import type { GalleryPhotoEntry, WeddingDaySession } from '../storage'
 
 type GalleryProps = {
   session: WeddingDaySession | null
@@ -44,7 +45,7 @@ export default function Gallery({
     const mapped: DisplayItem[] = all.map((entry) => ({
       ...entry,
       isMine: session ? entry.guestId === session.guestId : false,
-      guestLabel: getGuestDisplayName(entry.guestId, session?.guestId),
+      guestLabel: getGuestDisplayName(entry.guestId, session),
     }))
 
     mapped.sort((a, b) => {
@@ -66,9 +67,7 @@ export default function Gallery({
   }, [session, activeGuestId])
 
   const activeGuestLabel =
-    activeGuestId != null
-      ? getGuestDisplayName(activeGuestId, session?.guestId)
-      : null
+    activeGuestId != null ? getGuestDisplayName(activeGuestId, session) : null
 
   const lightboxItem =
     lightboxIndex != null ? (items[lightboxIndex] ?? null) : null
@@ -86,7 +85,7 @@ export default function Gallery({
         </button>
         <h1 id="wd-gallery-title" className="wd-gallery__title">
           {activeGuestLabel
-            ? activeGuestLabel === 'You'
+            ? activeGuestId === session?.guestId
               ? 'Your Moments'
               : `${activeGuestLabel}'s Moments`
             : 'Celebration Gallery'}
@@ -96,7 +95,7 @@ export default function Gallery({
 
       <GuestStrip
         guests={guests}
-        sessionGuestId={session?.guestId}
+        session={session}
         activeGuestId={activeGuestId}
         onSelectGuest={setActiveGuestId}
       />
@@ -143,11 +142,15 @@ export default function Gallery({
                     />
                     <span className="wd-gallery__polaroid-caption">
                       <span className="wd-gallery__caption">
-                        {item.isMine ? 'You' : item.guestLabel}
+                        {item.guestLabel}
                       </span>
                       {timeLabel ? (
                         <span className="wd-gallery__time">{timeLabel}</span>
                       ) : null}
+                    </span>
+                    <span className="wd-gallery__film-caption">
+                      {couple.name1} &amp; {couple.name2}{' '}
+                      <span>{couple.weddingDateDisplay}</span>
                     </span>
                   </button>
                 </motion.li>

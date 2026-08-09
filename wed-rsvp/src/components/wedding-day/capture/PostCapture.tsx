@@ -1,16 +1,17 @@
 import { useMemo, useState } from 'react'
 import { ChevronLeft } from 'lucide-react'
-import { Button } from '../ui/button'
-import GuestStrip from './GuestStrip'
-import PhotoLightbox from './PhotoLightbox'
-import { formatCaptureTime, readGalleryGuests } from './storage'
-import type { WeddingDayPhoto } from './storage'
+import { Button } from '../../ui/button'
+import GuestStrip from '../gallery/GuestStrip'
+import PhotoLightbox from '../gallery/PhotoLightbox'
+import { formatCaptureTime, readGalleryGuests } from '../storage'
+import type { WeddingDayPhoto } from '../storage'
 
 type PostCaptureProps = {
   photoCount: number
   photos: WeddingDayPhoto[]
   revealed: boolean
   sessionGuestId?: string | null
+  guestDisplayName?: string
   onBackToCamera: () => void
   onViewGallery: (guestId?: string | null) => void
 }
@@ -20,6 +21,7 @@ export default function PostCapture({
   photos,
   revealed,
   sessionGuestId = null,
+  guestDisplayName = 'Guest',
   onBackToCamera,
   onViewGallery,
 }: PostCaptureProps) {
@@ -132,7 +134,11 @@ export default function PostCapture({
           <p className="wd-post__guests-label">Browse guests</p>
           <GuestStrip
             guests={guests}
-            sessionGuestId={sessionGuestId}
+            session={
+              sessionGuestId
+                ? { guestId: sessionGuestId, displayName: guestDisplayName }
+                : null
+            }
             activeGuestId={null}
             navigateOnly
             onSelectGuest={(guestId) => onViewGallery(guestId)}
@@ -196,7 +202,7 @@ export default function PostCapture({
       {lightboxPhoto ? (
         <PhotoLightbox
           dataUrl={lightboxPhoto.dataUrl}
-          guestLabel="You"
+          guestLabel={guestDisplayName}
           capturedAt={lightboxPhoto.capturedAt}
           onClose={() => setLightboxIndex(null)}
         />

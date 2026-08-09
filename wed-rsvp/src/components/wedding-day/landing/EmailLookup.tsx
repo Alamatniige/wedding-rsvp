@@ -1,11 +1,12 @@
 import { useRef, useState } from 'react'
 import type { FormEvent } from 'react'
 import { ChevronDown } from 'lucide-react'
-import { Button } from '../ui/button'
-import { couple } from '../../data/weddingData'
-import { createRSVP, findRSVPByEmail } from '../../lib/rsvp/server'
-import { writeSession } from './storage'
-import type { WeddingDaySession } from './storage'
+import MixedDisplayName from '../../typography/MixedDisplayName'
+import { Button } from '../../ui/button'
+import { couple } from '../../../data/weddingData'
+import { createRSVP, findRSVPByEmail } from '../../../lib/rsvp/server'
+import { writeSession } from '../storage'
+import type { WeddingDaySession } from '../storage'
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
@@ -69,7 +70,7 @@ export default function EmailLookup({ onMatched }: EmailLookupProps) {
       if (!guest) {
         openSignup(trimmed)
         setError(
-          "We couldn't find an RSVP with that email. Sign up below to join the celebration.",
+          "We couldn't find that email. Join below and you can still capture the day with us.",
         )
         return
       }
@@ -77,6 +78,7 @@ export default function EmailLookup({ onMatched }: EmailLookupProps) {
       const session: WeddingDaySession = {
         guestId: guest.id,
         email: guest.email,
+        displayName: guest.firstName.trim(),
       }
       writeSession(session)
       onMatched(session)
@@ -118,6 +120,7 @@ export default function EmailLookup({ onMatched }: EmailLookupProps) {
         const session: WeddingDaySession = {
           guestId: existing.id,
           email: existing.email,
+          displayName: existing.firstName.trim() || trimmedFirst,
         }
         writeSession(session)
         onMatched(session)
@@ -136,6 +139,7 @@ export default function EmailLookup({ onMatched }: EmailLookupProps) {
       const session: WeddingDaySession = {
         guestId: result.record.id,
         email: result.record.email,
+        displayName: result.record.firstName.trim() || trimmedFirst,
       }
       writeSession(session)
       onMatched(session)
@@ -152,25 +156,39 @@ export default function EmailLookup({ onMatched }: EmailLookupProps) {
 
   return (
     <div className="wd-welcome">
-      <section className="wd-welcome__hero" aria-labelledby="wd-welcome-title">
-        <p className="wd-eyebrow">Wedding Day</p>
-        <h1 id="wd-welcome-title" className="wd-welcome__title">
-          Welcome
-        </h1>
-        <p className="wd-welcome__names">
-          {couple.name1} &amp; {couple.name2}
+      <section className="wd-welcome__hero" aria-labelledby="wd-welcome-names">
+        <p className="wd-eyebrow wd-welcome__date">
+          {couple.weddingDateDisplay}
         </p>
+        <h1
+          id="wd-welcome-names"
+          className="wd-welcome__names"
+          aria-label={`${couple.name1} and ${couple.name2}`}
+        >
+          <span aria-hidden="true">
+            <MixedDisplayName
+              name={couple.name1}
+              scriptIndices={couple.name1ScriptIndices}
+            />
+            <span className="mixed-name__amp">&amp;</span>
+            <MixedDisplayName
+              name={couple.name2}
+              scriptIndices={couple.name2ScriptIndices}
+            />
+          </span>
+        </h1>
+        <p className="wd-welcome__title">Welcome</p>
         <p className="wd-welcome__copy">
-          So glad you&apos;re here. Scroll down to find your RSVP — or sign up
-          on the spot — and start capturing moments with us.
+          Glad you made it. Check in with your RSVP email below to open the
+          photobooth and capture moments from the celebration.
         </p>
         <button
           type="button"
           className="wd-welcome__scroll"
           onClick={scrollToLookup}
-          aria-label="Scroll to email lookup"
+          aria-label="Scroll to guest check-in"
         >
-          <span>Continue</span>
+          <span>Begin</span>
           <ChevronDown aria-hidden="true" />
         </button>
       </section>
@@ -182,13 +200,12 @@ export default function EmailLookup({ onMatched }: EmailLookupProps) {
       >
         {mode === 'lookup' ? (
           <>
-            <p className="wd-eyebrow">Moments</p>
+            <p className="wd-eyebrow">Guest check-in</p>
             <h2 id="wd-lookup-title" className="wd-title">
-              Find your RSVP
+              Find your invitation
             </h2>
             <p className="wd-copy">
-              Enter the email you used when you RSVP&apos;d to unlock the
-              photobooth.
+              Enter the email from your RSVP to open the photobooth.
             </p>
 
             <form className="wd-form" onSubmit={handleLookupSubmit} noValidate>
@@ -217,31 +234,30 @@ export default function EmailLookup({ onMatched }: EmailLookupProps) {
               ) : null}
               <div className="wd-actions">
                 <Button type="submit" size="lg" disabled={submitting}>
-                  {submitting ? 'Checking…' : 'Continue'}
+                  {submitting ? 'Looking…' : 'Open photobooth'}
                 </Button>
               </div>
             </form>
 
             <p className="wd-lookup__alt">
-              No RSVP yet?{' '}
+              Didn&apos;t RSVP?{' '}
               <button
                 type="button"
                 className="wd-lookup__link"
                 onClick={() => openSignup(email)}
               >
-                Sign up as a guest
+                Join as a guest
               </button>
             </p>
           </>
         ) : (
           <>
-            <p className="wd-eyebrow">Same-day guest</p>
+            <p className="wd-eyebrow">New guest</p>
             <h2 id="wd-lookup-title" className="wd-title">
-              Join the celebration
+              Join us today
             </h2>
             <p className="wd-copy">
-              Share a few details and you can start capturing moments right
-              away.
+              A name and email is all we need — then the camera is yours.
             </p>
             {error ? (
               <p className="wd-lookup__notice" role="status">
@@ -333,7 +349,7 @@ export default function EmailLookup({ onMatched }: EmailLookupProps) {
 
               <div className="wd-actions wd-actions--row">
                 <Button type="submit" size="lg" disabled={submitting}>
-                  {submitting ? 'Saving…' : 'Start capturing'}
+                  {submitting ? 'Saving…' : 'Open photobooth'}
                 </Button>
                 <Button
                   type="button"
@@ -341,7 +357,7 @@ export default function EmailLookup({ onMatched }: EmailLookupProps) {
                   size="lg"
                   onClick={openLookup}
                 >
-                  Back to lookup
+                  Use a different email
                 </Button>
               </div>
             </form>
