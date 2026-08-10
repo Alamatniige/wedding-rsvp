@@ -3,6 +3,7 @@ import type { TouchEvent, TouchList } from 'react'
 import { Flashlight, FlashlightOff, Images, SwitchCamera } from 'lucide-react'
 import { Button } from '../../ui/button'
 import { couple } from '../../../data/weddingData'
+import { uploadWeddingPhoto } from '../../../lib/photos/server'
 import { appendPhoto, MAX_PHOTOS_PER_GUEST, readPhotos } from '../storage'
 import type { WeddingDayPhoto, WeddingDaySession } from '../storage'
 
@@ -218,11 +219,8 @@ export default function CameraCapture({
     setFreezeFrame(dataUrl)
     setFreezing(true)
 
-    const result = appendPhoto(
-      session.guestId,
-      dataUrl,
-      new Date().toISOString(),
-    )
+    const capturedAt = new Date().toISOString()
+    const result = appendPhoto(session.guestId, dataUrl, capturedAt)
     setPhotos(result.photos)
     onPhotoSaved(result.photos.length)
 
@@ -236,6 +234,16 @@ export default function CameraCapture({
       setFreezeFrame(null)
       return
     }
+
+    void uploadWeddingPhoto({
+      data: {
+        guestId: session.guestId,
+        dataUrl,
+        capturedAt,
+      },
+    }).catch(() => {
+      // Local save already succeeded; keep the capture UX resilient offline.
+    })
 
     setFlyingPhoto(dataUrl)
 

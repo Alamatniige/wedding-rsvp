@@ -2118,10 +2118,32 @@ p {
 
 .wd-admin__toggle-row {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   gap: var(--spacing-lg);
   padding: var(--spacing-lg);
+}
+
+.wd-admin__toggle-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: 0;
+  text-align: left;
+}
+
+.wd-admin__toggle-desc {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  line-height: 1.45;
+  color: var(--hero-text-soft);
+}
+
+.wd-admin__section-lede {
+  margin: 0;
+  max-width: 28rem;
+  text-align: center;
 }
 
 .wd-admin--signin {
@@ -2217,8 +2239,10 @@ p {
   isolation: isolate;
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: var(--spacing-lg);
-  padding: var(--spacing-lg) 3.5rem var(--spacing-lg) var(--spacing-md);
+  padding: var(--spacing-lg) 3.5rem;
+  text-align: center;
 }
 
 .wd-admin__dash-band::before {
@@ -2241,10 +2265,25 @@ p {
 .wd-admin__views {
   display: flex;
   flex-wrap: nowrap;
+  justify-content: flex-start;
   gap: var(--spacing-sm);
+  width: 100%;
+  max-width: 100%;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
+  scroll-padding-inline: var(--spacing-md);
+  box-sizing: border-box;
+}
+
+/* Grow equally when tabs fit (centers the row); collapse to end padding when scrolling. */
+.wd-admin__views::before,
+.wd-admin__views::after {
+  content: '';
+  flex: 1 0 var(--spacing-md);
+  min-width: var(--spacing-md);
+  height: 1px;
+  pointer-events: none;
 }
 
 .wd-admin__views::-webkit-scrollbar {
@@ -2295,7 +2334,8 @@ p {
 
 .wd-admin__guests,
 .wd-admin__add,
-.wd-admin__day {
+.wd-admin__day,
+.wd-admin__gallery {
   position: relative;
   z-index: 2;
   display: flex;
@@ -2308,13 +2348,20 @@ p {
 
 .wd-admin__add {
   max-width: 28rem;
-  padding: var(--spacing-lg);
+  margin-inline: auto;
+  padding: 0;
+  align-items: center;
+}
+
+.wd-admin__add .wd-admin__section-lede {
+  margin-bottom: 0;
 }
 
 .wd-admin__add .wd-form {
   position: relative;
   z-index: 2;
   width: 100%;
+  text-align: left;
 }
 
 .wd-admin__add-actions {
@@ -2322,8 +2369,10 @@ p {
   z-index: 2;
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: var(--spacing-md);
   margin-top: var(--spacing-xl);
+  width: 100%;
 }
 
 .wd-admin__add-submit {
@@ -2531,9 +2580,21 @@ p {
   z-index: 2;
   width: 100%;
   max-width: 24rem;
+  margin-inline: auto;
   display: flex;
   flex-direction: column;
+  align-items: stretch;
   gap: var(--spacing-md);
+}
+
+.wd-admin__day-stack .wd-admin__section-lede {
+  max-width: none;
+  margin-bottom: var(--spacing-sm);
+}
+
+.wd-admin__day-stack .wd-toggle {
+  flex-shrink: 0;
+  margin-top: 0.15rem;
 }
 
 .wd-admin__day-stack .wd-admin__toggle-row,
@@ -2559,9 +2620,11 @@ p {
 
 .wd-admin__heading {
   flex-direction: row;
-  align-items: flex-start;
-  justify-content: space-between;
+  align-items: center;
+  justify-content: center;
   gap: var(--spacing-lg);
+  text-align: center;
+  width: 100%;
 }
 
 .wd-admin__menu-trigger {
@@ -2726,7 +2789,212 @@ p {
   border-top: 1px solid var(--glass-border);
 }
 
+.wd-admin__gallery-toolbar {
+  padding: var(--spacing-lg);
+}
+
+.wd-admin__gallery-toolbar-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-md);
+}
+
+.wd-admin__gallery-toolbar-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+}
+
+.wd-admin__gallery-strip {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: var(--spacing-sm);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding-bottom: 0.15rem;
+}
+
+.wd-admin__gallery-strip::-webkit-scrollbar {
+  display: none;
+}
+
+.wd-admin__gallery-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  flex-shrink: 0;
+  min-height: 2.4rem;
+  padding: 0.35rem 0.75rem;
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  color: var(--hero-text-soft);
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.wd-admin__gallery-chip.is-active {
+  border-color: var(--color-sunset-gold);
+  color: var(--color-capiz);
+}
+
+.wd-admin__gallery-chip-thumb {
+  width: 1.5rem;
+  height: 1.5rem;
+  object-fit: cover;
+}
+
+.wd-admin__gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr));
+  gap: var(--spacing-md);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.wd-admin__gallery-item {
+  position: relative;
+  border: 1px solid var(--glass-border);
+  background: color-mix(in srgb, var(--color-capiz) 8%, transparent);
+}
+
+.wd-admin__gallery-item.is-selected {
+  box-shadow: 0 0 0 1px
+    color-mix(in srgb, var(--color-sunset-gold) 55%, transparent);
+  border-color: var(--color-sunset-gold);
+}
+
+.wd-admin__gallery-select {
+  position: absolute;
+  top: 0.4rem;
+  left: 0.4rem;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.65rem;
+  height: 1.65rem;
+  padding: 0;
+  border: 1px solid color-mix(in srgb, var(--color-capiz) 55%, transparent);
+  background: color-mix(in srgb, #1a1d21 55%, transparent);
+  color: var(--color-capiz);
+  cursor: pointer;
+}
+
+.wd-admin__gallery-check {
+  display: inline-flex;
+  width: 0.95rem;
+  height: 0.95rem;
+}
+
+.wd-admin__gallery-check svg {
+  width: 100%;
+  height: 100%;
+}
+
+.wd-admin__gallery-open {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.wd-admin__gallery-img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+}
+
+.wd-admin__gallery-meta {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.55rem 0.65rem 0.7rem;
+}
+
+.wd-admin__gallery-guest {
+  font-family: var(--font-display, var(--font-body));
+  font-size: 0.95rem;
+  color: var(--color-capiz);
+}
+
+.wd-admin__gallery-time {
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--hero-text-soft);
+}
+
+.wd-admin__gallery-bar {
+  position: sticky;
+  bottom: max(0.75rem, env(safe-area-inset-bottom, 0px));
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-sm);
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--glass-border);
+  background: color-mix(in srgb, #1a1d21 72%, transparent);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.wd-admin__gallery-bar-copy {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--hero-text-soft);
+}
+
+.wd-admin__gallery-bar-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.wd-admin__gallery-bar-clear {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  padding: 0;
+  border: 1px solid var(--glass-border);
+  background: transparent;
+  color: var(--hero-text-soft);
+  cursor: pointer;
+}
+
+.wd-admin__gallery-bar-clear:hover {
+  border-color: var(--color-sunset-gold);
+  color: var(--color-sunset-gold);
+}
+
 @media (max-width: 40rem) {
+  .wd-admin__dash-band {
+    padding-inline: var(--spacing-md);
+  }
+
   .wd-admin__dash-band::before {
     inset: -2.75rem -2.5rem -2.25rem;
     filter: blur(44px);
@@ -2741,12 +3009,21 @@ p {
 
   .wd-admin__heading {
     flex-direction: column;
-    align-items: stretch;
+    align-items: center;
   }
 
   .wd-admin__view {
     padding: 0.5rem 0.7rem;
     letter-spacing: 0.12em;
+  }
+
+  .wd-admin__gallery-toolbar-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .wd-admin__gallery-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 

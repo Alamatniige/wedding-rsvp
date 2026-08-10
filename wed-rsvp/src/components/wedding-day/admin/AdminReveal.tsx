@@ -16,8 +16,11 @@ import {
 } from '../../../lib/rsvp/server'
 import type { RSVPRecord } from '../../../lib/rsvp/schema'
 import { setWeddingDayPreview } from '../../../lib/wedding-mode'
+import { listAdminPhotos } from '../../../lib/photos/server'
+import type { WeddingDayPhotoRecord } from '../../../lib/photos/schema'
 import { Button } from '../../ui/button'
 import { readRevealed, writeRevealed } from '../storage'
+import AdminGallery from './AdminGallery'
 
 type AdminRevealProps = {
   initialPreviewEnabled: boolean
@@ -32,7 +35,7 @@ type EditorState = {
   submissionSource: RSVPRecord['submissionSource']
 }
 
-type DashView = 'list' | 'add' | 'configure'
+type DashView = 'list' | 'add' | 'gallery' | 'configure'
 
 const emptyEditor: EditorState = {
   firstName: '',
@@ -45,6 +48,7 @@ const emptyEditor: EditorState = {
 const viewTitles: Record<DashView, string> = {
   list: 'Guest list',
   add: 'Add RSVP',
+  gallery: 'Guest photos',
   configure: 'Website',
 }
 
@@ -70,10 +74,32 @@ export default function AdminReveal({
   const [menuOpen, setMenuOpen] = useState(false)
   const [pendingDelete, setPendingDelete] = useState<RSVPRecord | null>(null)
   const [deleting, setDeleting] = useState(false)
+  const [galleryPhotos, setGalleryPhotos] = useState<WeddingDayPhotoRecord[]>(
+    [],
+  )
+  const [galleryLoading, setGalleryLoading] = useState(false)
+  const [galleryError, setGalleryError] = useState<string | null>(null)
+  const [galleryLoaded, setGalleryLoaded] = useState(false)
 
   async function loadRecords() {
     const next = await listRSVPs()
     setRecords(next)
+  }
+
+  async function loadGalleryPhotos() {
+    setGalleryLoading(true)
+    setGalleryError(null)
+    try {
+      const next = await listAdminPhotos()
+      setGalleryPhotos(next)
+      setGalleryLoaded(true)
+    } catch {
+      // Fall through to sample photos in AdminGallery when the backend is empty/unavailable.
+      setGalleryPhotos([])
+      setGalleryLoaded(true)
+    } finally {
+      setGalleryLoading(false)
+    }
   }
 
   useEffect(() => {
@@ -92,6 +118,13 @@ export default function AdminReveal({
       }
     })()
   }, [])
+
+  useEffect(() => {
+    if (!adminEmail || view !== 'gallery' || galleryLoaded || galleryLoading) {
+      return
+    }
+    void loadGalleryPhotos()
+  }, [adminEmail, view, galleryLoaded, galleryLoading])
 
   useEffect(() => {
     if (!menuOpen && !pendingDelete) return
@@ -145,6 +178,9 @@ export default function AdminReveal({
     setAdminEmail(null)
     setRecords([])
     setEditor(emptyEditor)
+    setGalleryPhotos([])
+    setGalleryLoaded(false)
+    setGalleryError(null)
     setView('list')
   }
 
@@ -482,6 +518,14 @@ export default function AdminReveal({
               </button>
               <button
                 type="button"
+                className={`wd-admin__view${view === 'gallery' ? ' is-active' : ''}`}
+                aria-pressed={view === 'gallery'}
+                onClick={() => setView('gallery')}
+              >
+                Photos
+              </button>
+              <button
+                type="button"
                 className={`wd-admin__view${view === 'configure' ? ' is-active' : ''}`}
                 aria-pressed={view === 'configure'}
                 onClick={() => setView('configure')}
@@ -597,7 +641,12 @@ export default function AdminReveal({
               ) : null}
 
               {view === 'add' ? (
-                <div className="wd-admin__add wd-admin__surface">
+                <div className="wd-admin__add">
+                  <p className="wd-copy wd-admin__section-lede">
+                    {editor.id
+                      ? 'Update this guest’s details. Changes sync to the guest list and can trigger a notification email.'
+                      : 'Manually add a guest who couldn’t RSVP online. They’ll appear in the guest list and can use their email at the photobooth.'}
+                  </p>
                   <form className="wd-form" onSubmit={handleSave}>
                     <div className="wd-form__row">
                       <div className="wd-form__field">
@@ -691,13 +740,31 @@ export default function AdminReveal({
                 </div>
               ) : null}
 
+              {view === 'gallery' ? (
+                <AdminGallery
+                  photos={galleryPhotos}
+                  loading={galleryLoading}
+                  error={galleryError}
+                />
+              ) : null}
+
               {view === 'configure' ? (
                 <div className="wd-admin__day">
                   <div className="wd-admin__day-stack">
+                    <p className="wd-copy wd-admin__section-lede">
+                      Control what guests see on the wedding website and when
+                      the shared photobooth gallery unlocks.
+                    </p>
                     <div className="wd-admin__toggle-row wd-admin__surface">
-                      <span className="wd-admin__status">
-                        Gallery is {revealed ? 'revealed' : 'hidden'}
-                      </span>
+                      <div className="wd-admin__toggle-copy">
+                        <span className="wd-admin__status">
+                          Gallery is {revealed ? 'revealed' : 'hidden'}
+                        </span>
+                        <p className="wd-admin__toggle-desc">
+                          When revealed, guests can browse everyone’s photobooth
+                          moments. Keep it hidden until you’re ready to share.
+                        </p>
+                      </div>
                       <button
                         type="button"
                         className={`wd-toggle${revealed ? ' is-on' : ''}`}
@@ -709,9 +776,16 @@ export default function AdminReveal({
                       </button>
                     </div>
                     <div className="wd-admin__toggle-row wd-admin__surface">
-                      <span className="wd-admin__status">
-                        Wedding-day preview is {previewEnabled ? 'on' : 'off'}
-                      </span>
+                      <div className="wd-admin__toggle-copy">
+                        <span className="wd-admin__status">
+                          Wedding-day preview is{' '}
+                          {previewEnabled ? 'on' : 'off'}
+                        </span>
+                        <p className="wd-admin__toggle-desc">
+                          Turns on the wedding-day experience early so you can
+                          test the photobooth and gallery before the big day.
+                        </p>
+                      </div>
                       <button
                         type="button"
                         className={`wd-toggle${previewEnabled ? ' is-on' : ''}`}

@@ -193,6 +193,9 @@ async function ensurePolaroidFonts(): Promise<void> {
 function loadImage(src: string): Promise<HTMLImageElement> {
   return new Promise((resolve, reject) => {
     const image = new Image()
+    if (!src.startsWith('data:')) {
+      image.crossOrigin = 'anonymous'
+    }
     image.onload = () => resolve(image)
     image.onerror = () => reject(new Error('Could not prepare this photo.'))
     image.src = src
