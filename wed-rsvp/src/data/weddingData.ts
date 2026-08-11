@@ -25,7 +25,11 @@ export const heroLanding = {
   venue: couple.location,
   hopeMessage: 'We hope you can join us in...',
   date: 'Tuesday, 27th April, 2027',
-  description: 'Formal invitation to follow. Please click below to share your email address!',
+  /** Two-line description under the countdown */
+  descriptionLines: [
+    'Formal invitation to follow.',
+    'Please click below to share your email address',
+  ] as const,
   ctaLabel: 'Share Your Details',
 }
 
@@ -38,7 +42,8 @@ export const invitationCollage = {
   },
   celebration: {
     details: `Tuesday, 27th April, 2027. Villa D'este, Tagaytay, Philippines.`,
-    note: `We'd love for you to join us at the wedding.`,
+    note: `Finally making it official (& throwing a massive party while we're at it).`,
+    secondNote: `Bring your best moves and your appetite!`,
     footer: 'Formal invitation to follow.',
   },
   filmStripSrcs: [

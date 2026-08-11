@@ -86,7 +86,16 @@ export default function PreWeddingPage({
             <div className="hero-landing__timer">
               <CountdownTimer />
             </div>
-            <p className="hero-landing__description">{heroLanding.description}</p>
+            <p
+              className="hero-landing__description"
+              aria-label={heroLanding.descriptionLines.join(' ')}
+            >
+              {heroLanding.descriptionLines.map((line) => (
+                <span key={line} className="hero-landing__description-line" aria-hidden="true">
+                  {line}
+                </span>
+              ))}
+            </p>
           </div>
 
           <Button asChild variant="outline" size="lg" className="hero-landing__anim">

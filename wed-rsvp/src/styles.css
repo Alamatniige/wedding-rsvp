@@ -742,8 +742,9 @@ p {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: var(--spacing-3xl) var(--spacing-lg);
+  justify-content: flex-start;
+  padding: calc(var(--spacing-lg) + env(safe-area-inset-top, 0px))
+    var(--spacing-lg) var(--spacing-3xl);
   max-width: 44rem;
   margin-inline: auto;
 }
@@ -904,7 +905,7 @@ p {
   content: '';
   position: absolute;
   inset: clamp(0.12rem, 0.4vw, 0.2rem);
-  border: 1px solid #1a1410;
+  border: 1px solid var(--color-burgundy);
   pointer-events: none;
 }
 
@@ -918,8 +919,8 @@ p {
 
 .invitation-collage__postcard {
   position: relative;
-  padding: clamp(0.35rem, 1.1vw, 0.5rem);
-  aspect-ratio: 5 / 3.15;
+  padding: clamp(0.28rem, 0.9vw, 0.42rem);
+  aspect-ratio: 5 / 3.55;
   transform: rotate(-5deg);
   background-color: #f7f3eb;
   background-image: url('/images/card-texture/paper-texture.avif');
@@ -935,29 +936,37 @@ p {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 0.4rem;
+  gap: 0.3rem;
   border: clamp(0.18rem, 0.55vw, 0.28rem) solid #6e2c3a;
-  padding: clamp(0.75rem, 2vw, 1.1rem) clamp(0.65rem, 1.8vw, 0.95rem);
+  padding: clamp(0.45rem, 1.4vw, 0.75rem) clamp(0.5rem, 1.5vw, 0.8rem);
+  overflow: hidden;
 }
 
 .invitation-collage__postcard-frame::after {
   content: '';
   position: absolute;
   inset: clamp(0.12rem, 0.4vw, 0.2rem);
-  border: 1px solid #1a1410;
+  border: 1px solid var(--color-burgundy);
   pointer-events: none;
 }
 
-.invitation-collage__postcard-note {
-  margin: 0.15rem 0;
+.invitation-collage__postcard-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex: 1;
+  min-height: 0;
+  gap: 0.35rem;
 }
 
+.invitation-collage__postcard-note,
+.invitation-collage__postcard-second-note,
 .invitation-collage__postcard-footer {
   margin: 0;
 }
 
 .invitation-collage__film {
-  background: #f4f0e8;
+  background: var(--color-burgundy);
   padding: 0.32rem 0.26rem;
   box-shadow: 0 10px 26px rgba(20, 10, 8, 0.3);
   border: 1px solid rgba(30, 20, 15, 0.2);
@@ -1026,7 +1035,7 @@ p {
 
 .hero-landing__description {
   margin-bottom: 0;
-  max-width: 28rem;
+  max-width: none;
 }
 
 .hero-landing__timer {
@@ -1043,7 +1052,8 @@ p {
   flex-direction: column;
   align-items: center;
   background: transparent;
-  padding: var(--spacing-3xl) var(--spacing-lg);
+  padding: calc(var(--spacing-lg) + env(safe-area-inset-top, 0px))
+    var(--spacing-lg) var(--spacing-3xl);
   max-width: 36rem;
   margin-inline: auto;
 }
