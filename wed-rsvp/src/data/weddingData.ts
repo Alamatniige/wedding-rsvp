@@ -96,6 +96,7 @@ export const entranceGate = {
   greeting: 'We are getting married!',
   // Couple's names written in Baybayin (old Filipino script): "Jianne - Joe"
   saveTheDateLabel: 'Save the Date',
+  pullHint: 'Pull the strip to open the invitation',
   photoboothMachineSrc: '/images/entrance/photobooth-machine.png',
   couplePhotoSrcs: [
     '/images/couple/couple-1.jpg',

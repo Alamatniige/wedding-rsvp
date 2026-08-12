@@ -397,7 +397,7 @@ p {
 }
 
 .photobooth-gate__names {
-  margin: 0 0 var(--spacing-lg);
+  margin: 0;
 }
 
 .photobooth-gate__machine-scene {
@@ -406,6 +406,7 @@ p {
   flex-direction: column;
   align-items: center;
   width: 100%;
+  margin-top: calc(-1 * var(--spacing-md));
   margin-bottom: var(--spacing-xl);
   overflow: visible;
 }
@@ -413,6 +414,25 @@ p {
 .photobooth-gate__machine {
   position: relative;
   width: min(16rem, 72vw);
+}
+
+.photobooth-gate__pull-hint {
+  margin: 0;
+  max-width: 16rem;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.45s ease,
+    max-height 0.45s ease,
+    margin 0.45s ease;
+}
+
+.photobooth-gate__pull-hint--visible {
+  margin-top: var(--spacing-md);
+  max-height: 3rem;
+  opacity: 1;
 }
 
 .photobooth-gate__machine-img {

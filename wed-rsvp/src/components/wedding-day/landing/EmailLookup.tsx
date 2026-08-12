@@ -174,6 +174,7 @@ export default function EmailLookup({ onMatched }: EmailLookupProps) {
             <MixedDisplayName
               name={couple.name2}
               scriptIndices={couple.name2ScriptIndices}
+              className="mixed-name__after-amp"
             />
           </span>
         </h1>

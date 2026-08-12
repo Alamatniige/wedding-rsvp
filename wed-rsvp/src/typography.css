@@ -67,9 +67,27 @@ button {
 .mixed-name__amp {
   font-family: var(--font-names);
   font-style: normal;
-  font-size: 0.72em;
-  margin: 0 0.14em;
+  font-size: 0.95em;
+  margin-block: 0;
+  margin-inline: 0.2em;
   vertical-align: 0.02em;
+}
+
+/* Optical clear for Joe's script-J left flourish */
+.mixed-name__after-amp {
+  padding-inline-start: 0.12em;
+}
+
+.photobooth-gate__pull-hint {
+  font-family: var(--font-venue);
+  font-size: clamp(0.7rem, 2.1vw, 0.8rem);
+  font-weight: 400;
+  letter-spacing: 0.16em;
+  line-height: 1.45;
+  text-align: center;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--hero-text-soft) 72%, transparent);
+  text-shadow: var(--gate-text-shadow);
 }
 
 .photobooth-gate__save-block {

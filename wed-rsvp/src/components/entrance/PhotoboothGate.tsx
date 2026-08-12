@@ -422,6 +422,7 @@ export default function PhotoboothGate({ onComplete }: PhotoboothGateProps) {
                 <MixedDisplayName
                   name={couple.name2}
                   scriptIndices={couple.name2ScriptIndices}
+                  className="mixed-name__after-amp"
                 />
               </span>
             </h1>
@@ -450,7 +451,7 @@ export default function PhotoboothGate({ onComplete }: PhotoboothGateProps) {
                     ref={stripRef}
                     className={`photobooth-gate__strip${stripLayoutReady ? ' photobooth-gate__strip--ready' : ''}${photoRevealed ? ' photobooth-gate__strip--revealed' : ''}`}
                     role="slider"
-                    aria-label="Pull down to reveal photos"
+                    aria-label={entranceGate.pullHint}
                     aria-orientation="vertical"
                     aria-valuemin={0}
                     aria-valuemax={100}
@@ -488,6 +489,12 @@ export default function PhotoboothGate({ onComplete }: PhotoboothGateProps) {
                 </div>
               </div>
 
+              <p
+                className={`photobooth-gate__pull-hint${pullReady && !photoRevealed ? ' photobooth-gate__pull-hint--visible' : ''}`}
+                aria-hidden={!pullReady || photoRevealed}
+              >
+                {entranceGate.pullHint}
+              </p>
             </div>
 
             <div className="photobooth-gate__save-block">
