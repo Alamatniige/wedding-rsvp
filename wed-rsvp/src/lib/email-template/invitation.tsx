@@ -31,7 +31,8 @@ function InvitationEmail({ guestName }: InvitationEmailProps) {
         </Text>
         <Text style={{ ...textStyles.body, marginBottom: '0' }}>
           {invitationCollage.saveTheDate.inviteLine}{' '}
-          {invitationCollage.celebration.note}
+          {invitationCollage.celebration.note}{' '}
+          {invitationCollage.celebration.noteAside}
         </Text>
       </Section>
 

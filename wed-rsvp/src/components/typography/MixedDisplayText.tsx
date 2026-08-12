@@ -54,6 +54,17 @@ type MixedDisplayTextProps = {
   /** Uppercase for specimen-style display titles (default true). */
   uppercase?: boolean
   className?: string
+  /** Optional extra classes for specific character indices (kerning tweaks, etc.). */
+  charClassByIndex?: Record<number, string>
+}
+
+function charClassName(
+  base: string,
+  index: number,
+  charClassByIndex?: Record<number, string>,
+): string {
+  const extra = charClassByIndex?.[index]
+  return extra ? `${base} ${extra}` : base
 }
 
 /**
@@ -65,6 +76,7 @@ export default function MixedDisplayText({
   scriptIndices,
   uppercase = true,
   className,
+  charClassByIndex,
 }: MixedDisplayTextProps) {
   const display = uppercase ? text.toUpperCase() : text
   const chars = Array.from(display)
@@ -82,7 +94,10 @@ export default function MixedDisplayText({
         const isLetter = /\p{L}/u.test(char)
         if (!isLetter) {
           return (
-            <span key={`${index}-${char}`} className="mixed-name__serif">
+            <span
+              key={`${index}-${char}`}
+              className={charClassName('mixed-name__serif', index, charClassByIndex)}
+            >
               {char}
             </span>
           )
@@ -91,9 +106,11 @@ export default function MixedDisplayText({
         return (
           <span
             key={`${index}-${char}`}
-            className={
-              scriptSet.has(index) ? 'mixed-name__script' : 'mixed-name__serif'
-            }
+            className={charClassName(
+              scriptSet.has(index) ? 'mixed-name__script' : 'mixed-name__serif',
+              index,
+              charClassByIndex,
+            )}
           >
             {char}
           </span>

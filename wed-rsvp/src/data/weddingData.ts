@@ -42,7 +42,8 @@ export const invitationCollage = {
   },
   celebration: {
     details: `Tuesday, 27th April, 2027. Villa D'este, Tagaytay, Philippines.`,
-    note: `Finally making it official (& throwing a massive party while we're at it).`,
+    note: `Finally making it official`,
+    noteAside: `(& throwing a massive party while we're at it).`,
     secondNote: `Bring your best moves and your appetite!`,
     footer: 'Formal invitation to follow.',
   },
@@ -58,7 +59,7 @@ export const invitationCollage = {
 export const rsvpForm = {
   backLabel: 'Go Back',
   title: 'Details',
-  description: 'We’d love for you to be part of our celebration! Please share your mailing address so we can send the official invitation with all the details for our wedding day.',
+  description: 'Come raise a glass  with us! Please share your mailing address so we can send the official invitation with all the details for our wedding day.',
   helperPrefix: 'Please kindly reply by',
   helperDate: couple.replyByDisplay,
   firstNameLabel: 'First Name',
