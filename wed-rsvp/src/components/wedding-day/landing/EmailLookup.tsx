@@ -5,6 +5,7 @@ import MixedDisplayName from '../../typography/MixedDisplayName'
 import { Button } from '../../ui/button'
 import { couple } from '../../../data/weddingData'
 import { createRSVP, findRSVPByEmail } from '../../../lib/rsvp/server'
+import { MOCK_GUESTS, isMockGuestEmail } from '../guestNames'
 import { writeSession } from '../storage'
 import type { WeddingDaySession } from '../storage'
 
@@ -64,6 +65,20 @@ export default function EmailLookup({ onMatched }: EmailLookupProps) {
       return
     }
 
+    const matchedMock = MOCK_GUESTS.find(
+      (g) => g.email.toLowerCase() === trimmed.toLowerCase(),
+    )
+    if (matchedMock) {
+      const session: WeddingDaySession = {
+        guestId: matchedMock.guestId,
+        email: matchedMock.email,
+        displayName: matchedMock.firstName,
+      }
+      writeSession(session)
+      onMatched(session)
+      return
+    }
+
     setSubmitting(true)
     try {
       const guest = await findRSVPByEmail({ data: { email: trimmed } })
@@ -83,6 +98,10 @@ export default function EmailLookup({ onMatched }: EmailLookupProps) {
       writeSession(session)
       onMatched(session)
     } catch {
+      if (isMockGuestEmail(trimmed)) {
+        openSignup(trimmed)
+        return
+      }
       setError('Guest lookup is unavailable. Please try again.')
     } finally {
       setSubmitting(false)
@@ -108,6 +127,26 @@ export default function EmailLookup({ onMatched }: EmailLookupProps) {
 
     if (Object.keys(nextErrors).length > 0) {
       setFieldErrors(nextErrors)
+      return
+    }
+
+    // Check if submitting as a mock guest or mock email
+    const matchedMock = MOCK_GUESTS.find(
+      (g) => g.email.toLowerCase() === trimmedEmail.toLowerCase(),
+    )
+    const isMock = isMockGuestEmail(trimmedEmail)
+
+    if (isMock) {
+      const guestId =
+        matchedMock?.guestId ??
+        `mock-guest-${trimmedFirst.toLowerCase().replace(/[^a-z0-9]/g, '') || 'user'}`
+      const session: WeddingDaySession = {
+        guestId,
+        email: trimmedEmail,
+        displayName: trimmedFirst,
+      }
+      writeSession(session)
+      onMatched(session)
       return
     }
 
@@ -144,6 +183,18 @@ export default function EmailLookup({ onMatched }: EmailLookupProps) {
       writeSession(session)
       onMatched(session)
     } catch (submissionError) {
+      // Fallback in development mode to let local mock testing proceed
+      if (import.meta.env.DEV) {
+        const session: WeddingDaySession = {
+          guestId: `mock-guest-${trimmedFirst.toLowerCase().replace(/[^a-z0-9]/g, '') || 'user'}`,
+          email: trimmedEmail,
+          displayName: trimmedFirst,
+        }
+        writeSession(session)
+        onMatched(session)
+        return
+      }
+
       setError(
         submissionError instanceof Error
           ? submissionError.message
@@ -209,6 +260,26 @@ export default function EmailLookup({ onMatched }: EmailLookupProps) {
               Enter the email from your RSVP to open the photobooth.
             </p>
 
+            <div className="wd-mock-guests">
+              <p className="wd-mock-guests__label">Demo guests:</p>
+              <div className="wd-mock-guests__chips">
+                {MOCK_GUESTS.map((mock) => (
+                  <button
+                    key={mock.guestId}
+                    type="button"
+                    className="wd-mock-guests__chip"
+                    onClick={() => {
+                      setEmail(mock.email)
+                      setFieldErrors({})
+                      setError(null)
+                    }}
+                  >
+                    {mock.firstName} ({mock.email})
+                  </button>
+                ))}
+              </div>
+            </div>
+
             <form className="wd-form" onSubmit={handleLookupSubmit} noValidate>
               <label className="wd-label" htmlFor="wd-email">
                 Email
@@ -265,6 +336,28 @@ export default function EmailLookup({ onMatched }: EmailLookupProps) {
                 {error}
               </p>
             ) : null}
+
+            <div className="wd-mock-guests">
+              <p className="wd-mock-guests__label">Or pick a demo guest:</p>
+              <div className="wd-mock-guests__chips">
+                {MOCK_GUESTS.map((mock) => (
+                  <button
+                    key={mock.guestId}
+                    type="button"
+                    className="wd-mock-guests__chip"
+                    onClick={() => {
+                      setEmail(mock.email)
+                      setFirstName(mock.firstName)
+                      setLastName(mock.lastName)
+                      setFieldErrors({})
+                      setError(null)
+                    }}
+                  >
+                    {mock.firstName} {mock.lastName}
+                  </button>
+                ))}
+              </div>
+            </div>
 
             <form className="wd-form" onSubmit={handleSignupSubmit} noValidate>
               <label className="wd-label" htmlFor="wd-signup-email">

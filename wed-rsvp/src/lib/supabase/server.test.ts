@@ -2,10 +2,11 @@ import { describe, expect, it } from 'vitest'
 import { isAllowedAdminEmail } from './server'
 
 describe('administrator allowlist', () => {
-  const allowlist = new Set(['owner@example.com'])
+  const allowlist = new Set(['owner@example.com', 'admin@example.com'])
 
   it('normalizes and accepts allowlisted addresses', () => {
     expect(isAllowedAdminEmail(' OWNER@example.com ', allowlist)).toBe(true)
+    expect(isAllowedAdminEmail('admin@example.com', allowlist)).toBe(true)
   })
 
   it('rejects absent and unknown addresses', () => {

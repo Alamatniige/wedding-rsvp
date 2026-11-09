@@ -12,16 +12,7 @@ import CountdownTimer from './CountdownTimer'
 import InvitationCollage from './elements/InvitationCollage'
 
 /** Per-character kerning for hero venue MixedDisplayText only. */
-const venueKernByLine: Record<string, Record<number, string>> = {
-  [heroLanding.venueLines[0]]: {
-    6: 'hero-landing__venue-kern hero-landing__venue-kern--d',
-    7: 'hero-landing__venue-kern hero-landing__venue-kern--apos',
-  },
-  [heroLanding.venueLines[1]]: {
-    0: 'hero-landing__venue-kern hero-landing__venue-kern--t',
-    10: 'hero-landing__venue-kern hero-landing__venue-kern--p',
-  },
-}
+const venueKernByLine: Record<string, Record<number, string>> = {}
 
 type PreWeddingPageProps = {
   gateOpen: boolean

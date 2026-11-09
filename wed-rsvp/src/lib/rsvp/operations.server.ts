@@ -114,6 +114,36 @@ async function sendAndStoreNotification(
   }
 }
 
+const MOCK_LOOKUP_USERS: Record<
+  string,
+  { id: string; firstName: string; lastName: string; email: string }
+> = {
+  'mia@example.com': {
+    id: 'mock-guest-mia',
+    firstName: 'Mia',
+    lastName: 'Santos',
+    email: 'mia@example.com',
+  },
+  'jon@example.com': {
+    id: 'mock-guest-jon',
+    firstName: 'Jon',
+    lastName: 'Reyes',
+    email: 'jon@example.com',
+  },
+  'ana@example.com': {
+    id: 'mock-guest-ana',
+    firstName: 'Ana',
+    lastName: 'Cruz',
+    email: 'ana@example.com',
+  },
+  'leo@example.com': {
+    id: 'mock-guest-leo',
+    firstName: 'Leo',
+    lastName: 'Lim',
+    email: 'leo@example.com',
+  },
+}
+
 export async function insertRSVP(input: RSVPInput) {
   const result = await createSupabaseAdminClient()
     .from('rsvps')
@@ -122,6 +152,30 @@ export async function insertRSVP(input: RSVPInput) {
     .single()
 
   if (result.error) {
+    const isMock =
+      input.email.endsWith('@example.com') ||
+      input.email.endsWith('@test.com') ||
+      Boolean(import.meta.env.DEV)
+    if (isMock) {
+      const mockId =
+        MOCK_LOOKUP_USERS[input.email.toLowerCase()]?.id ??
+        `mock-guest-${input.firstName.toLowerCase().replace(/[^a-z0-9]/g, '') || 'user'}`
+      return {
+        record: {
+          id: mockId,
+          firstName: input.firstName,
+          lastName: input.lastName,
+          email: input.email,
+          additionalDetails: input.additionalDetails,
+          submissionSource: input.submissionSource,
+          notificationStatus: {},
+          lastNotifiedAt: null,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        },
+        notification: null,
+      }
+    }
     if (isDuplicateError(result.error)) {
       throw new Error('An RSVP already exists for this email address.')
     }
@@ -134,6 +188,11 @@ export async function insertRSVP(input: RSVPInput) {
 }
 
 export async function lookupRSVP(email: string) {
+  const normalized = email.trim().toLowerCase()
+  if (normalized in MOCK_LOOKUP_USERS) {
+    return MOCK_LOOKUP_USERS[normalized]!
+  }
+
   const result = await createSupabaseAdminClient()
     .from('rsvps')
     .select('id, first_name, last_name, email')

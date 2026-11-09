@@ -8,6 +8,8 @@ import { createSupabaseAuthClient, isAllowedAdminEmail } from './server'
 const ACCESS_COOKIE = 'wedding-admin-access'
 const REFRESH_COOKIE = 'wedding-admin-refresh'
 const SESSION_MAX_AGE = 60 * 60 * 24 * 30
+const MOCK_TOKEN_PREFIX = 'dev-mock-admin-token'
+const DEV_MOCK_ADMIN_PASSWORD = process.env.DEV_ADMIN_PASSWORD || 'admin123'
 
 export type AdminIdentity = {
   id: string
@@ -44,6 +46,14 @@ export async function resolveAdmin(): Promise<AdminIdentity | null> {
   const accessToken = getCookie(ACCESS_COOKIE)
   const refreshToken = getCookie(REFRESH_COOKIE)
   if (!accessToken || !refreshToken) return null
+
+  if (import.meta.env.DEV && accessToken.startsWith(MOCK_TOKEN_PREFIX)) {
+    const email =
+      accessToken.slice(MOCK_TOKEN_PREFIX.length + 1) || 'admin@example.com'
+    if (isAllowedAdminEmail(email)) {
+      return { id: 'mock-admin-id', email }
+    }
+  }
 
   const supabase = createSupabaseAuthClient()
   const current = await supabase.auth.getUser(accessToken)
@@ -82,8 +92,14 @@ export async function authenticateAdmin(input: {
   email: string
   password: string
 }): Promise<AdminIdentity> {
-  if (!isAllowedAdminEmail(input.email)) {
+  const normalizedEmail = input.email.trim().toLowerCase()
+  if (!isAllowedAdminEmail(normalizedEmail)) {
     throw new Error('Invalid administrator credentials.')
+  }
+
+  if (import.meta.env.DEV && input.password === DEV_MOCK_ADMIN_PASSWORD) {
+    writeSession(`${MOCK_TOKEN_PREFIX}:${normalizedEmail}`, MOCK_TOKEN_PREFIX)
+    return { id: 'mock-admin-id', email: normalizedEmail }
   }
 
   const result = await createSupabaseAuthClient().auth.signInWithPassword(input)

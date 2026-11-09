@@ -7,7 +7,7 @@ import {
 
 export type WeddingMode = 'pre-wedding' | 'wedding-day'
 
-export const WEDDING_DATE = '2027-04-27'
+export const WEDDING_DATE = '2027-10-16'
 export const WEDDING_TIMEZONE = 'Asia/Manila'
 const WEDDING_DAY_PREVIEW_COOKIE = 'wedding-day-preview'
 const PREVIEW_MAX_AGE_SECONDS = 60 * 60 * 24 * 30

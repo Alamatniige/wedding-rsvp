@@ -1,15 +1,15 @@
 export const couple = {
-  name1: 'Jianne',
-  name2: 'Joe',
+  name1: 'Jane',
+  name2: 'John',
   /** Script flourish letters (0-based) for Loren Blake mixed formatting */
-  name1ScriptIndices: [0], // J in JIANNE
-  name2ScriptIndices: [0], // J in JOE
+  name1ScriptIndices: [0], // J in JANE
+  name2ScriptIndices: [0], // J in JOHN
   monogram: 'J&J',
-  weddingDateISO: '2027-04-27T16:00:00',
-  weddingDateDisplay: '27. 04. 2027',
-  rsvpByDisplay: 'April 27, 2027',
-  replyByDisplay: '1st December, 2026',
-  location: 'Villa D’este, Tagaytay, Philippines',
+  weddingDateISO: '2027-10-16T16:00:00',
+  weddingDateDisplay: '16. 10. 2027',
+  rsvpByDisplay: 'October 16, 2027',
+  replyByDisplay: '1st August, 2027',
+  location: 'The Palm Grove, Boracay, Philippines',
 }
 
 export const hero = {
@@ -21,10 +21,10 @@ export const hero = {
 export const heroLanding = {
   meetUsPrefix: 'Meet us at',
   /** Two-line venue for mobile-friendly mixed display */
-  venueLines: ["Villa D'este", 'Tagaytay, Philippines'] as const,
+  venueLines: ['The Palm Grove', 'Boracay, Philippines'] as const,
   venue: couple.location,
   hopeMessage: 'We hope you can join us in...',
-  date: 'Tuesday, 27th April, 2027',
+  date: 'Saturday, 16th October, 2027',
   /** Two-line description under the countdown */
   descriptionLines: [
     'Formal invitation to follow.',
@@ -41,7 +41,7 @@ export const invitationCollage = {
     names: `${couple.name1} & ${couple.name2}`,
   },
   celebration: {
-    details: `Tuesday, 27th April, 2027. Villa D'este, Tagaytay, Philippines.`,
+    details: `Saturday, 16th October, 2027. The Palm Grove, Boracay, Philippines.`,
     note: `Finally making it official`,
     noteAside: `(& throwing a massive party while we're at it).`,
     secondNote: `Bring your best moves and your appetite!`,
@@ -76,14 +76,14 @@ export const rsvpForm = {
 }
 
 export const footer = {
-  initials: 'Jianne & Joe',
+  initials: 'Jane & John',
   heroMessage: '',
   rsvpThankYouMessage: 'Thank you for your response. We cannot wait to celebrate our new chapter with you!',
   closingMessage:
     'We are so grateful to share this day with you. Your love and support have shaped our journey, and we cannot wait to celebrate together.',
   coordinatorName: 'Sarah Mitchell',
   coordinatorPhone: '(555) 123-4567',
-  coordinatorEmail: 'sarah@rosewoodweddings.com',
+  coordinatorEmail: 'coordinator@example.com',
   attribution: 'Created with love',
 }
 
@@ -94,7 +94,7 @@ export const siteMeta = {
 
 export const entranceGate = {
   greeting: 'We are getting married!',
-  // Couple's names written in Baybayin (old Filipino script): "Jianne - Joe"
+  // Mock couple names: "Jane & John"
   saveTheDateLabel: 'Save the Date',
   pullHint: 'Pull the strip to open the invitation',
   photoboothMachineSrc: '/images/entrance/photobooth-machine.png',

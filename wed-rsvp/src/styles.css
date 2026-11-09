@@ -1358,6 +1358,40 @@ p {
   border-color: var(--color-sunset-gold);
 }
 
+.wd-mock-guests {
+  margin: var(--spacing-sm) 0 var(--spacing-lg);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border: 1px dashed var(--glass-border);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.wd-mock-guests__label {
+  margin: 0 0 var(--spacing-xs);
+  font-size: 0.8rem;
+  opacity: 0.8;
+}
+
+.wd-mock-guests__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-xs);
+}
+
+.wd-mock-guests__chip {
+  padding: 3px 9px;
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg);
+  color: inherit;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.wd-mock-guests__chip:hover {
+  border-color: var(--color-sunset-gold);
+  background: rgba(255, 255, 255, 0.15);
+}
+
 .wd-password-field {
   position: relative;
   width: 100%;
