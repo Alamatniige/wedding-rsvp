@@ -9,20 +9,15 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as WeddingDayRouteImport } from './routes/wedding-day'
-import { Route as RsvpRouteImport } from './routes/rsvp'
-import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminRouteImport } from './routes/admin'
+import { Route as RsvpRouteImport } from './routes/rsvp'
+import { Route as WeddingDayRouteImport } from './routes/wedding-day'
 import { Route as WeddingDayIndexRouteImport } from './routes/wedding-day.index'
 
-const WeddingDayRoute = WeddingDayRouteImport.update({
-  id: '/wedding-day',
-  path: '/wedding-day',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const RsvpRoute = RsvpRouteImport.update({
-  id: '/rsvp',
-  path: '/rsvp',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminRoute = AdminRouteImport.update({
@@ -30,9 +25,14 @@ const AdminRoute = AdminRouteImport.update({
   path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const RsvpRoute = RsvpRouteImport.update({
+  id: '/rsvp',
+  path: '/rsvp',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WeddingDayRoute = WeddingDayRouteImport.update({
+  id: '/wedding-day',
+  path: '/wedding-day',
   getParentRoute: () => rootRouteImport,
 } as any)
 const WeddingDayIndexRoute = WeddingDayIndexRouteImport.update({
@@ -79,18 +79,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/wedding-day': {
-      id: '/wedding-day'
-      path: '/wedding-day'
-      fullPath: '/wedding-day'
-      preLoaderRoute: typeof WeddingDayRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/rsvp': {
-      id: '/rsvp'
-      path: '/rsvp'
-      fullPath: '/rsvp'
-      preLoaderRoute: typeof RsvpRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin': {
@@ -100,11 +93,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/rsvp': {
+      id: '/rsvp'
+      path: '/rsvp'
+      fullPath: '/rsvp'
+      preLoaderRoute: typeof RsvpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/wedding-day': {
+      id: '/wedding-day'
+      path: '/wedding-day'
+      fullPath: '/wedding-day'
+      preLoaderRoute: typeof WeddingDayRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/wedding-day/': {
