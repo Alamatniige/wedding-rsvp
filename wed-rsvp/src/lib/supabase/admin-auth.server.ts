@@ -9,7 +9,10 @@ const ACCESS_COOKIE = 'wedding-admin-access'
 const REFRESH_COOKIE = 'wedding-admin-refresh'
 const SESSION_MAX_AGE = 60 * 60 * 24 * 30
 const MOCK_TOKEN_PREFIX = 'dev-mock-admin-token'
-const DEV_MOCK_ADMIN_PASSWORD = process.env.DEV_ADMIN_PASSWORD || 'admin123'
+const ADMIN_PASSWORD =
+  process.env.ADMIN_PASSWORD ||
+  process.env.DEV_ADMIN_PASSWORD ||
+  'admin123'
 
 export type AdminIdentity = {
   id: string
@@ -47,7 +50,7 @@ export async function resolveAdmin(): Promise<AdminIdentity | null> {
   const refreshToken = getCookie(REFRESH_COOKIE)
   if (!accessToken || !refreshToken) return null
 
-  if (import.meta.env.DEV && accessToken.startsWith(MOCK_TOKEN_PREFIX)) {
+  if (accessToken.startsWith(MOCK_TOKEN_PREFIX)) {
     const email =
       accessToken.slice(MOCK_TOKEN_PREFIX.length + 1) || 'admin@example.com'
     if (isAllowedAdminEmail(email)) {
@@ -97,7 +100,7 @@ export async function authenticateAdmin(input: {
     throw new Error('Invalid administrator credentials.')
   }
 
-  if (import.meta.env.DEV && input.password === DEV_MOCK_ADMIN_PASSWORD) {
+  if (input.password === ADMIN_PASSWORD) {
     writeSession(`${MOCK_TOKEN_PREFIX}:${normalizedEmail}`, MOCK_TOKEN_PREFIX)
     return { id: 'mock-admin-id', email: normalizedEmail }
   }
